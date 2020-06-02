@@ -49,7 +49,6 @@ const LoginScreen = (props) => {
   const [error, setError] = useState();
   const [buttonPressed, setButtonPressed] = useState(false);
   const [show, setShow] = useState(false);
-  console.log("hello");
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -72,7 +71,6 @@ const LoginScreen = (props) => {
 
   const { formIsValid } = formState;
 
-  console.log(buttonPressed);
   useEffect(() => {
     loginHandler = async () => {
       Keyboard.dismiss();

@@ -2,62 +2,23 @@ import React from "react";
 import { Platform, View, SafeAreaView, Button } from "react-native";
 import { useDispatch } from "react-redux";
 import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
-import {
   createDrawerNavigator,
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
-import LoginScreen from "../screens/authentication/LoginScreen";
-import SignUpScreen from "../screens/authentication/SignUpScreen";
-import HomeScreen, {
-  screenOptions as homeScreenOptions,
-} from "../screens/shop/HomeScreen";
-import CartScreen from "../screens/shop/CartScreen";
+import { ShopNavigator } from "./ShopNavigator";
 
-import * as authenticationActions from "../store/actions/authentication";
+import AccountScreen from "../../screens/user/AccountScreen";
+import UserProductsScreen from "../../screens/user/UserProductsScreen";
+import OrderHistoryScreen from "../../screens/user/OrderHistoryScreen";
+import SettingsScreen from "../../screens/user/Settings";
+import HelpScreen from "../../screens/HelpScreen";
+import ContactUs from "../../screens/ContactUsScreen";
 
-const AuthenticationStackNavigator = createStackNavigator();
-
-export const AuthenticationNavigator = () => {
-  return (
-    <AuthenticationStackNavigator.Navigator
-      screenOptions={{
-        headerShown: false,
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      }}
-    >
-      <AuthenticationStackNavigator.Screen
-        name="Login"
-        component={LoginScreen}
-      />
-      <AuthenticationStackNavigator.Screen
-        name="Sign up"
-        component={SignUpScreen}
-      />
-    </AuthenticationStackNavigator.Navigator>
-  );
-};
-
-const ShopStackNavigator = createStackNavigator();
-
-export const ShopNavigator = () => {
-  return (
-    <ShopStackNavigator.Navigator>
-      <ShopStackNavigator.Screen
-        name="Home"
-        component={HomeScreen}
-        options={homeScreenOptions}
-      />
-      <ShopStackNavigator.Screen name="Cart" component={CartScreen} />
-    </ShopStackNavigator.Navigator>
-  );
-};
+import * as authenticationActions from "../../store/actions/authentication";
 
 const ShopDrawerNavigator = createDrawerNavigator();
 

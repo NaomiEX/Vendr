@@ -2,7 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 
-import { AuthenticationNavigator, MainNavigator } from "./ShopNavigator";
+import { AuthenticationNavigator } from "./navigators/AuthenticationNavigator";
+import { MainNavigator } from "./navigators/MainNavigator";
 import StartupScreen from "../screens/StartupScreen";
 
 const NavigatorContainer = (props) => {
