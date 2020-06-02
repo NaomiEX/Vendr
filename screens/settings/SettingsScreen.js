@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "../components/UI/HeaderButton";
+import CustomHeaderButton from "../../components/UI/HeaderButton";
 
-const HelpScreen = (props) => {
+const SettingsScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <Text>Help Screen</Text>
+      <Text>Settings Screen</Text>
     </View>
   );
 };
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HelpScreen;
+export default SettingsScreen;

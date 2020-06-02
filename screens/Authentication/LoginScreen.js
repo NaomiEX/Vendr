@@ -145,6 +145,8 @@ const LoginScreen = (props) => {
               type="email"
               isSignIn
               show={show}
+              autoCapitalize="none"
+              autoCorrect={false}
             />
             <Input
               label="Password"
@@ -152,6 +154,9 @@ const LoginScreen = (props) => {
               type="password"
               isSignIn
               show={show}
+              secureTextEntry
+              autoCapitalize="none"
+              autoCorrect={false}
             />
             <View style={styles.buttonViewContainer}>
               <View style={styles.buttonContainer}>

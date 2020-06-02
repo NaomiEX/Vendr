@@ -73,7 +73,6 @@ const SignUpScreen = (props) => {
   const dispatch = useDispatch();
 
   const { formIsValid } = formState;
-  console.log(buttonPressed);
 
   useEffect(() => {
     signUpHandler = async () => {
@@ -86,7 +85,6 @@ const SignUpScreen = (props) => {
         setIsLoading(true);
       }
       try {
-        console.log("hola");
         await dispatch(
           authenticationActions.signUp(
             formState.inputValues.email,
@@ -155,18 +153,25 @@ const SignUpScreen = (props) => {
               onInputChange={inputChangeHandler}
               type="email"
               show={show}
+              autoCapitalize="none"
+              autoCorrect={false}
             />
             <Input
               label="Username"
               onInputChange={inputChangeHandler}
               type="username"
               show={show}
+              autoCapitalize="none"
+              autoCorrect={false}
             />
             <Input
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
               show={show}
+              autoCapitalize="none"
+              autoCorrect={false}
+              secureTextEntry
             />
             <View style={styles.buttonViewContainer}>
               <View style={styles.buttonContainer}>

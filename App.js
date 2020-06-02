@@ -27,7 +27,10 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
-  YellowBox.ignoreWarnings(["Setting a timer"]);
+  YellowBox.ignoreWarnings([
+    "Setting a timer",
+    "Possible Unhandled Promise Rejection",
+  ]);
   const [fontLoaded, setFontLoaded] = useState(false);
 
   if (!fontLoaded) {

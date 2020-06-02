@@ -26,9 +26,6 @@ const HomeScreen = (props) => {
 
 export const screenOptions = (navData) => {
   return {
-    headerStyle: {
-      backgroundColor: Colors.primary,
-    },
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item
