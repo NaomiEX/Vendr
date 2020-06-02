@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback, useEffect } from "react";
 import {
   View,
   TouchableWithoutFeedback,
@@ -7,13 +7,18 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../../constants/Colors";
 import Input from "../../components/Input";
-import MainButton from "../../components/MainButton";
+import MainButton from "../../components/UI/MainButton";
 import BodyText from "../../components/Text/BodyText";
+
+import * as authenticationActions from "../../store/actions/authentication";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -40,21 +45,66 @@ const formReducer = (state, action) => {
 };
 
 const LoginScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [show, setShow] = useState(false);
+  console.log("hello");
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      username: "",
       email: "",
       password: "",
     },
     inputValidities: {
-      username: false,
       email: false,
       password: false,
     },
     formIsValid: false,
   });
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+  const dispatch = useDispatch();
+
+  const { formIsValid } = formState;
+
+  console.log(buttonPressed);
+  useEffect(() => {
+    loginHandler = async () => {
+      Keyboard.dismiss();
+      setError(null);
+      // ensures that the loading spinner shows only once, previously it would appear, disapear twice
+      // (because loginHandler runs again when setButtonPressed(false) is executed down below and useEffect runs again, as buttonPressed state changes,
+      // loginHandler is executed again because formState is still valid from last time)
+      if (buttonPressed) {
+        setIsLoading(true);
+      }
+      try {
+        await dispatch(
+          authenticationActions.login(
+            formState.inputValues.email,
+            formState.inputValues.password,
+            formIsValid
+          )
+        );
+      } catch (err) {
+        if (buttonPressed) {
+          setError(err.message);
+        }
+        // runs twice but since the second time setIsLoading(true) does not run, it makes no visual difference as isLoading is already false
+        setIsLoading(false);
+        setButtonPressed(false);
+        setShow(true);
+      }
+    };
+    if (buttonPressed) {
+      loginHandler();
+    }
+  }, [formIsValid, buttonPressed]);
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
@@ -91,20 +141,33 @@ const LoginScreen = (props) => {
             }}
           >
             <Input
-              label="Username"
+              label="Email-address"
+              keyboardType="email-address"
               onInputChange={inputChangeHandler}
-              type="username"
+              type="email"
               isSignIn
+              show={show}
             />
             <Input
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
               isSignIn
+              show={show}
             />
             <View style={styles.buttonViewContainer}>
               <View style={styles.buttonContainer}>
-                <MainButton onPress={Keyboard.dismiss}>Login</MainButton>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color={Colors.accent} />
+                ) : (
+                  <MainButton
+                    onPress={() => {
+                      setButtonPressed(true);
+                    }}
+                  >
+                    Login
+                  </MainButton>
+                )}
               </View>
             </View>
             <View style={styles.textContainer}>

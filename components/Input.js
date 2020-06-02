@@ -6,7 +6,6 @@ import Colors from "../constants/Colors";
 import EmphasisText from "../components/Text/EmphasisText";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
-const INPUT_BLUR = "INPUT_BLUR";
 
 const inputReducer = (state, action) => {
   switch (action.type) {
@@ -16,12 +15,6 @@ const inputReducer = (state, action) => {
         value: action.value,
         errorMessage: action.errorMessage,
         isValid: action.isValid,
-      };
-
-    case INPUT_BLUR:
-      return {
-        ...state,
-        touched: true,
       };
 
     default:
@@ -44,6 +37,10 @@ const constraints = {
     },
   },
   email: {
+    length: {
+      minimum: 1,
+      tooShort: "^Your email-address cannot be empty",
+    },
     email: {
       message: "^Please enter a valid email-address",
     },
@@ -68,15 +65,12 @@ const Input = (props) => {
     value: "",
     errorMessage: "",
     isValid: false,
-    touched: false,
   });
 
   const { onInputChange } = props;
 
   useEffect(() => {
-    if (inputState.touched) {
-      onInputChange(props.type, inputState.value, inputState.isValid);
-    }
+    onInputChange(props.type, inputState.value, inputState.isValid);
   }, [onInputChange, inputState]);
 
   let object = {};
@@ -96,13 +90,11 @@ const Input = (props) => {
       isValid: result ? (result[props.type] ? false : true) : true,
     });
   };
+  console.log("render");
 
-  const lostFocusHandler = (text) => {
-    inputChangeHandler(text);
-    dispatch({
-      type: INPUT_BLUR,
-    });
-  };
+  useEffect(() => {
+    inputChangeHandler("");
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -113,17 +105,16 @@ const Input = (props) => {
           style={{
             ...styles.input,
             borderColor:
-              !inputState.isValid && inputState.touched
+              !inputState.isValid && props.show
                 ? props.isSignIn
                   ? Colors.accent
-                  : "white"
+                  : "red"
                 : "white",
           }}
           onChangeText={inputChangeHandler}
           value={inputState.value}
-          onBlur={lostFocusHandler.bind(this, inputState.value)}
         />
-        {!inputState.isValid && inputState.touched && (
+        {!inputState.isValid && props.show && (
           <Text
             style={{
               color: props.isSignIn ? Colors.accent : "red",

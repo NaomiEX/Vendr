@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { YellowBox } from "react-native";
 import { AppLoading } from "expo";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -7,7 +7,8 @@ import ReduxThunk from "redux-thunk";
 
 import * as Font from "expo-font";
 
-import authenticationReducer from "./store/reducers/Authentication";
+import authenticationReducer from "./store/reducers/authentication";
+import userProfileReducer from "./store/reducers/authentication";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
 
@@ -18,7 +19,15 @@ const fetchFonts = () => {
   });
 };
 
+const rootReducer = combineReducers({
+  authentication: authenticationReducer,
+  userProfile: userProfileReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
 export default function App() {
+  YellowBox.ignoreWarnings(["Setting a timer"]);
   const [fontLoaded, setFontLoaded] = useState(false);
 
   if (!fontLoaded) {
@@ -32,7 +41,9 @@ export default function App() {
     );
   }
 
-  return <NavigatorContainer />;
+  return (
+    <Provider store={store}>
+      <NavigatorContainer />
+    </Provider>
+  );
 }
-
-const styles = StyleSheet.create({});

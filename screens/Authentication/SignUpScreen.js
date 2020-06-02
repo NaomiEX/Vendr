@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback, useEffect } from "react";
 import {
   View,
   TouchableWithoutFeedback,
@@ -7,15 +7,18 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
-  TouchableNativeFeedback,
   TouchableOpacity,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../../constants/Colors";
 import Input from "../../components/Input";
-import MainButton from "../../components/MainButton";
-import BodyText from "../../components/Text/BodyText";
+import MainButton from "../../components/UI/MainButton";
+
+import * as authenticationActions from "../../store/actions/authentication";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -42,7 +45,10 @@ const formReducer = (state, action) => {
 };
 
 const SignUpScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [show, setShow] = useState(false);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -57,6 +63,52 @@ const SignUpScreen = (props) => {
     },
     formIsValid: false,
   });
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An Error Occurred!", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
+  const dispatch = useDispatch();
+
+  const { formIsValid } = formState;
+  console.log(buttonPressed);
+
+  useEffect(() => {
+    signUpHandler = async () => {
+      Keyboard.dismiss();
+      setError(null);
+      // ensures that the loading spinner shows only once, previously it would appear, disapear twice
+      // (because loginHandler runs again when setButtonPressed(false) is executed down below and useEffect runs again, as buttonPressed state changes,
+      // loginHandler is executed again because formState is still valid from last time)
+      if (buttonPressed) {
+        setIsLoading(true);
+      }
+      try {
+        console.log("hola");
+        await dispatch(
+          authenticationActions.signUp(
+            formState.inputValues.email,
+            formState.inputValues.password,
+            formState.inputValues.username,
+            formIsValid
+          )
+        );
+      } catch (err) {
+        if (buttonPressed) {
+          setError(err.message);
+        }
+        // runs twice but since the second time setIsLoading(true) does not run, it makes no visual difference as isLoading is already false
+        setIsLoading(false);
+        setButtonPressed(false);
+        setShow(true);
+      }
+    };
+    if (buttonPressed) {
+      signUpHandler();
+    }
+  }, [formIsValid, buttonPressed]);
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
@@ -102,20 +154,33 @@ const SignUpScreen = (props) => {
               keyboardType="email-address"
               onInputChange={inputChangeHandler}
               type="email"
+              show={show}
             />
             <Input
               label="Username"
               onInputChange={inputChangeHandler}
               type="username"
+              show={show}
             />
             <Input
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
+              show={show}
             />
             <View style={styles.buttonViewContainer}>
               <View style={styles.buttonContainer}>
-                <MainButton onPress={Keyboard.dismiss}>Sign up</MainButton>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color={Colors.primary} />
+                ) : (
+                  <MainButton
+                    onPress={() => {
+                      setButtonPressed(true);
+                    }}
+                  >
+                    Sign up
+                  </MainButton>
+                )}
               </View>
             </View>
           </View>

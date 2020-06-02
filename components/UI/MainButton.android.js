@@ -8,7 +8,7 @@ import {
   Platform,
 } from "react-native";
 
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
 const MainButton = (props) => {
   let ButtonComponent = TouchableOpacity;
