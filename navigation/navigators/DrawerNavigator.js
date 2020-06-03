@@ -1,11 +1,12 @@
 import React from "react";
-import { Platform, View, SafeAreaView, Button, Settings } from "react-native";
+import { Platform, View, SafeAreaView, Button, Dimensions } from "react-native";
 import { useDispatch } from "react-redux";
 import {
   createDrawerNavigator,
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../../constants/Colors";
 
@@ -18,33 +19,41 @@ import { ContactUsNavigator } from "./ContactUsNavigator";
 
 import * as authenticationActions from "../../store/actions/authentication";
 
+const deviceHeight = Dimensions.get("window").height;
+
 const ShopDrawerNavigator = createDrawerNavigator();
 
 export const DrawerNavigator = () => {
   const dispatch = useDispatch();
   return (
     <ShopDrawerNavigator.Navigator
-      initialRouteName="Shop"
+      initialRouteName="Home"
       drawerStyle={{
-        backgroundColor: Colors.primary,
         width: 240,
       }}
       drawerContent={(props) => {
         return (
           <View>
-            <SafeAreaView
-              style={{ paddingTop: 15 }}
-              forceInset={{ top: "always", horizontal: "never" }}
+            <LinearGradient
+              style={{ width: 240, height: deviceHeight }}
+              colors={["#ff7c58", "#f01313"]}
+              start={[0, 0]}
+              end={[1, 1]}
             >
-              <DrawerItemList {...props} />
-              <Button
-                title="Logout"
-                color={Colors.accent}
-                onPress={() => {
-                  dispatch(authenticationActions.logout());
-                }}
-              />
-            </SafeAreaView>
+              <SafeAreaView
+                style={{ paddingTop: 15 }}
+                forceInset={{ top: "always", horizontal: "never" }}
+              >
+                <DrawerItemList {...props} />
+                <Button
+                  title="Logout"
+                  color={Colors.accent}
+                  onPress={() => {
+                    dispatch(authenticationActions.logout());
+                  }}
+                />
+              </SafeAreaView>
+            </LinearGradient>
           </View>
         );
       }}
