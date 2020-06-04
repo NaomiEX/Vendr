@@ -44,6 +44,9 @@ const formReducer = (state, action) => {
   }
 };
 
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
+
 const LoginScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -135,7 +138,7 @@ const LoginScreen = (props) => {
           </View>
           <View
             style={{
-              marginBottom: Dimensions.get("window").height / 24.37,
+              marginBottom: deviceHeight / 24.37,
             }}
           >
             <Input
@@ -143,7 +146,6 @@ const LoginScreen = (props) => {
               keyboardType="email-address"
               onInputChange={inputChangeHandler}
               type="email"
-              isSignIn
               show={show}
               autoCapitalize="none"
               autoCorrect={false}
@@ -152,7 +154,6 @@ const LoginScreen = (props) => {
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
-              isSignIn
               show={show}
               secureTextEntry
               autoCapitalize="none"
@@ -178,7 +179,7 @@ const LoginScreen = (props) => {
                 Don't have an account yet?
               </BodyText>
               <BodyText
-                style={styles.signUp}
+                style={styles.signUpText}
                 onPress={() => {
                   props.navigation.navigate("Sign up");
                 }}
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     alignItems: "center",
-    marginBottom: 95,
+    marginBottom: deviceHeight / 6.602,
   },
 
   buttonViewContainer: {
@@ -213,18 +214,18 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginHorizontal: Dimensions.get("window").width / 3.914,
-    marginTop: Dimensions.get("window").height / 24.37,
+    marginHorizontal: deviceWidth / 3.914,
+    marginTop: deviceHeight / 24.37,
   },
 
   textContainer: {
     alignItems: "center",
-    marginTop: Dimensions.get("window").height / 73.1,
+    marginTop: deviceHeight / 73.1,
   },
 
-  signUp: {
+  signUpText: {
     textDecorationLine: "underline",
-    color: "rgba(255, 199, 0, 0.6)",
+    color: "rgba(255, 199, 0, 0.8)",
   },
 
   bodyText: {

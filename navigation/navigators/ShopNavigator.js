@@ -4,7 +4,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen, {
   screenOptions as homeScreenOptions,
 } from "../../screens/shop/HomeScreen";
-import SearchScreen from "../../screens/shop/SearchScreen";
+import SearchScreen, {
+  screenOptions as searchScreenOptions,
+} from "../../screens/shop/SearchScreen";
 import CategoriesScreen from "../../screens/shop/CategoriesScreen";
 import ProductsScreen from "../../screens/shop/ProductsScreen";
 import ProductDetailsScreen from "../../screens/shop/ProductDetailsScreen";
@@ -23,7 +25,11 @@ export const ShopNavigator = () => {
         component={HomeScreen}
         options={homeScreenOptions}
       />
-      <ShopStackNavigator.Screen name="Search" component={SearchScreen} />
+      <ShopStackNavigator.Screen
+        name="Search"
+        component={SearchScreen}
+        options={searchScreenOptions}
+      />
       <ShopStackNavigator.Screen
         name="Categories"
         component={CategoriesScreen}

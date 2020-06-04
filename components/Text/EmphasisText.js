@@ -11,7 +11,7 @@ const EmphasisText = (props) => {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: "helvetica-standard",
     color: "white",
   },

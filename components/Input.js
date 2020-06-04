@@ -102,14 +102,12 @@ const Input = (props) => {
       <View style={styles.inputContainer}>
         <TextInput
           {...props}
+          selectionColor="rgba(67, 206, 190, 0.8)"
+          underlineColorAndroid="transparent"
           style={{
             ...styles.input,
-            borderColor:
-              !inputState.isValid && props.show
-                ? props.isSignIn
-                  ? Colors.accent
-                  : "red"
-                : "white",
+            borderBottomColor:
+              !inputState.isValid && props.show ? Colors.accent : "white",
           }}
           onChangeText={inputChangeHandler}
           value={inputState.value}
@@ -117,7 +115,7 @@ const Input = (props) => {
         {!inputState.isValid && props.show && (
           <Text
             style={{
-              color: props.isSignIn ? Colors.accent : "red",
+              color: Colors.accent,
               textAlign: "left",
             }}
           >
@@ -137,19 +135,21 @@ const styles = StyleSheet.create({
   label: {
     textAlign: "left",
     marginTop: 20,
-    marginBottom: 10,
     marginHorizontal: Dimensions.get("window").width / 10.275,
   },
 
   input: {
-    borderWidth: 1,
+    borderBottomWidth: 1.5,
     height: 30,
-    paddingHorizontal: 10,
+    marginTop: 5,
+    paddingHorizontal: 7,
+    paddingBottom: 2,
+    fontSize: 16,
     color: "white",
   },
 
   inputContainer: {
-    marginHorizontal: Dimensions.get("window").width / 10.275,
+    marginHorizontal: Dimensions.get("window").width / 12,
   },
 });
 

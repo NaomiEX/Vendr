@@ -33,14 +33,12 @@ const HomeScreen = (props) => {
         backgroundColor="rgba(0,0,0,0)"
       />
       <ShopCarousel data={LARGE_BANNERS} autoplay={false} />
-      <View style={{ marginTop: 100 }}>
-        <Button
-          title="Get user data"
-          onPress={() => {
-            dispatch(userProfileActions.getProfile());
-          }}
-        />
-      </View>
+      <Button
+        title="Get user data"
+        onPress={() => {
+          dispatch(userProfileActions.getProfile());
+        }}
+      />
     </View>
   );
 };
@@ -48,22 +46,13 @@ const HomeScreen = (props) => {
 export const screenOptions = (navData) => {
   return {
     headerTransparent: true,
-    headerTitle: () => <SearchBar />,
-    headerStyle: {
-      height: deviceHeight / 10.847,
-    },
-    headerTitleContainerStyle: {
-      marginTop: 10,
-    },
-    headerLeftContainerStyle: {
-      marginLeft: 10,
-      marginTop: 10,
-    },
-    headerRightContainerStyle: {
-      marginRight: 10,
-      marginTop: 10,
-    },
-    headerTitleAlign: "center",
+    headerTitle: () => (
+      <SearchBar
+        onPress={() => {
+          navData.navigation.navigate("Search");
+        }}
+      />
+    ),
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item

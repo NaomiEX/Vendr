@@ -44,6 +44,9 @@ const formReducer = (state, action) => {
   }
 };
 
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
+
 const SignUpScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -124,7 +127,7 @@ const SignUpScreen = (props) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <LinearGradient
         style={styles.gradient}
-        colors={["#01E1BD", "#00CFD7"]}
+        colors={["#43cebe", "#478feb"]}
         start={[0, 0]}
         end={[1, 1]}
       >
@@ -207,16 +210,16 @@ const styles = StyleSheet.create({
 
   arrowContainer: {
     marginTop: 30,
-    marginLeft: Dimensions.get("window").width / 41.1,
+    marginLeft: deviceWidth / 41.1,
   },
 
   imageContainer: {
     alignItems: "center",
-    marginBottom: Dimensions.get("window").height / 13.54,
+    marginBottom: deviceHeight / 13.54,
   },
 
   contentContainer: {
-    marginBottom: Dimensions.get("window").height / 14.62,
+    marginBottom: deviceHeight / 14.62,
   },
 
   buttonViewContainer: {
@@ -224,13 +227,13 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginHorizontal: Dimensions.get("window").width / 3.914,
-    marginTop: Dimensions.get("window").height / 24.37,
+    marginHorizontal: deviceWidth / 3.914,
+    marginTop: deviceHeight / 24.37,
   },
 
   textContainer: {
     alignItems: "center",
-    marginTop: Dimensions.get("window").height / 73.1,
+    marginTop: deviceHeight / 73.1,
   },
 
   signUp: {

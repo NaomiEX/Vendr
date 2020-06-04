@@ -1,20 +1,32 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+
+import SearchBar from "../../components/SearchBar";
 
 const SearchScreen = (props) => {
   return (
-    <View style={styles.screen}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
       <Text>Search Screen</Text>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+export const screenOptions = (navData) => {
+  return {
+    headerTitle: () => <SearchBar typeable />,
+  };
+};
+
+const styles = StyleSheet.create({});
 
 export default SearchScreen;
