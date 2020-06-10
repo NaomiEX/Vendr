@@ -1,0 +1,69 @@
+import React from "react";
+import { View, Text } from "react-native";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { ShopNavigator } from "./ShopNavigator";
+import { DrawerNavigator } from "./DrawerNavigator";
+import { WishlistNavigator } from "./WishlistNavigator";
+import { CategoriesOverviewNavigator } from "./CategoriesOverviewNavigator";
+
+import Colors from "../../constants/Colors";
+
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+
+const MaterialBottomTabBarNavigator = createMaterialBottomTabNavigator();
+
+const IoniconIcon = (props) => (
+  <View style={{ marginTop: -2 }}>
+    <Ionicons
+      name={
+        Platform.OS === "android" ? `md-${props.icon}` : `ios-${props.icon}`
+      }
+      size={27}
+      color={props.iconColor}
+    />
+  </View>
+);
+
+export const BottomTabBarNavigator = () => {
+  return (
+    <MaterialBottomTabBarNavigator.Navigator
+      barStyle={{ backgroundColor: "white" }}
+      activeColor={Colors.primary}
+      inactiveColor={Colors.inactive_grey}
+    >
+      <MaterialBottomTabBarNavigator.Screen
+        name="Home"
+        component={DrawerNavigator}
+        options={{
+          tabBarIcon: (props) => {
+            return <IoniconIcon icon="home" iconColor={props.color} />;
+          },
+        }}
+      />
+      <MaterialBottomTabBarNavigator.Screen
+        name="All Categories"
+        component={CategoriesOverviewNavigator}
+        options={{
+          tabBarIcon: (props) => {
+            return (
+              <View style={{ marginLeft: -2, marginTop: -2 }}>
+                <AntDesign name="appstore1" size={27} color={props.color} />
+              </View>
+            );
+          },
+        }}
+      />
+      <MaterialBottomTabBarNavigator.Screen
+        name="Wishlist"
+        component={WishlistNavigator}
+        options={{
+          tabBarIcon: (props) => {
+            return <IoniconIcon icon="heart" iconColor={props.color} />;
+          },
+        }}
+      />
+    </MaterialBottomTabBarNavigator.Navigator>
+  );
+};

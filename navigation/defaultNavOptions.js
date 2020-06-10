@@ -1,28 +1,50 @@
 import React from "react";
-import { Dimensions } from "react-native";
+import { View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
 import { CardStyleInterpolators } from "@react-navigation/stack";
 
 import Colors from "../constants/Colors";
-
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
+import DeviceDimensions from "../constants/DeviceDimensions";
 
 export const defaultNavOptions = {
+  // headerBackground: () => (
+  //   <LinearGradient
+  //     style={{ flex: 1 }}
+  //     colors={[Colors.secondary, Colors.primary]}
+  //     start={[0, 0]}
+  //     end={[1, 1]}
+  //   />
+  // ),
+  headerBackground: () => (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+      }}
+    ></View>
+  ),
+  headerTitleStyle: {
+    color: "white",
+    // color: Colors.primary,
+    // fontFamily: "helvetica-bold",
+    // fontSize: 20,
+    // letterSpacing: 2,
+  },
   headerTitleContainerStyle: {
-    marginBottom: deviceHeight / 151.85,
+    marginBottom: DeviceDimensions.height / 151.85,
   },
   headerLeftContainerStyle: {
-    marginLeft: deviceWidth / 39.273,
-    marginBottom: deviceHeight / 151.85,
+    marginLeft: DeviceDimensions.width / 39.273,
+    marginBottom: DeviceDimensions.height / 151.85,
   },
   headerRightContainerStyle: {
-    marginRight: deviceWidth / 39.273,
-    marginBottom: deviceHeight / 151.85,
+    marginRight: DeviceDimensions.width / 39.273,
+    marginBottom: DeviceDimensions.height / 151.85,
   },
   headerTitleAlign: "center",
   headerStyle: {
-    backgroundColor: Colors.primary,
-    height: deviceHeight / 9.86,
+    height: DeviceDimensions.height / 9.86,
   },
   cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 };

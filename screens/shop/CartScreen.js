@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from "react-native";
 
 const CartScreen = (props) => {
   return (

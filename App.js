@@ -8,7 +8,8 @@ import ReduxThunk from "redux-thunk";
 import * as Font from "expo-font";
 
 import authenticationReducer from "./store/reducers/authentication";
-import userProfileReducer from "./store/reducers/authentication";
+import userProfileReducer from "./store/reducers/userProfile";
+import activeComponentsReducer from "./store/reducers/activeComponents";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
 
@@ -22,6 +23,7 @@ const fetchFonts = () => {
 const rootReducer = combineReducers({
   authentication: authenticationReducer,
   userProfile: userProfileReducer,
+  activeComponents: activeComponentsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

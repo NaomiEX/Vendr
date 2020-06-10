@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 
+import * as activeComponentsActions from "../../store/actions/activeComponents";
+
 const SettingsScreen = (props) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      dispatch(activeComponentsActions.updateActiveScreen("Settings"));
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
     <View style={styles.screen}>
-      <Text>Settings Screen</Text>
+      <Text
+        onPress={() => {
+          props.navigation.navigate("Edit Profile");
+        }}
+      >
+        Edit User Profile
+      </Text>
     </View>
   );
 };
@@ -30,8 +51,6 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

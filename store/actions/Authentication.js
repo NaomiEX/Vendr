@@ -152,6 +152,8 @@ export const login = (email, password, formValidity) => {
       )
     );
 
+    dispatch(userProfileActions.getProfile());
+
     const expirationDate = new Date(
       new Date().getTime() + parseInt(responseData.expiresIn) * 1000
     );
@@ -188,6 +190,67 @@ export const verifyEmail = (token) => {
 
     const responseData = await response.json();
     console.log(responseData);
+  };
+};
+
+export const resetPassword = () => {
+  return async (dispatch, getState) => {
+    const email = getState().userProfile.email;
+
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDrkPG1KbBlYRCW91Can7KNHRsY6RKCdWE",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            requestType: "PASSWORD_RESET",
+            email: email,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorResponseData = await response.json();
+        console.log(errorResponseData);
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const deleteAccount = () => {
+  return async (dispatch, getState) => {
+    const token = getState().authentication.token;
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyDrkPG1KbBlYRCW91Can7KNHRsY6RKCdWE",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idToken: token,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorResponseData = await response.json();
+        console.log(errorResponseData);
+      }
+
+      dispatch(logout());
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 

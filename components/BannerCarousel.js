@@ -1,29 +1,19 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { View, Text, ImageBackground, StyleSheet, Image } from "react-native";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../constants/Colors";
+import DeviceDimensions from "../constants/DeviceDimensions";
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
 const renderCarouselItem = (itemData) => {
-  console.log(deviceWidth);
-  console.log(deviceHeight);
   return (
     <View>
       <ImageBackground
         style={{
-          width: deviceWidth,
-          height: deviceHeight / 2.812,
+          width: DeviceDimensions.width,
+          height: DeviceDimensions.height / 2.812,
         }}
         source={itemData.item.imageUrl}
       >
@@ -42,7 +32,7 @@ const renderCarouselItem = (itemData) => {
   );
 };
 
-const ShopCarousel = (props) => {
+const BannerCarousel = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   return (
@@ -51,13 +41,16 @@ const ShopCarousel = (props) => {
         <Carousel
           data={props.data}
           renderItem={renderCarouselItem}
-          sliderWidth={deviceWidth}
-          itemWidth={deviceWidth}
+          sliderWidth={DeviceDimensions.width}
+          itemWidth={DeviceDimensions.width}
           lockScrollWhileSnapping={props.autoplay ? true : false}
           autoplay={props.autoplay}
           autoplayInterval={5000}
           loop={props.autoplay ? true : false}
           onSnapToItem={(index) => setActiveSlide(index)}
+          slideStyle={{ width: DeviceDimensions.width }}
+          inactiveSlideOpacity={1}
+          inactiveSlideScale={1}
         />
       </View>
       <Pagination
@@ -80,13 +73,13 @@ const ShopCarousel = (props) => {
 
 const styles = StyleSheet.create({
   carousel: {
-    marginBottom: -deviceHeight / 37.964,
+    marginBottom: -DeviceDimensions.height / 37.964,
   },
 
   textContainer: {
     marginBottom: 25,
-    marginLeft: deviceWidth / 78.546,
+    marginLeft: DeviceDimensions.width / 78.546,
   },
 });
 
-export default ShopCarousel;
+export default BannerCarousel;

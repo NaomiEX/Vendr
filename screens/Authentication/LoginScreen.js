@@ -4,7 +4,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  Dimensions,
   Image,
   KeyboardAvoidingView,
   ActivityIndicator,
@@ -14,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../../constants/Colors";
+import DeviceDimensions from "../../constants/DeviceDimensions";
 import Input from "../../components/Input";
 import MainButton from "../../components/UI/MainButton";
 import BodyText from "../../components/Text/BodyText";
@@ -43,9 +43,6 @@ const formReducer = (state, action) => {
     };
   }
 };
-
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
 
 const LoginScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -138,7 +135,7 @@ const LoginScreen = (props) => {
           </View>
           <View
             style={{
-              marginBottom: deviceHeight / 24.37,
+              marginBottom: DeviceDimensions.height / 24.37,
             }}
           >
             <Input
@@ -206,7 +203,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     alignItems: "center",
-    marginBottom: deviceHeight / 6.602,
+    marginBottom: DeviceDimensions.height / 6.602,
   },
 
   buttonViewContainer: {
@@ -214,13 +211,13 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginHorizontal: deviceWidth / 3.914,
-    marginTop: deviceHeight / 24.37,
+    marginHorizontal: DeviceDimensions.width / 3.914,
+    marginTop: DeviceDimensions.height / 24.37,
   },
 
   textContainer: {
     alignItems: "center",
-    marginTop: deviceHeight / 73.1,
+    marginTop: DeviceDimensions.height / 73.1,
   },
 
   signUpText: {

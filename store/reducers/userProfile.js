@@ -2,8 +2,9 @@ import { UPDATE_PROFILE } from "../actions/userProfile";
 
 const initialState = {
   email: "",
-  displayName: "",
+  username: "",
   profilePicture: "",
+  verified: false,
 };
 
 export default (state = initialState, action) => {
@@ -12,8 +13,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         email: action.email,
-        displayName: action.username,
-        profilePicture: action.profilePicture,
+        username: action.username,
+        verified: action.verified,
       };
     default:
       return state;

@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { AuthenticationNavigator } from "./navigators/AuthenticationNavigator";
 import { DrawerNavigator } from "./navigators/DrawerNavigator";
+import { BottomTabNavigator } from "./navigators/BottomTabBarNavigator";
 import StartupScreen from "../screens/StartupScreen";
 
 const NavigatorContainer = (props) => {
@@ -14,7 +15,7 @@ const NavigatorContainer = (props) => {
 
   return (
     <NavigationContainer>
-      {isAuthenticated && <DrawerNavigator />}
+      {isAuthenticated && <BottomTabNavigator />}
       {!isAuthenticated && didTryAutoLogin && <AuthenticationNavigator />}
       {!isAuthenticated && !didTryAutoLogin && <StartupScreen />}
     </NavigationContainer>

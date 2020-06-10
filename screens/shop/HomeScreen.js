@@ -1,51 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
-  Button,
   StyleSheet,
-  Image,
   Platform,
-  Text,
   StatusBar,
-  Dimensions,
+  ScrollView,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useIsDrawerOpen } from "@react-navigation/drawer";
 
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
-import ShopCarousel from "../../components/ShopCarousel";
+import BannerCarousel from "../../components/BannerCarousel";
 import SearchBar from "../../components/SearchBar";
+import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
+import BubbleIconRow from "../../components/BubbleIconRow";
 
-import * as userProfileActions from "../../store/actions/userProfile";
 import Colors from "../../constants/Colors";
+import DeviceDimensions from "../../constants/DeviceDimensions";
 import { LARGE_BANNERS } from "../../data/large_banners";
+import { CATEGORIES } from "../../data/categories";
 
-const deviceHeight = Dimensions.get("window").height;
+import * as activeComponentsActions from "../../store/actions/activeComponents";
 
 const HomeScreen = (props) => {
-  console.log(Dimensions.get("window").height);
+  const [isHomeScreenActive, setIsHomeScreenActive] = useState(true);
   const dispatch = useDispatch();
+
+  const isDrawerOpen = useIsDrawerOpen();
+
+  const navigateToCategory = (categoryName) => {
+    props.navigation.navigate("Category", { title: categoryName });
+  };
+
+  const { navigation } = props;
+
+  useEffect(() => {
+    const unsubscribeFocus = props.navigation.addListener("focus", () => {
+      dispatch(activeComponentsActions.updateActiveScreen("Home"));
+      setIsHomeScreenActive(true);
+    });
+
+    const unsubscribeBlur = props.navigation.addListener("blur", () => {
+      setIsHomeScreenActive(false);
+    });
+
+    return () => {
+      unsubscribeFocus();
+    };
+  }, [navigation]);
+
+  useEffect(() => {
+    dispatch(activeComponentsActions.updateActiveDrawer(isDrawerOpen));
+  }, [isDrawerOpen]);
+
   return (
-    <View style={styles.screen}>
-      <StatusBar
-        barStyle="light-content"
-        translucent={true}
-        backgroundColor="rgba(0,0,0,0)"
-      />
-      <ShopCarousel data={LARGE_BANNERS} autoplay={false} />
-      <Button
-        title="Get user data"
-        onPress={() => {
-          dispatch(userProfileActions.getProfile());
-        }}
-      />
-    </View>
+    <ScrollView style={styles.screen}>
+      <View>
+        <StatusBar
+          barStyle={isHomeScreenActive ? "light-content" : "dark-content"}
+          translucent={true}
+          backgroundColor="rgba(0,0,0,0)"
+        />
+        <BannerCarousel data={LARGE_BANNERS} autoplay={true} />
+        <View style={styles.body}>
+          <CategoryHeaderText style={styles.headerText}>
+            Categories
+          </CategoryHeaderText>
+          <BubbleIconRow data={CATEGORIES} onTap={navigateToCategory} />
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 export const screenOptions = (navData) => {
   return {
     headerTransparent: true,
+    headerBackground: () => <View></View>,
     headerTitle: () => (
       <SearchBar
         onPress={() => {
@@ -61,6 +94,7 @@ export const screenOptions = (navData) => {
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
+          translucentBackground
         />
       </HeaderButtons>
     ),
@@ -72,6 +106,7 @@ export const screenOptions = (navData) => {
           onPress={() => {
             navData.navigation.navigate("Cart");
           }}
+          translucentBackground
         />
       </HeaderButtons>
     ),
@@ -81,6 +116,16 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: "white",
+  },
+
+  body: {
+    marginLeft: DeviceDimensions.width / 19.64,
+    marginTop: -DeviceDimensions.height / 75.93,
+  },
+
+  headerText: {
+    marginBottom: 5,
   },
 });
 

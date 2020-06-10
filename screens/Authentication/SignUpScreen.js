@@ -4,7 +4,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  Dimensions,
   Image,
   KeyboardAvoidingView,
   TouchableOpacity,
@@ -19,6 +18,7 @@ import Input from "../../components/Input";
 import MainButton from "../../components/UI/MainButton";
 
 import * as authenticationActions from "../../store/actions/authentication";
+import DeviceDimensions from "../../constants/DeviceDimensions";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -43,9 +43,6 @@ const formReducer = (state, action) => {
     };
   }
 };
-
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
 
 const SignUpScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -138,7 +135,7 @@ const SignUpScreen = (props) => {
             props.navigation.goBack();
           }}
         >
-          <Image source={require("../../assets/back_arrow.png")} />
+          <Image source={require("../../assets/icons/back_arrow.png")} />
         </TouchableOpacity>
         <KeyboardAvoidingView
           behavior="padding"
@@ -210,16 +207,16 @@ const styles = StyleSheet.create({
 
   arrowContainer: {
     marginTop: 30,
-    marginLeft: deviceWidth / 41.1,
+    marginLeft: DeviceDimensions.width / 41.1,
   },
 
   imageContainer: {
     alignItems: "center",
-    marginBottom: deviceHeight / 13.54,
+    marginBottom: DeviceDimensions.height / 13.54,
   },
 
   contentContainer: {
-    marginBottom: deviceHeight / 14.62,
+    marginBottom: DeviceDimensions.height / 14.62,
   },
 
   buttonViewContainer: {
@@ -227,13 +224,13 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginHorizontal: deviceWidth / 3.914,
-    marginTop: deviceHeight / 24.37,
+    marginHorizontal: DeviceDimensions.width / 3.914,
+    marginTop: DeviceDimensions.height / 24.37,
   },
 
   textContainer: {
     alignItems: "center",
-    marginTop: deviceHeight / 73.1,
+    marginTop: DeviceDimensions.height / 73.1,
   },
 
   signUp: {

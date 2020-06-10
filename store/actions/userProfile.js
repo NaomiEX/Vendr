@@ -1,11 +1,20 @@
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
-export const GET_PROFILE = "GET_PROFILE";
+
+export const storeProfileData = (email, username, profilePicture, verified) => {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_PROFILE,
+      email: email,
+      username: username,
+      profilePicture: profilePicture,
+      verified: verified,
+    });
+  };
+};
 
 export const updateProfile = (username, profilePicture) => {
   return async (dispatch, getState) => {
     const token = getState().authentication.token;
-    console.log(token);
-    console.log("Hello there");
     try {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDrkPG1KbBlYRCW91Can7KNHRsY6RKCdWE",
@@ -29,18 +38,20 @@ export const updateProfile = (username, profilePicture) => {
 
       const responseData = await response.json();
 
+      dispatch(
+        storeProfileData(
+          responseData.email,
+          responseData.displayName,
+          responseData.photoUrl,
+          responseData.emailVerified
+        )
+      );
+
       console.log(responseData);
     } catch (err) {
       console.log(err);
       throw err;
     }
-
-    dispatch({
-      type: UPDATE_PROFILE,
-      email: responseData.email,
-      username: responseData.displayName,
-      profilePicture: responseData.photoUrl,
-    });
   };
 };
 
@@ -68,6 +79,18 @@ export const getProfile = () => {
 
       const responseData = await response.json();
       console.log(responseData);
+      console.log("email:");
+      console.log(responseData.users[0].email);
+      console.log();
+
+      dispatch(
+        storeProfileData(
+          responseData.users[0].email,
+          responseData.users[0].displayName,
+          responseData.users[0].photoUrl,
+          responseData.users[0].emailVerified
+        )
+      );
     } catch (err) {
       console.log(err);
       throw err;

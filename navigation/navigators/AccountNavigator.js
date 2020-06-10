@@ -5,6 +5,8 @@ import AccountScreen, {
   screenOptions as accountScreenOptions,
 } from "../../screens/user/AccountScreen";
 import UserProductsScreen from "../../screens/user/UserProductsScreen";
+import EditProductScreen from "../../screens/user/EditProductScreen";
+import EditProfileScreen from "../../screens/settings/EditProfileScreen";
 
 import { defaultNavOptions } from "../defaultNavOptions";
 
@@ -19,8 +21,16 @@ export const AccountNavigator = () => {
         options={accountScreenOptions}
       />
       <AccountStackNavigator.Screen
-        name="UserProducts"
+        name="User Products"
         component={UserProductsScreen}
+      />
+      <AccountStackNavigator.Screen
+        name="Edit Product"
+        component={EditProductScreen}
+      />
+      <AccountStackNavigator.Screen
+        name="Edit Profile"
+        component={EditProfileScreen}
       />
     </AccountStackNavigator.Navigator>
   );

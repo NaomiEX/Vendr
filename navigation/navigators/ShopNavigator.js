@@ -7,7 +7,8 @@ import HomeScreen, {
 import SearchScreen, {
   screenOptions as searchScreenOptions,
 } from "../../screens/shop/SearchScreen";
-import CategoriesScreen from "../../screens/shop/CategoriesScreen";
+import CategoriesOverviewScreen from "../../screens/shop/CategoriesOverviewScreen";
+import CategoryScreen from "../../screens/shop/CategoryScreen";
 import ProductsScreen from "../../screens/shop/ProductsScreen";
 import ProductDetailsScreen from "../../screens/shop/ProductDetailsScreen";
 import CartScreen from "../../screens/shop/CartScreen";
@@ -31,9 +32,10 @@ export const ShopNavigator = () => {
         options={searchScreenOptions}
       />
       <ShopStackNavigator.Screen
-        name="Categories"
-        component={CategoriesScreen}
+        name="Categories Overview"
+        component={CategoriesOverviewScreen}
       />
+      <ShopStackNavigator.Screen name="Category" component={CategoryScreen} />
       <ShopStackNavigator.Screen name="Products" component={ProductsScreen} />
       <ShopStackNavigator.Screen
         name="ProductDetails"
