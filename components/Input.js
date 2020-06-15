@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, Dimensions } from "react-native";
 import validate from "validate.js";
 
 import Colors from "../constants/Colors";
+import DeviceDimensions from "../constants/DeviceDimensions";
 import EmphasisText from "../components/Text/EmphasisText";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
@@ -58,6 +59,30 @@ const constraints = {
         "^Your password must contain an uppercase letter, a lowercase letter, and a digit",
     },
   },
+
+  title: {
+    length: {
+      minimum: 5,
+      tooShort: "^Your title must be at least 5 characters",
+      maximum: 100,
+      tooLong: "^Your title must not exceed 100 characters",
+    },
+  },
+
+  description: {
+    length: {
+      minimum: 10,
+      tooShort: "^Your description must be at least 10 characters",
+      maximum: 1000,
+      tooLong: "^Your description must not exceed 1000 characters",
+    },
+  },
+
+  url: {
+    url: {
+      message: "^The url you typed in is not valid",
+    },
+  },
 };
 
 const Input = (props) => {
@@ -78,7 +103,9 @@ const Input = (props) => {
   let result;
   const inputChangeHandler = (text) => {
     object[props.type] = text;
+    console.log(object);
     result = validate(object, constraints);
+    console.log(result);
     dispatch({
       type: INPUT_CHANGE,
       value: text,
@@ -90,7 +117,6 @@ const Input = (props) => {
       isValid: result ? (result[props.type] ? false : true) : true,
     });
   };
-  console.log("render");
 
   useEffect(() => {
     inputChangeHandler("");
@@ -98,16 +124,36 @@ const Input = (props) => {
 
   return (
     <View style={styles.container}>
-      <EmphasisText style={styles.label}>{props.label}</EmphasisText>
-      <View style={styles.inputContainer}>
+      {props.label && (
+        <EmphasisText style={styles.label}>{props.label}</EmphasisText>
+      )}
+      <View
+        style={{
+          marginHorizontal: props.style
+            ? props.style.marginHorizontal
+            : DeviceDimensions.width / 12,
+        }}
+      >
         <TextInput
           {...props}
-          selectionColor="rgba(67, 206, 190, 0.8)"
-          underlineColorAndroid="transparent"
+          selectionColor="rgba(0,0,0,0.1)"
+          underlineColorAndroid="rgba(0,0,0,0)"
           style={{
             ...styles.input,
+            textAlignVertical: "top",
+            paddingTop: props.style.borderColor ? 5 : 0,
+            height: props.multiline ? 100 : 30,
+            borderColor: props.style.borderColor
+              ? props.style.borderColor
+              : null,
+            borderWidth: props.style.borderColor ? 1.5 : 0,
             borderBottomColor:
-              !inputState.isValid && props.show ? Colors.accent : "white",
+              !inputState.isValid && props.show
+                ? Colors.accent
+                : props.style.borderBottomColor,
+            color: props.style.color ? props.style.color : "white",
+            fontSize: props.style.fontSize ? props.style.fontSize : 16,
+            borderRadius: props.style.borderColor ? 5 : 0,
           }}
           onChangeText={inputChangeHandler}
           value={inputState.value}
@@ -117,6 +163,7 @@ const Input = (props) => {
             style={{
               color: Colors.accent,
               textAlign: "left",
+              marginBottom: -15,
             }}
           >
             {inputState.errorMessage}
@@ -134,22 +181,16 @@ const styles = StyleSheet.create({
 
   label: {
     textAlign: "left",
-    marginTop: 20,
+    marginTop: 40,
     marginHorizontal: Dimensions.get("window").width / 10.275,
+    color: "white",
   },
 
   input: {
     borderBottomWidth: 1.5,
-    height: 30,
     marginTop: 5,
     paddingHorizontal: 7,
     paddingBottom: 2,
-    fontSize: 16,
-    color: "white",
-  },
-
-  inputContainer: {
-    marginHorizontal: Dimensions.get("window").width / 12,
   },
 });
 

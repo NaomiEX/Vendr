@@ -1,13 +1,15 @@
 import React from "react";
 import { View, Text } from "react-native";
 
+import Screen from "../../components/UI/BasicScreen";
+
 const CategoryScreen = (props) => {
   const categoryTitle = props.route.params.title;
 
   return (
-    <View>
+    <Screen>
       <Text>{categoryTitle}</Text>
-    </View>
+    </Screen>
   );
 };
 

@@ -7,6 +7,10 @@ import SettingsScreen, {
   screenOptions as settingsScreenOptions,
 } from "../../screens/settings/SettingsScreen";
 import EditProfileScreen from "../../screens/settings/EditProfileScreen";
+import ChangePasswordScreen from "../../screens/settings/ChangePasswordScreen";
+import AddressesScreen from "../../screens/settings/AddressesScreen";
+import BillingAddressScreen from "../../screens/settings/BillingAddressScreen";
+import ManageCardsScreen from "../../screens/settings/ManageCardsScreen";
 
 const SettingsStackNavigator = createStackNavigator();
 
@@ -21,6 +25,22 @@ export const SettingsNavigator = () => {
       <SettingsStackNavigator.Screen
         name="Edit Profile"
         component={EditProfileScreen}
+      />
+      <SettingsStackNavigator.Screen
+        name="Change Password"
+        component={ChangePasswordScreen}
+      />
+      <SettingsStackNavigator.Screen
+        name="Addresses"
+        component={AddressesScreen}
+      />
+      <SettingsStackNavigator.Screen
+        name="Billing Address"
+        component={BillingAddressScreen}
+      />
+      <SettingsStackNavigator.Screen
+        name="Manage Cards"
+        component={ManageCardsScreen}
       />
     </SettingsStackNavigator.Navigator>
   );

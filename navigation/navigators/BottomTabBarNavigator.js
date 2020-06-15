@@ -1,16 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { View, Text } from "react-native";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useIsDrawerOpen } from "@react-navigation/drawer";
 
-import { ShopNavigator } from "./ShopNavigator";
 import { DrawerNavigator } from "./DrawerNavigator";
 import { WishlistNavigator } from "./WishlistNavigator";
 import { CategoriesOverviewNavigator } from "./CategoriesOverviewNavigator";
+import { NotificationsNavigator } from "./NotificationsNavigator";
 
 import Colors from "../../constants/Colors";
+import DeviceDimensions from "../../constants/DeviceDimensions";
 
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 
@@ -38,7 +37,14 @@ export const BottomTabNavigator = () => {
       tabBarOptions={{
         activeTintColor: Colors.primary,
         inactiveTintColor: "rgba(0,0,0,0.2)",
-        keyboardHidesTabBar: true,
+        style: {
+          elevation: 0,
+          borderTopWidth: 0,
+          position: "absolute",
+          top: DeviceDimensions.height - 52,
+          height: 52,
+          paddingBottom: 2,
+        },
       }}
     >
       <BottomTabBarNavigator.Screen
@@ -61,6 +67,15 @@ export const BottomTabNavigator = () => {
                 <AntDesign name="appstore1" size={27} color={props.color} />
               </View>
             );
+          },
+        }}
+      />
+      <BottomTabBarNavigator.Screen
+        name="Notifications"
+        component={NotificationsNavigator}
+        options={{
+          tabBarIcon: (props) => {
+            return <IoniconIcon icon="notifications" iconColor={props.color} />;
           },
         }}
       />

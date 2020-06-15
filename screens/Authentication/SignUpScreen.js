@@ -148,6 +148,7 @@ const SignUpScreen = (props) => {
           </View>
           <View style={styles.contentContainer}>
             <Input
+              style={styles.input}
               label="Email-address"
               keyboardType="email-address"
               onInputChange={inputChangeHandler}
@@ -157,6 +158,7 @@ const SignUpScreen = (props) => {
               autoCorrect={false}
             />
             <Input
+              style={styles.input}
               label="Username"
               onInputChange={inputChangeHandler}
               type="username"
@@ -165,6 +167,7 @@ const SignUpScreen = (props) => {
               autoCorrect={false}
             />
             <Input
+              style={styles.input}
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
@@ -179,6 +182,7 @@ const SignUpScreen = (props) => {
                   <ActivityIndicator size="small" color={Colors.primary} />
                 ) : (
                   <MainButton
+                    style={{ backgroundColor: Colors.accent }}
                     onPress={() => {
                       setButtonPressed(true);
                     }}
@@ -217,6 +221,11 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     marginBottom: DeviceDimensions.height / 14.62,
+  },
+
+  input: {
+    borderBottomColor: "white",
+    marginHorizontal: 30,
   },
 
   buttonViewContainer: {

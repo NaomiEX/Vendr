@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { createDrawerNavigator, DrawerItem } from "@react-navigation/drawer";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
@@ -68,28 +69,35 @@ export const DrawerNavigator = () => {
             <View style={styles.profileSectionContainer}>
               <ImageBackground
                 style={{ width: "100%", height: "100%" }}
-                source={require("../../assets/Drawer_Background.png")}
+                source={require("../../assets/Drawer_Background_Even_Pinker.png")}
               >
-                <View style={styles.bubbleIconContainer}>
-                  <BubbleIcon profilePicture={imageUrl} />
-                </View>
-                <View style={styles.profileDetailsContainer}>
-                  <CategoryHeaderText style={{ color: "white" }}>
-                    {username}
-                  </CategoryHeaderText>
-                  <View style={styles.profileEmailContainer}>
-                    <View style={{ marginRight: 10 }}>
-                      <Image source={require("../../assets/icons/mail.png")} />
-                    </View>
-                    <BodyText
-                      style={{
-                        color: "rgba(255,255,255,0.5)",
-                      }}
-                    >
-                      {email}
-                    </BodyText>
+                <LinearGradient
+                  colors={["rgba(0,0,0,0.4)", "rgba(0,0,0,0)"]}
+                  start={[0, 0.5]}
+                  end={[1, 0.5]}
+                  style={{ flex: 1 }}
+                >
+                  <View style={styles.bubbleIconContainer}>
+                    <BubbleIcon profilePicture={imageUrl} />
                   </View>
-                </View>
+                  <View style={styles.profileDetailsContainer}>
+                    <CategoryHeaderText
+                      style={{ color: "rgba(255,255,255,0.9)" }}
+                    >
+                      {username}
+                    </CategoryHeaderText>
+                    <View style={styles.profileEmailContainer}>
+                      <View style={{ marginRight: 10 }}>
+                        <Image
+                          source={require("../../assets/icons/mail.png")}
+                        />
+                      </View>
+                      <BodyText style={{ color: "rgba(255,255,255,0.5)" }}>
+                        {email}
+                      </BodyText>
+                    </View>
+                  </View>
+                </LinearGradient>
               </ImageBackground>
             </View>
             {/* Main drawer section */}
@@ -231,13 +239,13 @@ const styles = StyleSheet.create({
   },
 
   bubbleIconContainer: {
-    marginTop: DeviceDimensions.height / 21.69,
-    marginLeft: DeviceDimensions.width / 15.71,
+    marginTop: DeviceDimensions.height / 19,
+    marginLeft: 20,
   },
 
   profileDetailsContainer: {
     flex: 1,
-    marginLeft: 25,
+    marginLeft: 20,
     marginBottom: 20,
     justifyContent: "flex-end",
   },

@@ -3,20 +3,16 @@ import { View, Text, StyleSheet, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 
+import Screen from "../../components/UI/BasicScreen";
+
 const CategoriesOverviewScreen = (props) => {
   return (
-    <View style={styles.screen}>
+    <Screen>
       <Text>Categories Overview Screen</Text>
-    </View>
+    </Screen>
   );
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default CategoriesOverviewScreen;

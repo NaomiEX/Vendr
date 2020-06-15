@@ -1,11 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
 
+import Screen from "../../components/UI/BasicScreen";
+
 const WishlistScreen = (props) => {
   return (
-    <View>
+    <Screen>
       <Text>Wishlist screen</Text>
-    </View>
+    </Screen>
   );
 };
 

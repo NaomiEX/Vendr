@@ -9,10 +9,9 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-
 import { LinearGradient } from "expo-linear-gradient";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import BubbleIcon from "../../components/UI/BubbleIcon";
 import Tab from "../../components/Tab";
@@ -109,20 +108,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 20,
+    alignItems: "center",
   },
 
   greeting: {
-    fontFamily: "helvetica-bold",
+    fontFamily: "helvetica-light",
     fontSize: 36,
+    letterSpacing: 0.6,
   },
 
   username: {
     color: Colors.accent,
-  },
-
-  tabBarTitle: {
-    fontSize: 18,
-    fontFamily: "helvetica-bold",
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ImageBackground, StyleSheet, Image } from "react-native";
+import { View, ImageBackground, StyleSheet, Image } from "react-native";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo-linear-gradient";

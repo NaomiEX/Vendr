@@ -1,6 +1,8 @@
 export default {
-  primary: "#d42828",
+  primary: "#FF5151",
   secondary: "#ff7c58",
   accent: "#ffc700",
-  inactive_grey: "rgba(0,0,0,0.3)",
+  inactive_grey: "#cccccc",
+  translucent_grey: "rgba(0,0,0,0.1)",
+  black: "#202020",
 };

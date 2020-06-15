@@ -17,10 +17,12 @@ const MainButton = (props) => {
     ButtonComponent = TouchableNativeFeedback;
   }
 
+  // backgroundColor: props.style ? props.style.backgroundColor ? props.style.backgroundColor : Colors.accent : Colors.accent,
+  // fontSize: props.style ? props.style.fontSize ? props.style.fontSize : 20 : 20,
   return (
     <View style={styles.buttonContainer}>
       <ButtonComponent activeOpacity={0.6} onPress={props.onPress}>
-        <View style={{ ...props.style, ...styles.button }}>
+        <View style={{ ...styles.button, ...props.style }}>
           <Text style={styles.buttonText}>{props.children}</Text>
         </View>
       </ButtonComponent>
@@ -34,15 +36,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   button: {
-    backgroundColor: Colors.accent,
     paddingVertical: 5,
     borderRadius: 20,
   },
   buttonText: {
     color: "white",
     fontFamily: "helvetica-standard",
-    fontSize: 20,
     textAlign: "center",
+    fontSize: 20,
   },
 });
 

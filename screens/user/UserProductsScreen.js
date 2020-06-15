@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
+import Screen from "../../components/UI/BasicScreen";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
 
@@ -20,9 +21,9 @@ const UserProductsScreen = (props) => {
   }, []);
 
   return (
-    <View style={styles.screen}>
+    <Screen>
       <Text>User Products Screen</Text>
-    </View>
+    </Screen>
   );
 };
 
@@ -42,12 +43,6 @@ export const screenOptions = (navData) => {
   };
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default UserProductsScreen;

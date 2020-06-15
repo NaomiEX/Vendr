@@ -11,7 +11,7 @@ const CustomHeaderButton = (props) => {
       IconComponent={Ionicons}
       iconSize={30}
       // color="rgba(255,255,255,0.9)"
-      color={props.translucentBackground ? "white" : "rgba(0,0,0,0.3)"}
+      color={props.translucentBackground ? "white" : Colors.inactive_grey}
     />
   );
 };

@@ -9,6 +9,8 @@ import {
   Platform,
 } from "react-native";
 
+import BodyText from "../../components/Text/BodyText";
+
 import DeviceDimensions from "../../constants/DeviceDimensions";
 
 let TouchableComponent = TouchableOpacity;
@@ -24,6 +26,9 @@ const BubbleIcon = (props) => {
         style={{
           ...styles.iconContainer,
           backgroundColor: props.iconBackgroundColor,
+          width: props.icon ? 60 : 65,
+          height: props.icon ? 60 : 65,
+          borderRadius: props.icon ? 30 : 32.5,
         }}
       >
         {props.icon && (
@@ -49,9 +54,7 @@ const BubbleIcon = (props) => {
       </View>
       {props.title && (
         <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={1}>
-            {props.title}
-          </Text>
+          <BodyText numberOfLines={1}>{props.title}</BodyText>
         </View>
       )}
     </View>
@@ -60,9 +63,6 @@ const BubbleIcon = (props) => {
 
 const styles = StyleSheet.create({
   iconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
     elevation: 5,
     shadowColor: "black",
     shadowOpacity: 0.26,
@@ -81,11 +81,6 @@ const styles = StyleSheet.create({
     width: 60,
     marginTop: DeviceDimensions.height / 151.85,
     alignItems: "center",
-  },
-
-  title: {
-    fontSize: 12,
-    fontFamily: "helvetica-standard",
   },
 });
 

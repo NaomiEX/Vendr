@@ -39,10 +39,8 @@ const CustomDrawerItem = (props) => {
             <Text
               style={{
                 ...styles.drawerTitle,
-                color: isCurrentScreenActive ? Colors.primary : "black",
-                fontFamily: isCurrentScreenActive
-                  ? "helvetica-bold"
-                  : "helvetica-standard",
+                color: isCurrentScreenActive ? Colors.primary : Colors.black,
+                fontFamily: "helvetica-standard",
               }}
             >
               {props.title}
@@ -53,7 +51,7 @@ const CustomDrawerItem = (props) => {
           props.navigation.navigate(props.screen);
         }}
         focused={isCurrentScreenActive}
-        activeBackgroundColor={"rgba(212,40,40,0.2)"}
+        activeBackgroundColor={"rgba(255,81,81,0.1)"}
       />
     </View>
   );

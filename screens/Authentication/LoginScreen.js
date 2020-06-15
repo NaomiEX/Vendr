@@ -125,8 +125,8 @@ const LoginScreen = (props) => {
         end={[1, 1]}
       >
         <KeyboardAvoidingView
-          behavior="padding"
           style={styles.bodyContainer}
+          behavior="padding"
           enabled
           keyboardVerticalOffset={-450}
         >
@@ -139,6 +139,7 @@ const LoginScreen = (props) => {
             }}
           >
             <Input
+              style={styles.input}
               label="Email-address"
               keyboardType="email-address"
               onInputChange={inputChangeHandler}
@@ -148,6 +149,7 @@ const LoginScreen = (props) => {
               autoCorrect={false}
             />
             <Input
+              style={styles.input}
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
@@ -162,6 +164,7 @@ const LoginScreen = (props) => {
                   <ActivityIndicator size="small" color={Colors.accent} />
                 ) : (
                   <MainButton
+                    style={{ backgroundColor: Colors.accent }}
                     onPress={() => {
                       setButtonPressed(true);
                     }}
@@ -172,7 +175,7 @@ const LoginScreen = (props) => {
               </View>
             </View>
             <View style={styles.textContainer}>
-              <BodyText style={styles.bodyText}>
+              <BodyText style={{ color: "rgba(255,255,255,0.6)" }}>
                 Don't have an account yet?
               </BodyText>
               <BodyText
@@ -206,6 +209,8 @@ const styles = StyleSheet.create({
     marginBottom: DeviceDimensions.height / 6.602,
   },
 
+  input: { borderBottomColor: "rgba(255,255,255,0.5)", marginHorizontal: 30 },
+
   buttonViewContainer: {
     width: "100%",
   },
@@ -223,10 +228,6 @@ const styles = StyleSheet.create({
   signUpText: {
     textDecorationLine: "underline",
     color: "rgba(255, 199, 0, 0.8)",
-  },
-
-  bodyText: {
-    color: "rgba(255,255,255,0.6)",
   },
 });
 

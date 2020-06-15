@@ -5,6 +5,7 @@ const initialState = {
   username: "",
   profilePicture: "",
   verified: false,
+  hashedPassword: "",
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +16,7 @@ export default (state = initialState, action) => {
         email: action.email,
         username: action.username,
         verified: action.verified,
+        hashedPassword: action.hashedPassword,
       };
     default:
       return state;

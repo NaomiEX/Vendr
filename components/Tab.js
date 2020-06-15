@@ -11,30 +11,31 @@ import {
 
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
+import CategoryHeaderText from "../components/Text/CategoryHeaderText";
+
 import DeviceDimensions from "../constants/DeviceDimensions";
 import Colors from "../constants/Colors";
 import BubbleIcon from "../components/UI/BubbleIcon";
 
 const initialLayout = { width: DeviceDimensions.width };
 
-const renderTabBar = (props) => (
-  <TabBar
-    {...props}
-    activeColor={Colors.accent}
-    inactiveColor="rgba(0,0,0,0.3)"
-    indicatorStyle={{ backgroundColor: Colors.accent }}
-    renderLabel={({ route, focused, color }) => (
-      <Text style={{ ...styles.tabBarTitle, color }}>{route.title}</Text>
-    )}
-    style={{ backgroundColor: "white" }}
-  />
-);
-
 let TouchableComponent = TouchableOpacity;
 
 if (Platform.OS === "android" && Platform.Version >= 21) {
   TouchableComponent = TouchableNativeFeedback;
 }
+const renderTabBar = (props) => (
+  <TabBar
+    {...props}
+    activeColor={Colors.accent}
+    inactiveColor={Colors.inactive_grey}
+    indicatorStyle={{ backgroundColor: Colors.accent }}
+    renderLabel={({ route, focused, color }) => (
+      <CategoryHeaderText style={{ color }}>{route.title}</CategoryHeaderText>
+    )}
+    style={{ backgroundColor: "white" }}
+  />
+);
 
 const Tab = (props) => {
   const [index, setIndex] = useState(0);
@@ -79,11 +80,6 @@ const Tab = (props) => {
 };
 
 const styles = StyleSheet.create({
-  tabBarTitle: {
-    fontSize: 18,
-    fontFamily: "helvetica-bold",
-  },
-
   addButton: {
     position: "absolute",
     top: 400,

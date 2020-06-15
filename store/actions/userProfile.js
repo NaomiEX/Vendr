@@ -1,6 +1,12 @@
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
-export const storeProfileData = (email, username, profilePicture, verified) => {
+export const storeProfileData = (
+  email,
+  username,
+  profilePicture,
+  verified,
+  hashedPassword
+) => {
   return (dispatch) => {
     dispatch({
       type: UPDATE_PROFILE,
@@ -8,6 +14,7 @@ export const storeProfileData = (email, username, profilePicture, verified) => {
       username: username,
       profilePicture: profilePicture,
       verified: verified,
+      hashedPassword: hashedPassword,
     });
   };
 };
@@ -43,7 +50,8 @@ export const updateProfile = (username, profilePicture) => {
           responseData.email,
           responseData.displayName,
           responseData.photoUrl,
-          responseData.emailVerified
+          responseData.emailVerified,
+          responseData.passwordHash
         )
       );
 
@@ -88,7 +96,8 @@ export const getProfile = () => {
           responseData.users[0].email,
           responseData.users[0].displayName,
           responseData.users[0].photoUrl,
-          responseData.users[0].emailVerified
+          responseData.users[0].emailVerified,
+          responseData.users[0].passwordHash
         )
       );
     } catch (err) {

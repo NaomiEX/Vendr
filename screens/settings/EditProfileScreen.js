@@ -1,11 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
 
+import Screen from "../../components/UI/BasicScreen";
+
 const EditProfileScreen = (props) => {
   return (
-    <View>
+    <Screen>
       <Text>Edit Profile Screen</Text>
-    </View>
+    </Screen>
   );
 };
 

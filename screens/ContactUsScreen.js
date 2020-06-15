@@ -4,6 +4,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 
+import Screen from "../components/UI/BasicScreen";
+
 import * as activeComponentsActions from "../store/actions/activeComponents";
 
 const ContactUsScreen = (props) => {
@@ -19,9 +21,9 @@ const ContactUsScreen = (props) => {
     };
   }, []);
   return (
-    <View style={styles.screen}>
+    <Screen>
       <Text>Contact Us Screen</Text>
-    </View>
+    </Screen>
   );
 };
 
@@ -41,12 +43,6 @@ export const screenOptions = (navData) => {
   };
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default ContactUsScreen;

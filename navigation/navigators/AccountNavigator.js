@@ -5,7 +5,9 @@ import AccountScreen, {
   screenOptions as accountScreenOptions,
 } from "../../screens/user/AccountScreen";
 import UserProductsScreen from "../../screens/user/UserProductsScreen";
-import EditProductScreen from "../../screens/user/EditProductScreen";
+import EditProductScreen, {
+  screenOptions as editProductScreenOptions,
+} from "../../screens/user/EditProductScreen";
 import EditProfileScreen from "../../screens/settings/EditProfileScreen";
 
 import { defaultNavOptions } from "../defaultNavOptions";
@@ -27,6 +29,7 @@ export const AccountNavigator = () => {
       <AccountStackNavigator.Screen
         name="Edit Product"
         component={EditProductScreen}
+        options={editProductScreenOptions}
       />
       <AccountStackNavigator.Screen
         name="Edit Profile"

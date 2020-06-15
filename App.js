@@ -17,6 +17,7 @@ const fetchFonts = () => {
   return Font.loadAsync({
     "helvetica-standard": require("./assets/fonts/helvetica.ttf"),
     "helvetica-bold": require("./assets/fonts/helvetica-bold.ttf"),
+    "helvetica-light": require("./assets/fonts/helvetica_light.ttf"),
   });
 };
 

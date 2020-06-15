@@ -47,4 +47,5 @@ export const defaultNavOptions = {
     height: DeviceDimensions.height / 9.86,
   },
   cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+  headerTintColor: Colors.inactive_grey,
 };
