@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer, useCallback } from "react";
 import {
   View,
   Image,
@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Keyboard,
   ImageBackground,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import Colors from "../constants/Colors";
@@ -16,10 +17,34 @@ import MainButton from "../components/UI/MainButton";
 import Input from "./Input";
 import EmphasisText from "./Text/EmphasisText";
 
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    return { ...state, url: action.url, urlValidity: action.validity };
+  }
+};
+
 const ImagePickerModal = (props) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [showUrlModal, setShowUrlModal] = useState(false);
   const [show, setShow] = useState(false);
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    url: "",
+    urlValidity: false,
+  });
+
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        url: inputValue,
+        validity: inputValidity,
+      });
+    },
+    [dispatchFormState]
+  );
 
   return (
     <View>
@@ -39,6 +64,7 @@ const ImagePickerModal = (props) => {
                   activeOpacity={0.4}
                   onPress={() => {
                     setShowModal(false);
+                    props.dismiss();
                   }}
                 >
                   <Image
@@ -114,7 +140,7 @@ const ImagePickerModal = (props) => {
                   }}
                   type="url"
                   show={show}
-                  onInputChange={props.onInputChange}
+                  onInputChange={inputChangeHandler}
                 />
                 <View style={styles.actionButtonsContainer}>
                   <TouchableOpacity
@@ -134,11 +160,11 @@ const ImagePickerModal = (props) => {
                   <TouchableOpacity
                     onPress={() => {
                       Keyboard.dismiss();
-                      if (props.formState.urlValidity) {
+                      if (formState.urlValidity) {
                         setShow(false);
                         setShowUrlModal(false);
                         setShowModal(false);
-                        props.onImagePicked(url);
+                        props.onImagePicked(formState.url);
                       } else {
                         setShow(true);
                       }

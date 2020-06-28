@@ -12,7 +12,9 @@ const OrderHistoryScreen = (props) => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener("focus", () => {
-      dispatch(activeComponentsActions.updateActiveScreen("Order History"));
+      dispatch(
+        activeComponentsActions.updateActiveScreen("Order History", "top")
+      );
     });
 
     return () => {

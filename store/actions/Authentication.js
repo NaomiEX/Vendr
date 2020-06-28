@@ -81,7 +81,7 @@ export const signUp = (email, password, username, formValidity) => {
 
     // dispatch(verifyEmail(responseData.idToken));
 
-    dispatch(userProfileActions.updateProfile(username, ""));
+    dispatch(userProfileActions.updateProfile(username, "", "sign up"));
 
     const expirationDate = new Date(
       // get the current time in seconds from the conception of the language to this moment and add the number of ms until the token expires
@@ -100,7 +100,6 @@ export const login = (email, password, formValidity) => {
   return async (dispatch) => {
     let response;
     if (formValidity) {
-      console.log("here");
       response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDrkPG1KbBlYRCW91Can7KNHRsY6RKCdWE",
         {
@@ -142,7 +141,7 @@ export const login = (email, password, formValidity) => {
 
     const responseData = await response.json();
 
-    console.log(responseData);
+    // console.log(responseData);
 
     dispatch(
       authenticate(
@@ -152,7 +151,7 @@ export const login = (email, password, formValidity) => {
       )
     );
 
-    dispatch(userProfileActions.getProfile());
+    dispatch(userProfileActions.getProfile(responseData.idToken));
 
     const expirationDate = new Date(
       new Date().getTime() + parseInt(responseData.expiresIn) * 1000
@@ -189,7 +188,7 @@ export const verifyEmail = (token) => {
     }
 
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
   };
 };
 
@@ -218,7 +217,7 @@ export const resetPassword = () => {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
+      // console.log(responseData);
     } catch (err) {
       console.log(err);
     }

@@ -5,4 +5,5 @@ export default {
   inactive_grey: "#cccccc",
   translucent_grey: "rgba(0,0,0,0.1)",
   black: "#202020",
+  translucent_white: "rgba(255, 255, 255, 0.8)",
 };

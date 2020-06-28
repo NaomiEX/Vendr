@@ -11,7 +11,11 @@ const renderBubbleIconRow = (props, itemData) => {
       <BubbleIcon
         icon={itemData.item.icon}
         title={itemData.item.title}
-        onClick={props.onTap.bind(this, itemData.item.title)}
+        onClick={props.onTap.bind(
+          this,
+          itemData.item.title,
+          itemData.item.color
+        )}
         iconBackgroundColor="#ffffff"
       />
     </View>

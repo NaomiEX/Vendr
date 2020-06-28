@@ -3,6 +3,7 @@ import {
   LOGOUT,
   SET_DID_TRY_AL,
 } from "../actions/authentication";
+import { STORE_ID_TOKEN } from "../actions/userProfile";
 
 const initialState = {
   token: null,
@@ -31,6 +32,13 @@ export default (state = initialState, action) => {
         ...initialState,
         // makes sure that if the user logouts, the app won't try to auto log them back in
         didTryAutoLogin: true,
+      };
+
+    case STORE_ID_TOKEN:
+      // console.log("STORE NEW ID TOKEN: " + action.token);
+      return {
+        ...state,
+        token: action.token ? action.token : state.token,
       };
 
     default:

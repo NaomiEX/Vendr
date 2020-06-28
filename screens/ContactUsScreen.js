@@ -13,7 +13,7 @@ const ContactUsScreen = (props) => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener("focus", () => {
-      dispatch(activeComponentsActions.updateActiveScreen("Contact Us"));
+      dispatch(activeComponentsActions.updateActiveScreen("Contact Us", "top"));
     });
 
     return () => {

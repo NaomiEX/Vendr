@@ -13,7 +13,7 @@ const HelpScreen = (props) => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener("focus", () => {
-      dispatch(activeComponentsActions.updateActiveScreen("Help"));
+      dispatch(activeComponentsActions.updateActiveScreen("Help", "top"));
     });
 
     return () => {

@@ -22,7 +22,7 @@ const CategoryHeaderText = (props) => {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: "helvetica-standard",
     letterSpacing: 0.6,
   },

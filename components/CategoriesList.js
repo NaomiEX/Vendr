@@ -15,10 +15,7 @@ import EmphasisText from "../components/Text/EmphasisText";
 import { CATEGORIES } from "../data/categories";
 
 const CategoriesList = (props) => {
-  const [chosenCategories, setChosenCategories] = useState([]);
-
-  console.log("Inside the categories List component:");
-  console.log(chosenCategories);
+  const [chosenCategories, setChosenCategories] = useState(props.initialValue);
 
   const renderCategoryListItem = (category) => {
     const isChosen = chosenCategories.includes(category.title);

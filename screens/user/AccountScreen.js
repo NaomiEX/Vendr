@@ -6,6 +6,7 @@ import {
   Platform,
   Image,
   StatusBar,
+  ToastAndroid,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,16 +24,29 @@ import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
 
 const AccountScreen = (props) => {
-  console.log("Account Screen render");
+  // console.log("Account Screen render");
 
   const dispatch = useDispatch();
   // get the most up-to-date data
-  dispatch(userProfileActions.getProfile());
+  const token = useSelector((state) => state.authentication.token);
   const username = " " + useSelector((state) => state.userProfile.username);
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", () => {
+      dispatch(activeComponentsActions.updateActiveScreen("Profile", "top"));
+      dispatch(userProfileActions.getProfile(token));
+      dispatch(userProfileActions.getProfileDetails());
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const profilePictureUrl = useSelector(
     (state) => state.userProfile.profilePicture
   );
+
+  // console.log("ACCOUNT SCREEN PROFILEPICTUREURL: " + profilePictureUrl);
 
   let imageUrl;
   if (profilePictureUrl !== "") {
@@ -48,14 +62,15 @@ const AccountScreen = (props) => {
   };
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", () => {
-      dispatch(activeComponentsActions.updateActiveScreen("Profile"));
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    props.route.params &&
+      ToastAndroid.showWithGravityAndOffset(
+        props.route.params.toastText,
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        160
+      );
+  });
 
   return (
     <View style={styles.screen}>

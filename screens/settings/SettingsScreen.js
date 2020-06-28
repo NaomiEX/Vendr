@@ -20,7 +20,7 @@ const SettingsScreen = (props) => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener("focus", () => {
-      dispatch(activeComponentsActions.updateActiveScreen("Settings"));
+      dispatch(activeComponentsActions.updateActiveScreen("Settings", "top"));
     });
 
     return () => {

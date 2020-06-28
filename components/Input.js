@@ -7,6 +7,7 @@ import DeviceDimensions from "../constants/DeviceDimensions";
 import EmphasisText from "../components/Text/EmphasisText";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
+const CHANGE_VALUE_ON_BLUR = "CHANGE_VALUE_ON_BLUR";
 
 const inputReducer = (state, action) => {
   switch (action.type) {
@@ -16,6 +17,12 @@ const inputReducer = (state, action) => {
         value: action.value,
         errorMessage: action.errorMessage,
         isValid: action.isValid,
+      };
+
+    case CHANGE_VALUE_ON_BLUR:
+      return {
+        ...state,
+        value: action.value,
       };
 
     default:
@@ -83,6 +90,14 @@ const constraints = {
       message: "^The url you typed in is not valid",
     },
   },
+
+  price: {
+    numericality: {
+      greaterThan: 0,
+      notGreaterThan: "^Please enter a price above 0",
+      notValid: "^Please enter a valid price",
+    },
+  },
 };
 
 const Input = (props) => {
@@ -118,8 +133,15 @@ const Input = (props) => {
     });
   };
 
+  const changeValueOnBlur = () => {
+    dispatch({
+      type: CHANGE_VALUE_ON_BLUR,
+      value: isNaN(inputState.value) ? "0.00" : (+inputState.value).toFixed(2),
+    });
+  };
+
   useEffect(() => {
-    inputChangeHandler("");
+    inputChangeHandler(props.initialValue ? props.initialValue : "");
   }, []);
 
   return (
@@ -143,6 +165,11 @@ const Input = (props) => {
             textAlignVertical: "top",
             paddingTop: props.style.borderColor ? 5 : 0,
             height: props.multiline ? 100 : 30,
+            width: props.style
+              ? props.style.width
+                ? props.style.width
+                : "100%"
+              : "100%",
             borderColor: props.style.borderColor
               ? props.style.borderColor
               : null,
@@ -157,13 +184,14 @@ const Input = (props) => {
           }}
           onChangeText={inputChangeHandler}
           value={inputState.value}
+          onEndEditing={props.type === "price" ? changeValueOnBlur : null}
         />
         {!inputState.isValid && props.show && (
           <Text
             style={{
               color: Colors.accent,
               textAlign: "left",
-              marginBottom: -15,
+              marginBottom: -5,
             }}
           >
             {inputState.errorMessage}

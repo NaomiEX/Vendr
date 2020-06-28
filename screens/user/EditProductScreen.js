@@ -11,8 +11,11 @@ import {
   Button,
   Platform,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as productActions from "../../store/actions/products";
+import * as firebase from "firebase";
 
 import { v4 as uuidv4 } from "uuid";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -32,7 +35,6 @@ import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
 import EmphasisText from "../../components/Text/EmphasisText";
 import category from "../../models/categories";
-import { ActivityIndicator } from "react-native-paper";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 const FORM_GENERAL_UPDATE = "FORM_GENERAL_UPDATE";
@@ -61,10 +63,10 @@ const formReducer = (state, action) => {
       };
 
     case FORM_GENERAL_UPDATE:
-      console.log("action.itemType::::::");
-      console.log(action.itemType);
-      console.log("action.item::::::::");
-      console.log(action.item);
+      // console.log("action.itemType::::::");
+      // console.log(action.itemType);
+      // console.log("action.item::::::::");
+      // console.log(action.item);
       const updatedGeneralValues = {
         ...state.inputValues,
         [action.itemType]: action.item,
@@ -99,28 +101,41 @@ const EditProductScreen = (props) => {
   const [buttonPressed, setButtonPressed] = useState(false);
   const [show, setShow] = useState(false);
 
-  console.log("button pressed?????????????");
-  console.log(buttonPressed);
-  console.log("is Loading????????????");
-  console.log(isLoading);
+  const params = props.route.params ? props.route.params : null;
+
+  // console.log(params && "THIS IS AN EDITTED PRODUCT, THE PARAMS ARE:");
+  // console.log(params && params.id);
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      title: "",
-      description: "",
-      thumbnail: new productImage(
-        "add_thumbnail",
-        require("../../assets/add_thumbnail.png")
-      ),
-      productImages: [
-        new productImage(
-          "add_picture",
-          require("../../assets/add_picture.png")
-        ),
-      ],
-      categories: [],
+      title: params ? params.title : "",
+      price: params ? params.price : 0,
+      description: params ? params.description : "",
+      thumbnail: params
+        ? params.thumbnail
+        : new productImage(
+            "add_thumbnail",
+            require("../../assets/add_thumbnail.png")
+          ),
+      productImages: params
+        ? [
+            new productImage(
+              "add_picture",
+              require("../../assets/add_picture.png")
+            ),
+            ...params.productImages,
+          ]
+        : [
+            new productImage(
+              "add_picture",
+              require("../../assets/add_picture.png")
+            ),
+          ],
+      categories: params ? params.categories : [],
     },
     inputValidities: {
       title: false,
+      price: false,
       thumbnail: false,
       productImages: false,
       description: false,
@@ -129,7 +144,7 @@ const EditProductScreen = (props) => {
     formIsValid: false,
   });
 
-  console.log(formState);
+  // console.log(formState);
 
   useEffect(() => {
     if (error) {
@@ -138,6 +153,7 @@ const EditProductScreen = (props) => {
           text: "Okay",
           onPress: () => {
             setError(null);
+            setButtonPressed(false);
             setIsLoading(false);
           },
         },
@@ -158,7 +174,7 @@ const EditProductScreen = (props) => {
               title="Save"
               iconName={Platform.OS === "android" ? "md-save" : "ios-save"}
               onPress={() => {
-                console.log("HUlo");
+                setIsLoading(true);
                 setButtonPressed(true);
               }}
             />
@@ -168,7 +184,14 @@ const EditProductScreen = (props) => {
     });
   }, [buttonPressed, isLoading]);
 
-  const { thumbnail, productImages, categories } = formState.inputValues;
+  const {
+    title,
+    thumbnail,
+    price,
+    productImages,
+    description,
+    categories,
+  } = formState.inputValues;
 
   useEffect(() => {
     dispatchFormState({
@@ -182,14 +205,10 @@ const EditProductScreen = (props) => {
   const { formIsValid } = formState;
 
   useEffect(() => {
-    console.log("HOy");
+    // console.log("HOy");
     const createProductHandler = async () => {
       Keyboard.dismiss();
-      if (buttonPressed) {
-        setIsLoading(true);
-      }
       if (!formIsValid) {
-        console.log("Hello");
         for (let index in formState.inputValidities) {
           if (!formState.inputValidities[index]) {
             if (index === "productImages") {
@@ -201,12 +220,87 @@ const EditProductScreen = (props) => {
             break;
           }
         }
-        setButtonPressed(false);
       } else {
         try {
-          // await dispatch();
-          //action
-          console.log("YAY! It went through");
+          let productImageUrl;
+          const productIdentifier = uuidv4();
+          let uploadedThumbnail = thumbnail;
+          const uploadImage = async (uri, type) => {
+            const filename = `${uuidv4()}.jpg`;
+            let ref = firebase
+              .storage()
+              .ref()
+              .child(`images/${type}/${productIdentifier}/` + filename);
+            const response = await fetch(uri);
+            const blob = await response.blob();
+            await ref.put(blob);
+            await ref
+              .getDownloadURL()
+              .then((url) =>
+                type === "thumbnail"
+                  ? (uploadedThumbnail.imageUrl = url)
+                  : (productImageUrl = url)
+              );
+          };
+
+          let uploadedProductImages = productImages;
+          const getProducts = async () => {
+            for (const key in productImages) {
+              if (key > 0) {
+                if (!productImages[key].imageUrl.startsWith("http")) {
+                  await uploadImage(
+                    productImages[key].imageUrl,
+                    "product_images"
+                  );
+                  uploadedProductImages[key].imageUrl = productImageUrl;
+                }
+              }
+            }
+          };
+          const saveToDatabase = async () => {
+            if (!thumbnail.imageUrl.startsWith("http")) {
+              await uploadImage(thumbnail.imageUrl, "thumbnail");
+            }
+            await getProducts();
+
+            if (params) {
+              // console.log("DISPATCH UPDATE PRODUCT");
+              await dispatch(
+                productActions.updateProduct(
+                  params.id,
+                  title,
+                  uploadedThumbnail,
+                  price,
+                  uploadedProductImages.filter(
+                    (image) => image.id !== "add_picture"
+                  ),
+                  description,
+                  categories
+                )
+              );
+              props.navigation.navigate("Home", {
+                toastText: "Product successfully edited!",
+              });
+            } else {
+              await dispatch(
+                productActions.createProduct(
+                  title,
+                  uploadedThumbnail,
+                  price,
+                  uploadedProductImages.filter(
+                    (image) => image.id !== "add_picture"
+                  ),
+                  description,
+                  categories
+                )
+              );
+              props.navigation.navigate("Account", {
+                toastText: "Product successfully created!",
+              });
+            }
+          };
+
+          saveToDatabase();
         } catch (err) {
           if (buttonPressed) {
             setError(err.message);
@@ -214,15 +308,15 @@ const EditProductScreen = (props) => {
           // runs twice but since the second time setIsLoading(true) does not run, it makes no visual difference as isLoading is already false
 
           setShow(true);
+          setButtonPressed(false);
+          setIsLoading(false);
         }
-        setIsLoading(false);
-        setButtonPressed(false);
       }
     };
     if (buttonPressed) {
       createProductHandler();
     }
-  }, [buttonPressed]);
+  }, [buttonPressed, formIsValid]);
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
@@ -333,7 +427,37 @@ const EditProductScreen = (props) => {
               type="title"
               onInputChange={inputChangeHandler}
               show={show}
+              initialValue={title}
             />
+            <HeaderText>Price</HeaderText>
+            <BodyText style={styles.description}>
+              Please choose an appropriate price for your product
+            </BodyText>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                style={{
+                  color: Colors.accent,
+                  fontFamily: "helvetica-standard",
+                  fontSize: 18,
+                  marginRight: 10,
+                }}
+              >
+                $
+              </Text>
+              <Input
+                style={{
+                  borderBottomColor: Colors.translucent_grey,
+                  color: Colors.accent,
+                  fontSize: 18,
+                  width: 70,
+                }}
+                type="price"
+                keyboardType="numeric"
+                onInputChange={inputChangeHandler}
+                show={show}
+                initialValue={price}
+              />
+            </View>
             <View style={{ ...styles.thumbnail, ...styles.header }}>
               <View>
                 <HeaderText>Thumbnail</HeaderText>
@@ -384,12 +508,16 @@ const EditProductScreen = (props) => {
               show={show}
               multiline
               numberofLines={10}
+              initialValue={description}
             />
             <HeaderText style={styles.header}>Categories</HeaderText>
             <BodyText style={styles.description}>
               Choose as many categories as possible that fits your product
             </BodyText>
-            <CategoriesList onChooseCategoryHandler={chooseCategory} />
+            <CategoriesList
+              initialValue={categories}
+              onChooseCategoryHandler={chooseCategory}
+            />
           </View>
         </ScrollView>
       </View>

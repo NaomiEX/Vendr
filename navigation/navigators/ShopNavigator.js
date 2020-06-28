@@ -8,11 +8,18 @@ import SearchScreen, {
   screenOptions as searchScreenOptions,
 } from "../../screens/shop/SearchScreen";
 import CategoriesOverviewScreen from "../../screens/shop/CategoriesOverviewScreen";
-import CategoryScreen from "../../screens/shop/CategoryScreen";
+import CategoryScreen, {
+  screenOptions as categoryScreenOptions,
+} from "../../screens/shop/CategoryScreen";
 import ProductsScreen from "../../screens/shop/ProductsScreen";
-import ProductDetailsScreen from "../../screens/shop/ProductDetailsScreen";
+import ProductDetailsScreen, {
+  screenOptions as productDetailsScreenOptions,
+} from "../../screens/shop/ProductDetailsScreen";
 import CartScreen from "../../screens/shop/CartScreen";
 import OrdersScreen from "../../screens/shop/OrdersScreen";
+import EditProductScreen, {
+  screenOptions as editProductScreenOptions,
+} from "../../screens/user/EditProductScreen";
 
 import { defaultNavOptions } from "../defaultNavOptions";
 
@@ -35,11 +42,21 @@ export const ShopNavigator = () => {
         name="Categories Overview"
         component={CategoriesOverviewScreen}
       />
-      <ShopStackNavigator.Screen name="Category" component={CategoryScreen} />
+      <ShopStackNavigator.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={categoryScreenOptions}
+      />
       <ShopStackNavigator.Screen name="Products" component={ProductsScreen} />
       <ShopStackNavigator.Screen
-        name="ProductDetails"
+        name="Product Details"
         component={ProductDetailsScreen}
+        options={productDetailsScreenOptions}
+      />
+      <ShopStackNavigator.Screen
+        name="Edit Product"
+        component={EditProductScreen}
+        options={editProductScreenOptions}
       />
       <ShopStackNavigator.Screen name="Cart" component={CartScreen} />
       <ShopStackNavigator.Screen name="Orders" component={OrdersScreen} />

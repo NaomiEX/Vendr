@@ -10,8 +10,15 @@ import * as Font from "expo-font";
 import authenticationReducer from "./store/reducers/authentication";
 import userProfileReducer from "./store/reducers/userProfile";
 import activeComponentsReducer from "./store/reducers/activeComponents";
+import productsReducer from "./store/reducers/products";
+import otherUserProfilesReducer from "./store/reducers/otherUserProfiles";
+import wishlistReducer from "./store/reducers/wishlist";
+import cartReducer from "./store/reducers/cart";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
+
+import * as firebase from "firebase";
+import ApiKeys from "./constants/ApiKeys";
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -25,6 +32,10 @@ const rootReducer = combineReducers({
   authentication: authenticationReducer,
   userProfile: userProfileReducer,
   activeComponents: activeComponentsReducer,
+  products: productsReducer,
+  otherUserProfiles: otherUserProfilesReducer,
+  wishlist: wishlistReducer,
+  cart: cartReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -47,6 +58,27 @@ export default function App() {
     );
   }
 
+  if (!firebase.apps.length) {
+    firebase.initializeApp(ApiKeys.FirebaseConfig);
+  }
+
+  // const uri =
+  //   "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540naomiex%252FVendr/ImagePicker/ea77b1f7-11b4-42f9-a6a9-6fb02858f1f4.jpg";
+
+  // var ref = firebase
+  //   .storage()
+  //   .ref()
+  //   .child("images/" + "Test_Image.jpg");
+  // const uploadImage = async (uri, imageName) => {
+  //   const response = await fetch(uri);
+  //   const blob = await response.blob();
+  //   console.log("********FIREBASE************");
+  //   console.log(ref);
+  //   ref.put(blob);
+  //   const url = ref.getDownloadURL().then((durl) => console.log(durl));
+  // };
+
+  // uploadImage(uri, "Test_image");
   return (
     <Provider store={store}>
       <NavigatorContainer />
