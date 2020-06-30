@@ -11,7 +11,9 @@ import CategoriesOverviewScreen from "../../screens/shop/CategoriesOverviewScree
 import CategoryScreen, {
   screenOptions as categoryScreenOptions,
 } from "../../screens/shop/CategoryScreen";
-import ProductsScreen from "../../screens/shop/ProductsScreen";
+import ProductsScreen, {
+  screenOptions as productsScreenOptions,
+} from "../../screens/shop/ProductsScreen";
 import ProductDetailsScreen, {
   screenOptions as productDetailsScreenOptions,
 } from "../../screens/shop/ProductDetailsScreen";
@@ -47,7 +49,11 @@ export const ShopNavigator = () => {
         component={CategoryScreen}
         options={categoryScreenOptions}
       />
-      <ShopStackNavigator.Screen name="Products" component={ProductsScreen} />
+      <ShopStackNavigator.Screen
+        name="Products"
+        component={ProductsScreen}
+        options={productsScreenOptions}
+      />
       <ShopStackNavigator.Screen
         name="Product Details"
         component={ProductDetailsScreen}

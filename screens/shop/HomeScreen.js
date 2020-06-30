@@ -23,17 +23,20 @@ import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
 import BubbleIconRow from "../../components/BubbleIconRow";
 import PopularProductsRow from "../../components/PopularProductsRow";
 import RecommendedProductsRow from "../../components/RecommendedProductsRow";
+import BodyText from "../../components/Text/BodyText";
+import SmallBanners from "../../components/UI/SmallBanners";
+import RecommendedCarousel from "../../components/RecommendedCarousel";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
 import { LARGE_BANNERS } from "../../data/large_banners";
 import { CATEGORIES } from "../../data/categories";
+import { SMALL_BANNERS } from "../../data/small_banner";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
 import * as otherProfilesActions from "../../store/actions/otherUserProfiles";
 import * as wishlistActions from "../../store/actions/wishlist";
 import * as productActions from "../../store/actions/products";
-import BodyText from "../../components/Text/BodyText";
 
 const HomeScreen = (props) => {
   const [isHomeScreenActive, setIsHomeScreenActive] = useState(true);
@@ -108,6 +111,13 @@ const HomeScreen = (props) => {
   //   );
   // }
 
+  const onPressSeeMoreHandler = (type, products) => {
+    props.navigation.navigate("Products", {
+      type,
+      products,
+    });
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 80 }}
@@ -139,15 +149,30 @@ const HomeScreen = (props) => {
             </BodyText>
             <Image source={require("../../assets/icons/yellow_arrow.png")} />
           </TouchableOpacity>
-          <CategoryHeaderText style={styles.headerText}>
+          <CategoryHeaderText style={{ marginBottom: 20, marginTop: 30 }}>
+            Popular
+          </CategoryHeaderText>
+          <PopularProductsRow
+            products={allProducts}
+            onPressProduct={onPressProductHandler}
+            onPressSeeMore={onPressSeeMoreHandler}
+          />
+          <CategoryHeaderText style={{ marginTop: 30, marginBottom: 20 }}>
+            Recommended
+          </CategoryHeaderText>
+          <View>
+            <RecommendedCarousel products={allProducts} />
+          </View>
+          {/* <CategoryHeaderText style={styles.headerText}>
             Recommended
           </CategoryHeaderText>
 
           <RecommendedProductsRow
             products={allProducts}
             onPressProduct={onPressProductHandler}
-          />
-          <TouchableOpacity
+            onPressSeeMore={onPressSeeMoreHandler}
+          /> */}
+          {/* <TouchableOpacity
             style={{ ...styles.seeMore, marginTop: 15 }}
             activeOpacity={0.6}
             onPress={() => {
@@ -158,26 +183,23 @@ const HomeScreen = (props) => {
               See all recommended products
             </BodyText>
             <Image source={require("../../assets/icons/yellow_arrow.png")} />
-          </TouchableOpacity>
-          <CategoryHeaderText style={styles.headerText}>
-            Popular
-          </CategoryHeaderText>
-          <PopularProductsRow
-            products={allProducts}
-            onPressProduct={onPressProductHandler}
-          />
-          <TouchableOpacity
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity
             style={{ ...styles.seeMore, marginTop: 15 }}
             activeOpacity={0.6}
             onPress={() => {
               console.log("Go to all popular products screen");
             }}
-          >
+            >
             <BodyText style={{ color: Colors.accent }}>
-              See all popular products
+            See all popular products
             </BodyText>
             <Image source={require("../../assets/icons/yellow_arrow.png")} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <CategoryHeaderText style={{ marginTop: 10 }}>
+            Hot Sales
+          </CategoryHeaderText>
+          <SmallBanners />
         </View>
       </View>
     </ScrollView>
@@ -190,6 +212,7 @@ export const screenOptions = (navData) => {
     headerBackground: () => <View></View>,
     headerTitle: () => (
       <SearchBar
+        barStyle={{ color: "rgba(255,255,255,0.8)" }}
         onPress={() => {
           navData.navigation.navigate("Search");
         }}

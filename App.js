@@ -14,6 +14,7 @@ import productsReducer from "./store/reducers/products";
 import otherUserProfilesReducer from "./store/reducers/otherUserProfiles";
 import wishlistReducer from "./store/reducers/wishlist";
 import cartReducer from "./store/reducers/cart";
+import searchReducer from "./store/reducers/search";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
 
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   otherUserProfiles: otherUserProfilesReducer,
   wishlist: wishlistReducer,
   cart: cartReducer,
+  search: searchReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

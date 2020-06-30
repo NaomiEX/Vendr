@@ -1,6 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Text, Platform, Button, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  Button,
+  Image,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
@@ -15,6 +24,8 @@ import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
 import ProductSlider from "../../components/UI/ProductSlider";
 import Product from "../../models/product";
 import PopularProductsRow from "../../components/PopularProductsRow";
+import FeaturedSellers from "../../components/FeaturedSellers";
+import ProductItem from "../../components/UI/ProductItem";
 
 const CategoryScreen = (props) => {
   const dispatch = useDispatch();
@@ -35,22 +46,93 @@ const CategoryScreen = (props) => {
     (state) => state.products.availableProducts
   ).filter((product) => product.categories.includes(categoryTitle));
 
-  const onPress = (itemId) => {
+  const onPressHandler = (itemId) => {
     props.navigation.navigate("Product Details", {
       id: itemId,
     });
   };
 
+  let leftArray = [];
+  let rightArray = [];
+
+  for (const index in products) {
+    if (index % 2 === 0) {
+      leftArray.push(products[index]);
+    } else {
+      rightArray.push(products[index]);
+    }
+  }
+
+  const onPressSeeMoreHandler = (type, products) => {
+    props.navigation.navigate("Products", {
+      type,
+      products,
+    });
+  };
+
+  const renderListItem = (item) => {
+    return (
+      <View key={item.id} style={styles.listItem}>
+        <ProductItem
+          style={{
+            width: 170.5,
+            height: 248,
+          }}
+          cardContainerStyle={{
+            marginRight: 12,
+          }}
+          titleStyle={{
+            fontSize: 18,
+          }}
+          onTap={onPressHandler}
+          id={item.id}
+          thumbnail={item.thumbnail}
+          title={item.title}
+          price={item.price}
+          rating={item.rating}
+        />
+      </View>
+    );
+  };
+
   return (
-    <Screen style={{ paddingLeft: 20 }}>
-      <CategoryHeaderText style={{ marginVertical: 10 }}>
-        Popular
-      </CategoryHeaderText>
-      {/* <ProductSlider data={products} onTap={onPress} /> */}
-      <PopularProductsRow products={products} onPressProduct={onPress} />
-    </Screen>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "white" }}
+      contentContainerStyle={{ paddingBottom: 80 }}
+    >
+      <View style={{ paddingLeft: 20 }}>
+        <CategoryHeaderText style={{ marginVertical: 10 }}>
+          Popular
+        </CategoryHeaderText>
+        {/* <ProductSlider data={products} onTap={onPress} /> */}
+        <PopularProductsRow
+          products={products}
+          onPressProduct={onPressHandler}
+          onPressSeeMore={onPressSeeMoreHandler}
+        />
+        <CategoryHeaderText style={{ marginTop: 40 }}>
+          Featured Sellers
+        </CategoryHeaderText>
+        <FeaturedSellers style={{ marginTop: 10 }} data={products} />
+        <CategoryHeaderText style={{ marginTop: 40 }}>
+          All Products
+        </CategoryHeaderText>
+      </View>
+      <View style={{ flexDirection: "row", paddingLeft: 19 }}>
+        <View>{leftArray.map((item) => renderListItem(item))}</View>
+        <View style={{ marginTop: 40 }}>
+          {rightArray.map((item) => renderListItem(item))}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  listItem: {
+    marginTop: 12,
+  },
+});
 
 export const screenOptions = (navData) => {
   const categoryColor = navData.route.params.categoryColor;
