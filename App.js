@@ -15,6 +15,11 @@ import otherUserProfilesReducer from "./store/reducers/otherUserProfiles";
 import wishlistReducer from "./store/reducers/wishlist";
 import cartReducer from "./store/reducers/cart";
 import searchReducer from "./store/reducers/search";
+import addressesReducer from "./store/reducers/addresses";
+import cardReducer from "./store/reducers/card";
+import ordersReducer from "./store/reducers/orders";
+import notificationsReducer from "./store/reducers/notifications";
+import productDiscussionReducer from "./store/reducers/productDiscussion";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
 
@@ -38,6 +43,11 @@ const rootReducer = combineReducers({
   wishlist: wishlistReducer,
   cart: cartReducer,
   search: searchReducer,
+  addresses: addressesReducer,
+  card: cardReducer,
+  orders: ordersReducer,
+  notifications: notificationsReducer,
+  productDiscussion: productDiscussionReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -46,6 +56,7 @@ export default function App() {
   YellowBox.ignoreWarnings([
     "Setting a timer",
     "Possible Unhandled Promise Rejection",
+    "Can't perform a React state update",
   ]);
   const [fontLoaded, setFontLoaded] = useState(false);
 

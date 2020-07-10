@@ -30,22 +30,6 @@ if (Platform.OS === "android" && Platform.Version >= 21) {
   TouchableComponent = TouchableNativeFeedback;
 }
 
-const CheckoutButton = (props) => {
-  return (
-    <View style={styles.checkoutTouchableCotainer}>
-      <TouchableComponent>
-        <View style={styles.checkoutButtonContainer}>
-          <Text style={styles.checkoutText}>Checkout</Text>
-          <Image
-            style={{ marginLeft: 10 }}
-            source={require("../../assets/icons/checkout_next.png")}
-          />
-        </View>
-      </TouchableComponent>
-    </View>
-  );
-};
-
 const CartScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,7 +39,10 @@ const CartScreen = (props) => {
     // console.log("CART ITEMS:");
     // console.log(cartItems[product.id].sum);
     return (
-      <View key={product.id}>
+      <View
+        style={{ marginHorizontal: 20, alignItems: "center" }}
+        key={product.id}
+      >
         <CartItem
           onTouch={(id) => {
             props.navigation.navigate("Product Details", {
@@ -98,6 +85,22 @@ const CartScreen = (props) => {
     (state) => state.products.availableProducts
   ).filter((product) => cartItemsIds.includes(product.id));
 
+  const CheckoutButton = (props) => {
+    return (
+      <View style={styles.checkoutTouchableCotainer}>
+        <TouchableComponent onPress={props.onCheckoutPress}>
+          <View style={styles.checkoutButtonContainer}>
+            <Text style={styles.checkoutText}>Checkout</Text>
+            <Image
+              style={{ marginLeft: 10 }}
+              source={require("../../assets/icons/checkout_next.png")}
+            />
+          </View>
+        </TouchableComponent>
+      </View>
+    );
+  };
+
   if (isLoading) {
     return (
       <View
@@ -114,11 +117,11 @@ const CartScreen = (props) => {
   }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 20, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 60, backgroundColor: "white" }}
+        contentContainerStyle={{ paddingBottom: 10, backgroundColor: "white" }}
       >
         <Screen>
           <View style={{ alignItems: "center" }}>
@@ -127,7 +130,7 @@ const CartScreen = (props) => {
               <Divider dividerStyle={{ width: 10, height: 2 }} />
             </View>
           </View>
-          <View>
+          <View style={{}}>
             {cartProducts.map((product) => renderCartItem(product, cartItems))}
           </View>
         </Screen>
@@ -137,7 +140,14 @@ const CartScreen = (props) => {
           <BodyText style={styles.totalText}>TOTAL</BodyText>
           <Text style={styles.total}>${cartTotal.toFixed(2)}</Text>
         </View>
-        <CheckoutButton />
+        <CheckoutButton
+          onCheckoutPress={() => {
+            cartProducts.length > 0 &&
+              props.navigation.navigate("Checkout", {
+                products: cartProducts,
+              });
+          }}
+        />
       </View>
     </View>
   );
@@ -149,6 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flexDirection: "row",
     justifyContent: "space-between",
+    marginHorizontal: 20,
   },
 
   totalText: {
@@ -168,7 +179,7 @@ const styles = StyleSheet.create({
     height: 43,
     borderRadius: 10,
     marginTop: 20,
-    backgroundColor: Colors.accent,
+    backgroundColor: Colors.primary,
     overflow: "hidden",
   },
 

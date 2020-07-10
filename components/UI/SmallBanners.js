@@ -28,7 +28,6 @@ const renderSmallBannerItem = (banner) => {
         marginTop: 15,
         borderRadius: 20,
         overflow: "hidden",
-        elevation: 4,
       }}
       key={banner.id}
     >

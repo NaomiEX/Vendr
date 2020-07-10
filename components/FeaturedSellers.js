@@ -8,35 +8,9 @@ import BodyText from "../components/Text/BodyText";
 import * as otherUserProfilesActions from "../store/actions/otherUserProfiles";
 
 const FeaturedSellers = (props) => {
-  let ownerIds = [];
-
-  for (const key in props.data) {
-    ownerIds.push(props.data[key].ownerId);
-  }
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(otherUserProfilesActions.getOtherProfiles(ownerIds));
-  }, [dispatch]);
-
-  const otherProfiles = useSelector(
+  const featuredProfiles = useSelector(
     (state) => state.otherUserProfiles.otherUsers
   );
-
-  let featuredProfiles = [];
-
-  for (const index in otherProfiles) {
-    featuredProfiles.push({
-      id: otherProfiles[index].uid,
-      username: otherProfiles[index].username,
-      profilePicture: otherProfiles[index].profilePicture,
-    });
-  }
-
-  console.log("FEATURED PROFILES:");
-  console.log(featuredProfiles);
-  console.log(otherProfiles);
 
   const renderFeaturedSellerItem = (itemData) => {
     return (
@@ -44,7 +18,10 @@ const FeaturedSellers = (props) => {
         <BubbleIcon
           iconBackgroundColor="white"
           profilePicture={{ uri: itemData.item.profilePicture }}
-          onClickEdit={() => {}}
+          onClickEdit={props.onOtherUserProfileTapped.bind(
+            this,
+            itemData.item.uid
+          )}
         />
         <View style={{ width: 65, marginTop: 5 }}>
           <BodyText style={{ textAlign: "center" }} numberOfLines={1}>
@@ -55,11 +32,15 @@ const FeaturedSellers = (props) => {
     );
   };
 
+  console.log("FEATURED PROFILES:");
+  console.log(featuredProfiles);
+
   return (
     <View>
       <FlatList
         horizontal={true}
         data={featuredProfiles.slice(0, 10)}
+        keyExtractor={(item) => item.uid}
         renderItem={renderFeaturedSellerItem}
       />
     </View>

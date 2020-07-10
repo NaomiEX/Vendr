@@ -58,14 +58,14 @@ const BannerCarousel = (props) => {
         activeDotIndex={activeSlide}
         dotColor={Colors.primary}
         inactiveDotColor="#000000"
-        inactiveDotScale={0.8}
+        inactiveDotScale={0.9}
         inactiveDotOpacity={0.2}
         dotStyle={{
-          width: 8,
-          height: 8,
-          borderRadius: 4,
+          width: 15,
+          height: 2,
+          borderRadius: 0,
         }}
-        dotContainerStyle={{ marginHorizontal: 2 }}
+        dotContainerStyle={{ marginHorizontal: 4 }}
       />
     </View>
   );

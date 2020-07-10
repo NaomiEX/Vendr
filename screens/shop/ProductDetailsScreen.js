@@ -9,6 +9,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Platform,
+  TextInput,
+  Alert,
+  ToastAndroid,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -29,6 +32,7 @@ import BodyText from "../../components/Text/BodyText";
 import ExpandingText from "../../components/ExpandingText";
 import AddToCartButton from "../../components/AddToCartButton";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
+import ProductDiscussion from "../../components/ProductDiscussion";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
@@ -36,12 +40,8 @@ import DeviceDimensions from "../../constants/DeviceDimensions";
 import * as otherUserProfilesActions from "../../store/actions/otherUserProfiles";
 import * as wishlistActions from "../../store/actions/wishlist";
 import * as productActions from "../../store/actions/products";
-
-// const data = [
-//   require("../../assets/black_headphones.jpg"),
-//   require("../../assets/Take_A_Picture.png"),
-//   require("../../assets/black_headphones.jpg"),
-// ];
+import * as notificationActions from "../../store/actions/notifications";
+import * as productDiscussionActions from "../../store/actions/productDiscussion";
 
 const ProductDetailsScreen = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -52,6 +52,8 @@ const ProductDetailsScreen = (props) => {
   );
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [filCat, setFilCat] = useState();
+  const [message, setMessage] = useState("");
+  const [discussionLoading, setDiscussionLoading] = useState(false);
 
   const { navigation, route } = props;
   const dispatch = useDispatch();
@@ -85,15 +87,15 @@ const ProductDetailsScreen = (props) => {
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", async () => {
-      // setIsLoading(true);
+      setIsLoading(true);
       setStatusBarLight(true);
-      // console.log("THIS PRODUCT'S OWNER ID IS: ");
-      // console.log(thisProduct.ownerId);
+      // await dispatch(notificationActions.getProductDiscussion(productId));
       await dispatch(
         otherUserProfilesActions.getOtherProfiles([thisProduct.ownerId])
       );
       await dispatch(productActions.updateProductDetails(thisProduct));
-      // setIsLoading(false);
+      await dispatch(productDiscussionActions.getProductDiscussion(productId));
+      setIsLoading(false);
     });
 
     const unsubscribeBlur = navigation.addListener("blur", () => {
@@ -116,6 +118,11 @@ const ProductDetailsScreen = (props) => {
   let imageUrl;
   let ownerUsername;
 
+  // const discussion = useSelector((state) => state.notifications.discussion);
+
+  // console.log("DISCUSSION IN PRODUCT DETAIL SCREEN: ");
+  // console.log(discussion);
+
   // let filCat;
 
   useEffect(() => {
@@ -126,12 +133,6 @@ const ProductDetailsScreen = (props) => {
     );
   }, [thisProduct]);
 
-  // const filteredCategories = CATEGORIES.filter((category) =>
-  //   thisProduct.categories.includes(category.title)
-  // );
-  // console.log("Filtered Categories:");
-  // console.log(filteredCategories);
-
   if (ownerProfile) {
     ownerUsername = ownerProfile.username;
     if (ownerProfile.profilePicture === "") {
@@ -140,14 +141,6 @@ const ProductDetailsScreen = (props) => {
       imageUrl = { uri: ownerProfile.profilePicture };
     }
   }
-
-  const testDescription =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in sodales ex, vel molestie dui. Aliquam ut condimentum arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla urna odio, semper quis convallis porta, tempus a leo. Aliquam volutpat enim gravida orci rhoncus tempor. Maecenas sit amet purus fermentum, fringilla nibh tempor, vestibulum turpis. Integer id dolor quis felis efficitur porttitor non a mauris. Proin posuere ante vel dui rhoncus pulvinar. Integer finibus suscipit ante, quis tincidunt mauris gravida a. Maecenas ligula nunc, vehicula sit amet mauris a, gravida molestie enim. Phasellus pretium faucibus lorem, sed tincidunt orci euismod et. Vivamus et eleifend felis. Suspendisse potenti. Ut cursus ligula ut orci tempor lacinia. Pellentesque ac congue ipsumaaaaaaaaaaaaaa.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in sodales ex, vel molestie dui. Aliquam ut condimentum arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla urna odio, semper quis convallis porta, tempus a leo. Aliquam volutpat enim gravida orci rhoncus tempor. Maecenas sit amet purus fermentum, fringilla nibh tempor, vestibulum turpis. Integer id dolor quis felis efficitur porttitor non a mauris. Proin posuere ante vel dui rhoncus pulvinar. Integer finibus suscipit ante, quis tincidunt mauris gravida a. Maecenas ligula nunc, vehicula sit amet mauris a, gravida molestie enim. Phasellus pretium faucibus lorem, sed tincidunt orci euismod et.";
-  // console.log("DESCRIPTION LENGTH:");
-  // console.log(testDescription.length);
-
-  // console.log("owner profile pic:" + ownerProfile.profilePicture);
-
   const onClickHandler = useCallback(() => {
     const addToWishlist = async () => {
       setWishlistLoading(true);
@@ -186,131 +179,258 @@ const ProductDetailsScreen = (props) => {
     }
   }, [actionButtonImage]);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
+  const onPressSubmitDiscussionHandler = () => {
+    const storeDiscussion = async () => {
+      setDiscussionLoading(true);
+      await dispatch(
+        notificationActions.storeNotification(
+          "product discussion post",
+          thisProduct.ownerId,
+          "",
+          thisProduct.title
+        )
+      );
+      await dispatch(
+        productDiscussionActions.storeProductDiscussion(
+          "post",
+          productId,
+          "",
+
+          message
+        )
+      );
+      await dispatch(productDiscussionActions.getProductDiscussion(productId));
+      // await dispatch(notificationActions.getProductDiscussion(productId));
+      setDiscussionLoading(false);
+      setMessage("");
+      ToastAndroid.showWithGravityAndOffset(
+        "Message Successfully Posted!",
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        160
+      );
+    };
+
+    message.length > 5
+      ? storeDiscussion()
+      : Alert.alert(
+          "Message is too short",
+          "Please enter a message that is at least 5 characters long",
+          [{ text: "Ok" }]
+        );
+  };
+
+  const onSubmitReplyHandler = async (messageInfo, message) => {
+    await dispatch(
+      productDiscussionActions.storeProductDiscussion(
+        "reply",
+        productId,
+        messageInfo,
+        message
+      )
     );
-  }
+    await dispatch(productDiscussionActions.getProductDiscussion(productId));
+  };
+
+  const navigateToUserDetailsScreen = (userId) => {
+    props.navigation.navigate("Other User Profile", {
+      userId,
+    });
+  };
+
+  // if (isLoading) {
+  //   return (
+  //     <View style={styles.loadingContainer}>
+  //       <ActivityIndicator size="large" color={Colors.primary} />
+  //     </View>
+  //   );
+  // }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <StatusBar barStyle={statusBarLight ? "light-content" : "dark-content"} />
-      <ProductImagesCarousel
-        data={thisProduct.productImages}
-        itemWidth={DeviceDimensions.width}
-        sliderWidth={DeviceDimensions.width}
-        onSnapToItem={(index) => {
-          setActiveSlide(index);
-        }}
-      />
-      <View style={styles.cardContainer}>
-        <View style={styles.heartIconContainer}>
-          {wishlistLoading ? (
-            <View style={styles.activityIndicator}>
-              <ActivityIndicator size="large" color={Colors.primary} />
-            </View>
-          ) : (
-            <BubbleIcon
-              iconBackgroundColor="white"
-              icon={actionButtonImage}
-              onClick={onClickHandler}
-              iconStyle={{
-                width: 32,
-                height: 29.59,
-                elevation: 4,
-              }}
-            />
-          )}
-        </View>
-        <View style={styles.pagination}>
-          <Pagination
-            dotsLength={thisProduct.productImages.length}
-            activeDotIndex={activeSlide}
-            dotColor={Colors.primary}
-            inactiveDotColor={Colors.inactive_grey}
-            inactiveDotOpacity={0.8}
-            inactiveDotScale={0.8}
-            dotStyle={{
-              width: 8,
-              height: 8,
-              borderRadius: 4,
+    <ScrollView style={{ backgroundColor: "white" }} contentContainerStyle={{}}>
+      <View style={{ backgroundColor: "white" }}>
+        <StatusBar
+          barStyle={statusBarLight ? "light-content" : "dark-content"}
+        />
+        {isLoading ? (
+          <View
+            style={{
+              width: DeviceDimensions.width,
+              height: DeviceDimensions.width * 0.9,
+              backgroundColor: Colors.inactive_grey,
             }}
-            dotContainerStyle={{
-              marginHorizontal: 4,
+          ></View>
+        ) : (
+          <ProductImagesCarousel
+            data={thisProduct.productImages}
+            itemWidth={DeviceDimensions.width}
+            sliderWidth={DeviceDimensions.width}
+            onSnapToItem={(index) => {
+              setActiveSlide(index);
             }}
           />
-        </View>
-        {/* info header */}
-        <View
-          style={thisProduct.productImages.length === 1 && { marginTop: 65 }}
-        >
-          <View style={styles.infoHeaderContainer}>
-            <BubbleIcon
-              width={50}
-              height={50}
-              borderRadius={30}
-              profilePicture={imageUrl}
-              onClickEdit={() => {}}
-            />
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.title}>{thisProduct.title}</Text>
-            </View>
-          </View>
-          {/* categories chip row */}
-          <View style={{ marginLeft: 62 }}>
-            {filCat ? (
-              <ChipRow data={filCat} />
+        )}
+        <View style={styles.cardContainer}>
+          <View style={styles.heartIconContainer}>
+            {wishlistLoading ? (
+              <View style={styles.activityIndicator}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+              </View>
             ) : (
-              <ActivityIndicator size="small" color={Colors.primary} />
+              <BubbleIcon
+                iconBackgroundColor="white"
+                icon={actionButtonImage}
+                onClick={onClickHandler}
+                iconStyle={{
+                  width: 32,
+                  height: 29.59,
+                  elevation: 4,
+                }}
+              />
             )}
           </View>
-        </View>
-        <View style={styles.dividerContainer}>
-          <Divider
-            dividerStyle={{ width: DeviceDimensions.width - 60, height: 1.8 }}
-          />
-        </View>
-        <EmphasisText style={{ color: Colors.inactive_grey }}>
-          Product Details
-        </EmphasisText>
-        <View style={styles.ratingsContainer}>
-          <Rating
-            readonly={true}
-            startingValue={thisProduct.rating.average}
-            fractions={1}
-            imageSize={25}
-            style={styles.ratings}
-          />
-          <EmphasisText style={{ marginLeft: 20 }}>
-            {thisProduct.rating.average} | {thisProduct.rating.numOfRatings}{" "}
-            ratings
+          <View style={styles.pagination}>
+            <Pagination
+              dotsLength={thisProduct.productImages.length}
+              activeDotIndex={activeSlide}
+              dotColor={Colors.primary}
+              inactiveDotColor={Colors.inactive_grey}
+              inactiveDotOpacity={0.8}
+              inactiveDotScale={0.8}
+              dotStyle={{
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+              }}
+              dotContainerStyle={{
+                marginHorizontal: 4,
+              }}
+            />
+          </View>
+          {/* info header */}
+          <View
+            style={thisProduct.productImages.length === 1 && { marginTop: 65 }}
+          >
+            <View style={styles.infoHeaderContainer}>
+              <BubbleIcon
+                width={50}
+                height={50}
+                borderRadius={30}
+                profilePicture={imageUrl}
+                onClickEdit={navigateToUserDetailsScreen.bind(
+                  this,
+                  ownerProfile.uid
+                )}
+              />
+              <View style={{ marginLeft: 10 }}>
+                <Text style={styles.title}>{thisProduct.title}</Text>
+              </View>
+            </View>
+            {/* categories chip row */}
+            <View style={{ marginLeft: 62 }}>
+              {filCat ? (
+                <ChipRow data={filCat} />
+              ) : (
+                <ActivityIndicator size="small" color={Colors.primary} />
+              )}
+            </View>
+          </View>
+          <View style={styles.dividerContainer}>
+            <Divider
+              dividerStyle={{ width: DeviceDimensions.width - 60, height: 1.8 }}
+            />
+          </View>
+          <EmphasisText style={{ color: Colors.inactive_grey }}>
+            Product Details
           </EmphasisText>
-        </View>
-        <ExpandingText
-          textStyle={{ lineHeight: 20, marginTop: 10 }}
-          expanderStyle={{ textDecorationLine: "underline" }}
-          numOfLines={6}
-          boundaryLength={362}
-          text={thisProduct.description}
-        />
-        <View style={styles.priceAndCartButtonContainer}>
-          <Text style={styles.price}>${thisProduct.price}</Text>
-          <AddToCartButton
-            productId={thisProduct.id}
-            productPrice={thisProduct.price}
-            ownerUsername={ownerUsername}
+          <View style={styles.ratingsContainer}>
+            <Rating
+              readonly={true}
+              startingValue={thisProduct.rating.average}
+              fractions={1}
+              imageSize={25}
+              style={styles.ratings}
+            />
+            <EmphasisText style={{ marginLeft: 20 }}>
+              {thisProduct.rating.average} | {thisProduct.rating.numOfRatings}{" "}
+              ratings
+            </EmphasisText>
+          </View>
+          <ExpandingText
+            textStyle={{ lineHeight: 20, marginTop: 10 }}
+            expanderStyle={{ textDecorationLine: "underline" }}
+            numOfLines={6}
+            boundaryLength={362}
+            text={thisProduct.description}
+          />
+          <View style={styles.priceAndCartButtonContainer}>
+            <Text style={styles.price}>${thisProduct.price}</Text>
+            <AddToCartButton
+              productId={thisProduct.id}
+              productPrice={thisProduct.price}
+              ownerUsername={ownerUsername}
+            />
+          </View>
+          <EmphasisText
+            style={{
+              color: Colors.inactive_grey,
+              marginTop: 20,
+              marginBottom: 10,
+            }}
+          >
+            Product Discussion
+          </EmphasisText>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              backgroundColor: Colors.translucent_grey,
+            }}
+          >
+            <TextInput
+              value={message}
+              onChangeText={(text) => {
+                setMessage(text);
+              }}
+              multiline={true}
+              placeholder="Join the discussion..."
+              placeholderTextColor={Colors.inactive_grey}
+              style={{
+                width: 300,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+            />
+            <TouchableOpacity onPress={onPressSubmitDiscussionHandler}>
+              <Image source={require("../../assets/icons/next_arrow.png")} />
+            </TouchableOpacity>
+          </View>
+          {discussionLoading && (
+            <ActivityIndicator
+              style={{ marginTop: 20 }}
+              size="small"
+              color={Colors.primary}
+            />
+          )}
+          <ProductDiscussion
+            onSubmitReplyHandler={onSubmitReplyHandler}
+            onClickProfilePicture={navigateToUserDetailsScreen}
           />
         </View>
-
-        <BodyText>{testDescription}</BodyText>
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+
   cardContainer: {
     flex: 1,
     backgroundColor: "white",
@@ -319,6 +439,7 @@ const styles = StyleSheet.create({
     marginTop: -30,
     elevation: 10,
     paddingHorizontal: 30,
+    paddingBottom: 80,
   },
 
   activityIndicator: { width: 60, height: 60, paddingTop: 10 },

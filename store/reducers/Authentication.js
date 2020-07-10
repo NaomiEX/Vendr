@@ -9,6 +9,7 @@ const initialState = {
   token: null,
   userId: null,
   didTryAutoLogin: false,
+  confirmed: false,
 };
 
 export default (state = initialState, action) => {

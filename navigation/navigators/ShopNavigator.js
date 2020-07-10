@@ -18,10 +18,22 @@ import ProductDetailsScreen, {
   screenOptions as productDetailsScreenOptions,
 } from "../../screens/shop/ProductDetailsScreen";
 import CartScreen from "../../screens/shop/CartScreen";
-import OrdersScreen from "../../screens/shop/OrdersScreen";
+import CheckoutScreen from "../../screens/shop/checkout/CheckoutScreen";
 import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from "../../screens/user/EditProductScreen";
+import AddressesScreen from "../../screens/settings/AddressesScreen";
+import BillingAddressScreen, {
+  screenOptions as billingAddressScreenOptions,
+} from "../../screens/settings/BillingAddressScreen";
+import ManageCardsScreen, {
+  screenOptions as manageCardsScreenOptions,
+} from "../../screens/settings/ManageCardsScreen";
+import OtherUserProfileScreen from "../../screens/shop/OtherUserProfileScreen";
+import EditCardScreen from "../../screens/settings/EditCardScreen";
+import AccountScreen, {
+  screenOptions as accountScreenOptions,
+} from "../../screens/user/AccountScreen";
 
 import { defaultNavOptions } from "../defaultNavOptions";
 
@@ -65,7 +77,23 @@ export const ShopNavigator = () => {
         options={editProductScreenOptions}
       />
       <ShopStackNavigator.Screen name="Cart" component={CartScreen} />
-      <ShopStackNavigator.Screen name="Orders" component={OrdersScreen} />
+      <ShopStackNavigator.Screen name="Checkout" component={CheckoutScreen} />
+      <ShopStackNavigator.Screen name="Addresses" component={AddressesScreen} />
+      <ShopStackNavigator.Screen
+        name="Billing Address"
+        component={BillingAddressScreen}
+        options={billingAddressScreenOptions}
+      />
+      <ShopStackNavigator.Screen
+        name="Manage Cards"
+        component={ManageCardsScreen}
+        options={manageCardsScreenOptions}
+      />
+      <ShopStackNavigator.Screen name="Edit Card" component={EditCardScreen} />
+      <ShopStackNavigator.Screen
+        name="Other User Profile"
+        component={OtherUserProfileScreen}
+      />
     </ShopStackNavigator.Navigator>
   );
 };

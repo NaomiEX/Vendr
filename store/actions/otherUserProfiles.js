@@ -3,6 +3,9 @@ import User from "../../models/user";
 export const SET_OTHER_PROFILES = "GET_OTHER_PROFILES";
 
 export const getOtherProfiles = (ownerIds) => {
+  // console.log("FROM ACTIONS: ");
+  // console.log(ownerIds);
+
   return async (dispatch, getState) => {
     const token = getState().authentication.token;
     const userId = getState().authentication.userId;
@@ -26,7 +29,9 @@ export const getOtherProfiles = (ownerIds) => {
             responseData[key].username,
             responseData[key].profilePicture,
             responseData[key].verified,
-            responseData[key].hashedPassword
+            responseData[key].hashedPassword,
+            responseData[key].fullName ? responseData[key].fullName : "",
+            responseData[key].bio ? responseData[key].bio : ""
           )
         );
       }

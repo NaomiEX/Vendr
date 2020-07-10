@@ -29,6 +29,10 @@ if (Platform.OS === "android" && Platform.Version >= 21) {
 const CartItem = (props) => {
   const { product, ownerUsername } = props;
 
+  if (props.checkout) {
+    TouchableComponent = View;
+  }
+
   const dispatch = useDispatch();
 
   const removeFromCart = () => {
@@ -55,15 +59,21 @@ const CartItem = (props) => {
             }}
           >
             <Text style={styles.title}>{product.title}</Text>
-            <TouchableOpacity activeOpacity={0.6} onPress={removeFromCart}>
-              <Image
-                style={styles.grayCross}
-                source={require("../assets/icons/gray_cross.png")}
-              />
-            </TouchableOpacity>
+            {!props.checkout && (
+              <TouchableOpacity activeOpacity={0.6} onPress={removeFromCart}>
+                <Image
+                  style={styles.grayCross}
+                  source={require("../assets/icons/gray_cross.png")}
+                />
+              </TouchableOpacity>
+            )}
           </View>
           {/* 2nd row */}
-          <BodyText style={styles.owner}>By {ownerUsername}</BodyText>
+          <BodyText
+            style={{ ...styles.owner, marginTop: props.checkout ? 5 : -3 }}
+          >
+            By {ownerUsername}
+          </BodyText>
           <View style={{ alignItems: "baseline", marginTop: 10 }}>
             <Rating
               startingValue={product.rating.average}
@@ -81,6 +91,7 @@ const CartItem = (props) => {
                   productId={product.id}
                   productPrice={product.price}
                   ownerUsername={ownerUsername}
+                  checkout={props.checkout ? true : false}
                 />
               </View>
             </View>
@@ -117,7 +128,6 @@ const styles = StyleSheet.create({
 
   owner: {
     color: Colors.inactive_grey,
-    marginTop: -3,
   },
 
   mainRow: {

@@ -211,13 +211,8 @@ export const resetPassword = () => {
         }
       );
 
-      if (!response.ok) {
-        const errorResponseData = await response.json();
-        console.log(errorResponseData);
-      }
-
       const responseData = await response.json();
-      // console.log(responseData);
+      console.log(responseData);
     } catch (err) {
       console.log(err);
     }
@@ -249,6 +244,54 @@ export const deleteAccount = () => {
       dispatch(logout());
     } catch (err) {
       console.log(err);
+    }
+  };
+};
+
+export const checkPassword = (password) => {
+  return async (dispatch, getState) => {
+    const email = getState().userProfile.email;
+
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDrkPG1KbBlYRCW91Can7KNHRsY6RKCdWE",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            returnSecureToken: true,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorResponseData = await response.json();
+        console.log(errorResponseData);
+        const errorId = errorResponseData.error.message;
+        let message = "Something went wrong!";
+        console.log("error id");
+        console.log(errorId);
+
+        if (errorId === "INVALID_PASSWORD") {
+          console.log("REACHED!!1");
+          message = "The old password you typed in is invalid!";
+        } else if (errorId.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
+          message = "Too many unsuccessful attempts. Try again later";
+        }
+
+        throw new Error(message);
+      }
+
+      const responseData = await response.json();
+      console.log("check password response:");
+      console.log(responseData);
+      dispatch(userProfileActions.storeNewIdToken(responseData.idToken));
+    } catch (err) {
+      throw new Error(err.message);
     }
   };
 };

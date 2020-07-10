@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { DrawerNavigator } from "./DrawerNavigator";
@@ -75,7 +75,31 @@ export const BottomTabNavigator = () => {
         component={NotificationsNavigator}
         options={{
           tabBarIcon: (props) => {
-            return <IoniconIcon icon="notifications" iconColor={props.color} />;
+            return (
+              <View>
+                <Ionicons
+                  name={
+                    Platform.OS == "android"
+                      ? "md-notifications"
+                      : "ios-notifications"
+                  }
+                  size={27}
+                  color={props.color}
+                />
+                {/* <View
+                  style={{
+                    backgroundColor: Colors.primary,
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    overflow: "hidden",
+                    position: "absolute",
+                    top: 3,
+                    right: 0,
+                  }}
+                ></View> */}
+              </View>
+            );
           },
         }}
       />

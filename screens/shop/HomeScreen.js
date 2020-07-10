@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -9,13 +9,17 @@ import {
   Text,
   ActivityIndicator,
   Image,
+  Animated,
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useIsDrawerOpen } from "@react-navigation/drawer";
-
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSafeArea } from "react-native-safe-area-context";
+import moment from "moment";
+import * as firebase from "firebase";
+
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import BannerCarousel from "../../components/BannerCarousel";
 import SearchBar from "../../components/SearchBar";
@@ -31,18 +35,20 @@ import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
 import { LARGE_BANNERS } from "../../data/large_banners";
 import { CATEGORIES } from "../../data/categories";
-import { SMALL_BANNERS } from "../../data/small_banner";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
 import * as otherProfilesActions from "../../store/actions/otherUserProfiles";
 import * as wishlistActions from "../../store/actions/wishlist";
 import * as productActions from "../../store/actions/products";
+import * as addressesActions from "../../store/actions/addresses";
+import * as userProfileActions from "../../store/actions/userProfile";
 
 const HomeScreen = (props) => {
   const [isHomeScreenActive, setIsHomeScreenActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [transparent, setTransparent] = useState(true);
 
+  const dispatch = useDispatch();
   const isDrawerOpen = useIsDrawerOpen();
 
   const navigateToCategory = (categoryName, categoryColor) => {
@@ -54,6 +60,7 @@ const HomeScreen = (props) => {
 
   const { navigation, route } = props;
 
+  const token = useSelector((state) => state.authentication.token);
   useEffect(() => {
     const unsubscribeFocus = props.navigation.addListener("focus", async () => {
       // setIsLoading(true);
@@ -61,6 +68,8 @@ const HomeScreen = (props) => {
       setIsHomeScreenActive(true);
       await dispatch(productActions.fetchProducts());
       await dispatch(wishlistActions.fetchWishlist());
+      dispatch(userProfileActions.getProfile(token));
+      dispatch(userProfileActions.getProfileDetails());
       // setIsLoading(false);
     });
 
@@ -102,7 +111,6 @@ const HomeScreen = (props) => {
       id: itemId,
     });
   };
-
   // if (isLoading) {
   //   return (
   //     <Screen style={{ justifyContent: "center", alignItems: "center" }}>
@@ -110,7 +118,6 @@ const HomeScreen = (props) => {
   //     </Screen>
   //   );
   // }
-
   const onPressSeeMoreHandler = (type, products) => {
     props.navigation.navigate("Products", {
       type,
@@ -118,14 +125,102 @@ const HomeScreen = (props) => {
     });
   };
 
+  const BANNER_HEIGHT = DeviceDimensions.height / 2.812;
+  const safeArea = useSafeArea();
+  const HEADER_HEIGHT = DeviceDimensions.height / 9.86;
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (!scrollY) {
+      return;
+    }
+    const listenerId = scrollY.addListener((a) => {
+      const topNaviOffset = BANNER_HEIGHT - HEADER_HEIGHT - safeArea.top;
+      // if (transparent && a.value > topNaviOffset) {
+      //   setTransparent(false);
+      // } else if (!transparent && a.value < topNaviOffset) {
+      //   setTransparent(true);
+      // }
+      transparent !== a.value < topNaviOffset && setTransparent(!transparent);
+    });
+    return () => scrollY.removeListener(listenerId);
+  });
+
+  // console.log(moment().format("DD/MM/YYYY-hh:mm a"));
+
+  props.navigation.setOptions({
+    headerTransparent: true,
+    headerBackground: () => (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: transparent
+            ? "rgba(0,0,0,0)"
+            : "rgba(255,255,255,1)",
+        }}
+      ></View>
+    ),
+    headerTitle: () => (
+      <SearchBar
+        barStyle={{
+          color: transparent
+            ? Colors.translucent_white
+            : Colors.translucent_grey,
+        }}
+        onPress={() => {
+          props.navigation.navigate("Search");
+        }}
+      />
+    ),
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+          onPress={() => {
+            props.navigation.toggleDrawer();
+          }}
+          color={transparent ? Colors.translucent_white : Colors.inactive_grey}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Cart"
+          iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+          onPress={() => {
+            props.navigation.navigate("Cart");
+          }}
+          color={transparent ? Colors.translucent_white : Colors.inactive_grey}
+        />
+      </HeaderButtons>
+    ),
+  });
+
   return (
-    <ScrollView
+    <Animated.ScrollView
       contentContainerStyle={{ paddingBottom: 80 }}
       style={styles.screen}
+      scrollEventThrottle={16}
+      onScroll={Animated.event(
+        [
+          {
+            nativeEvent: { contentOffset: { y: scrollY } },
+          },
+        ],
+        { useNativeDriver: true }
+      )}
     >
       <View>
         <StatusBar
-          barStyle={isHomeScreenActive ? "light-content" : "dark-content"}
+          barStyle={
+            isHomeScreenActive
+              ? transparent
+                ? "light-content"
+                : "dark-content"
+              : "dark-content"
+          }
           translucent={true}
           backgroundColor="rgba(0,0,0,0)"
         />
@@ -149,6 +244,7 @@ const HomeScreen = (props) => {
             </BodyText>
             <Image source={require("../../assets/icons/yellow_arrow.png")} />
           </TouchableOpacity>
+
           <CategoryHeaderText style={{ marginBottom: 20, marginTop: 30 }}>
             Popular
           </CategoryHeaderText>
@@ -161,88 +257,19 @@ const HomeScreen = (props) => {
             Recommended
           </CategoryHeaderText>
           <View>
-            <RecommendedCarousel products={allProducts} />
+            <RecommendedCarousel
+              products={allProducts}
+              onPressProduct={onPressProductHandler}
+            />
           </View>
-          {/* <CategoryHeaderText style={styles.headerText}>
-            Recommended
-          </CategoryHeaderText>
-
-          <RecommendedProductsRow
-            products={allProducts}
-            onPressProduct={onPressProductHandler}
-            onPressSeeMore={onPressSeeMoreHandler}
-          /> */}
-          {/* <TouchableOpacity
-            style={{ ...styles.seeMore, marginTop: 15 }}
-            activeOpacity={0.6}
-            onPress={() => {
-              console.log("go to all recommended products screen");
-            }}
-          >
-            <BodyText style={{ color: Colors.accent }}>
-              See all recommended products
-            </BodyText>
-            <Image source={require("../../assets/icons/yellow_arrow.png")} />
-          </TouchableOpacity> */}
-          {/* <TouchableOpacity
-            style={{ ...styles.seeMore, marginTop: 15 }}
-            activeOpacity={0.6}
-            onPress={() => {
-              console.log("Go to all popular products screen");
-            }}
-            >
-            <BodyText style={{ color: Colors.accent }}>
-            See all popular products
-            </BodyText>
-            <Image source={require("../../assets/icons/yellow_arrow.png")} />
-          </TouchableOpacity> */}
           <CategoryHeaderText style={{ marginTop: 10 }}>
             Hot Sales
           </CategoryHeaderText>
           <SmallBanners />
         </View>
       </View>
-    </ScrollView>
+    </Animated.ScrollView>
   );
-};
-
-export const screenOptions = (navData) => {
-  return {
-    headerTransparent: true,
-    headerBackground: () => <View></View>,
-    headerTitle: () => (
-      <SearchBar
-        barStyle={{ color: "rgba(255,255,255,0.8)" }}
-        onPress={() => {
-          navData.navigation.navigate("Search");
-        }}
-      />
-    ),
-    headerLeft: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-          color={Colors.translucent_white}
-        />
-      </HeaderButtons>
-    ),
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title="Cart"
-          iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-          onPress={() => {
-            navData.navigation.navigate("Cart");
-          }}
-          color={Colors.translucent_white}
-        />
-      </HeaderButtons>
-    ),
-  };
 };
 
 const styles = StyleSheet.create({

@@ -337,3 +337,40 @@ export const editProfile = (email, profilePicture, username, fullName, bio) => {
     dispatch(storeProfileDetails("", responseData.fullName, responseData.bio));
   };
 };
+
+export const changePassword = (newPassword) => {
+  return async (dispatch, getState) => {
+    const token = getState().authentication.token;
+    const userId = getState().userProfile.id;
+
+    try {
+      const response = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDrkPG1KbBlYRCW91Can7KNHRsY6RKCdWE`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idToken: token,
+            password: newPassword,
+            returnSecureToken: true,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorResponseData = await response.json();
+        console.log("RESPONSE IS NOT OK");
+        console.log(errorResponseData);
+        throw new Error("The old password you typed is invalid!");
+      }
+
+      const responseData = await response.json();
+      console.log("change password response data: ");
+      console.log(responseData);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+};

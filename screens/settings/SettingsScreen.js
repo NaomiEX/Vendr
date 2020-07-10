@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { View, Text, StyleSheet, Platform, ScrollView } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  ScrollView,
+  ToastAndroid,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import SettingItem from "../../components/UI/SettingItem";
@@ -13,7 +20,6 @@ const SettingsScreen = (props) => {
   const [transactions, setTransactions] = useState(false);
   const [productDiscussion, setProductDiscussion] = useState(false);
   const [wishlistChanges, setWishlistChanges] = useState(false);
-  const [cartChanges, setCartChanges] = useState(false);
   const [sales, setSales] = useState(false);
 
   const dispatch = useDispatch();
@@ -27,6 +33,17 @@ const SettingsScreen = (props) => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    props.route.params &&
+      ToastAndroid.showWithGravityAndOffset(
+        props.route.params.toastText,
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        160
+      );
+  });
 
   return (
     <ScrollView
@@ -101,14 +118,6 @@ const SettingsScreen = (props) => {
         switchValue={wishlistChanges}
         onSwitchChange={(newValue) => {
           setWishlistChanges(newValue);
-        }}
-      />
-      <SettingItem
-        imageIconUrl={require("../../assets/icons/cart_changes.png")}
-        itemTitle="Cart Changes"
-        switchValue={cartChanges}
-        onSwitchChange={(newValue) => {
-          setCartChanges(newValue);
         }}
       />
       <SettingItem

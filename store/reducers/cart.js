@@ -2,6 +2,7 @@ import {
   ADD_TO_CART,
   REDUCE_FROM_CART,
   REMOVE_FROM_CART,
+  CLEAR_CART,
 } from "../actions/cart";
 import CartItem from "../../models/cartItem";
 // import { ADD_ORDER } from "../actions/orders";
@@ -14,6 +15,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_CART:
+      return {
+        items: initialState.items,
+        totalAmount: initialState.totalAmount,
+      };
+
     case ADD_TO_CART:
       // console.log("PRODUCT ID PASSED FROM ACTION:");
       // console.log(action.productId);

@@ -35,9 +35,6 @@ const ShopDrawerNavigator = createDrawerNavigator();
 
 export const DrawerNavigator = () => {
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.authentication.token);
-  dispatch(userProfileActions.getProfile(token));
-  dispatch(userProfileActions.getProfileDetails());
   const username = useSelector((state) => state.userProfile.username);
   const email = useSelector((state) => state.userProfile.email);
   const profilePictureUrl = useSelector(

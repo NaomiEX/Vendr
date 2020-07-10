@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   View,
@@ -9,11 +9,13 @@ import {
   FlatList,
   StyleSheet,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
 import * as productsActions from "../../store/actions/products";
+import * as otherUserProfilesActions from "../../store/actions/otherUserProfiles";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
@@ -28,12 +30,17 @@ import FeaturedSellers from "../../components/FeaturedSellers";
 import ProductItem from "../../components/UI/ProductItem";
 
 const CategoryScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", () => {
+    const unsubscribe = props.navigation.addListener("focus", async () => {
       // dispatch(activeComponentsActions.updateActiveScreen("Home"));
-      dispatch(productsActions.fetchProducts());
+      setIsLoading(true);
+      await dispatch(productsActions.fetchProducts());
+      await dispatch(otherUserProfilesActions.getOtherProfiles(ownerIds));
+      setIsLoading(false);
     });
 
     return () => {
@@ -45,6 +52,15 @@ const CategoryScreen = (props) => {
   const products = useSelector(
     (state) => state.products.availableProducts
   ).filter((product) => product.categories.includes(categoryTitle));
+
+  let ownerIds = [];
+
+  for (const key in products) {
+    ownerIds.push(products[key].ownerId);
+  }
+
+  // console.log("OWNER IDS:");
+  // console.log(ownerIds);
 
   const onPressHandler = (itemId) => {
     props.navigation.navigate("Product Details", {
@@ -113,7 +129,19 @@ const CategoryScreen = (props) => {
         <CategoryHeaderText style={{ marginTop: 40 }}>
           Featured Sellers
         </CategoryHeaderText>
-        <FeaturedSellers style={{ marginTop: 10 }} data={products} />
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : (
+          <FeaturedSellers
+            style={{ marginTop: 10 }}
+            data={products}
+            onOtherUserProfileTapped={(userId) => {
+              props.navigation.navigate("Other User Profile", {
+                userId,
+              });
+            }}
+          />
+        )}
         <CategoryHeaderText style={{ marginTop: 40 }}>
           All Products
         </CategoryHeaderText>

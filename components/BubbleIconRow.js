@@ -23,7 +23,6 @@ const renderBubbleIconRow = (props, itemData) => {
 };
 
 const BubbleIconRow = (props) => {
-  console.log(DeviceDimensions);
   return (
     <View>
       <FlatList

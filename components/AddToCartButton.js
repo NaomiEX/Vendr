@@ -27,7 +27,7 @@ const AddToCartButton = (props) => {
   const cartItems = useSelector((state) => state.cart.items);
 
   // console.log("CART ITEMS FROM BUTTON SCREEN:");
-  // console.log(cartItems);
+  // console.log(cartItems);=
 
   useEffect(() => {
     if (cartItems[props.productId]) {
@@ -53,6 +53,22 @@ const AddToCartButton = (props) => {
 
   // console.log("PRODUCT ID: " + props.productId);
   // console.log("PRODUCT PRICE: " + props.productPrice);
+
+  if (props.checkout) {
+    return (
+      <View>
+        <Text
+          style={{
+            fontSize: 36,
+            fontFamily: "helvetica-light",
+            color: Colors.inactive_grey,
+          }}
+        >
+          x{numInCart}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View>

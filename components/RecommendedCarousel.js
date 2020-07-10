@@ -1,5 +1,13 @@
 import React, { useRef, useState } from "react";
-import { View, Text, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Button,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -63,56 +71,70 @@ const RecommendedCarousel = (props) => {
   }
 
   const slicedRecommendedProducts = recommendedProducts.slice(0, 5);
-  //   const customDotElement = (props) => {
-  //     return (
-  //       <View
-  //         style={{
-  //           width: 15,
-  //           height: 3,
-  //           backgroundColor: props.active ? "red" : "gray",
-  //         }}
-  //       />
-  //     );
-  //   };
+
+  let TouchableComponent = TouchableOpacity;
+
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableComponent = TouchableNativeFeedback;
+  }
 
   const renderRecommendedCarouselItem = (itemData) => {
     return (
-      <View style={{ flexDirection: "row", backgroundColor: "white" }}>
-        <View
-          style={{
-            borderTopLeftRadius: 20,
-            borderBottomLeftRadius: 20,
-            overflow: "hidden",
-            marginRight: 5,
-          }}
+      <View
+        style={{
+          borderRadius: 20,
+          overflow: "hidden",
+          backgroundColor: "white",
+          elevation: 3,
+          margin: 5,
+        }}
+      >
+        <TouchableComponent
+          style={{ flex: 1 }}
+          useForeground={true}
+          onPress={props.onPressProduct.bind(this, itemData.item.id)}
         >
-          <Image
-            style={{
-              width: DeviceDimensions.width / 3.114,
-              height: DeviceDimensions.height / 3.807,
-            }}
-            source={{ uri: itemData.item.thumbnail.imageUrl }}
-          />
-        </View>
-        <View style={{ marginLeft: 10 }}>
-          <Text style={{ fontFamily: "helvetica-light", fontSize: 18 }}>
-            {itemData.item.title}
-          </Text>
-          {/* <View
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                borderTopLeftRadius: 20,
+                borderBottomLeftRadius: 20,
+                overflow: "hidden",
+                marginRight: 5,
+              }}
+            >
+              <Image
+                style={{
+                  width: DeviceDimensions.width / 3.114,
+                  height: DeviceDimensions.height / 3.807,
+                }}
+                source={{ uri: itemData.item.thumbnail.imageUrl }}
+              />
+            </View>
+            <View style={{ marginLeft: 10 }}>
+              <Text style={{ fontFamily: "helvetica-light", fontSize: 18 }}>
+                {itemData.item.title}
+              </Text>
+              {/* <View
             style={{ justifyContent: "flex-start", alignItems: "flex-start" }}
           > */}
-          <Rating
-            style={{ alignItems: "flex-start", marginVertical: 5 }}
-            readonly={true}
-            startingValue={itemData.item.rating.average}
-            fractions={1}
-            imageSize={25}
-          />
-          {/* </View> */}
-          <BodyText numberOfLines={11} style={{ width: 170, color: "#cccccc" }}>
-            {itemData.item.description}
-          </BodyText>
-        </View>
+              <Rating
+                style={{ alignItems: "flex-start", marginVertical: 5 }}
+                readonly={true}
+                startingValue={itemData.item.rating.average}
+                fractions={1}
+                imageSize={25}
+              />
+              {/* </View> */}
+              <BodyText
+                numberOfLines={11}
+                style={{ width: 170, color: "#cccccc" }}
+              >
+                {itemData.item.description}
+              </BodyText>
+            </View>
+          </View>
+        </TouchableComponent>
       </View>
     );
   };
@@ -128,26 +150,27 @@ const RecommendedCarousel = (props) => {
         renderItem={renderRecommendedCarouselItem}
         onSnapToItem={(index) => setActiveSlide(index)}
         inactiveSlideOpacity={0.4}
+        loop={true}
       />
       <Pagination
         activeDotIndex={activeSlide}
         dotsLength={slicedRecommendedProducts.length}
         dotColor={Colors.primary}
         inactiveDotColor={Colors.inactive_grey}
-        inactiveDotScale={1}
+        inactiveDotScale={0.9}
         activeOpacity={0.5}
         tappableDots={true}
         carouselRef={carouselRef}
         containerStyle={{
-          marginTop: -2,
+          marginTop: -4,
         }}
         dotContainerStyle={{
-          marginHorizontal: 5,
+          marginHorizontal: 4,
         }}
         dotStyle={{
-          width: 35,
-          height: 5,
-          borderRadius: 2,
+          width: 15,
+          height: 2,
+          borderRadius: 0,
         }}
       />
     </View>
