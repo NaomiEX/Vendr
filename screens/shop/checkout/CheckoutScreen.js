@@ -27,6 +27,7 @@ import Colors from "../../../constants/Colors";
 import * as addressesActions from "../../../store/actions/addresses";
 import * as ordersActions from "../../../store/actions/orders";
 import * as notificationsActions from "../../../store/actions/notifications";
+import { ActivityIndicator } from "react-native-paper";
 
 let TouchableComponent = TouchableOpacity;
 
@@ -36,6 +37,7 @@ if (Platform.OS === "android" && Platform.Version >= 21) {
 
 const CheckoutScreen = (props) => {
   const [methodSelected, setMethodSelected] = useState("Credit Card");
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const { navigation } = props;
 
@@ -54,8 +56,8 @@ const CheckoutScreen = (props) => {
   const shippingAddress = useSelector(
     (state) => state.addresses.shippingAddress
   );
-  console.log("SHIPPING ADDRESS:");
-  console.log(shippingAddress);
+  // console.log("SHIPPING ADDRESS:");
+  // console.log(shippingAddress);
 
   let cartItemsIds = [];
 
@@ -102,10 +104,10 @@ const CheckoutScreen = (props) => {
   const selectedCard = useSelector((state) => state.card.selectedCard);
   const billingAddress = useSelector((state) => state.addresses.billingAddress);
 
-  console.log("SELECTED CARD:");
-  console.log(selectedCard);
-  console.log("BILLING ADDRESS:");
-  console.log(billingAddress);
+  // console.log("SELECTED CARD:");
+  // console.log(selectedCard);
+  // console.log("BILLING ADDRESS:");
+  // console.log(billingAddress);
 
   let items = [];
 
@@ -131,6 +133,7 @@ const CheckoutScreen = (props) => {
         [{ text: "Ok" }]
       );
     } else {
+      setOrderPlaced(true);
       await dispatch(ordersActions.storeOrder(items, cartTotal.toFixed(2)));
 
       for (const key in cartProducts) {
@@ -152,8 +155,10 @@ const CheckoutScreen = (props) => {
         );
       }
       // await dispatch(notificationsActions.storeNotification("official", ))
+      setOrderPlaced(false);
       props.navigation.navigate("Home", {
         toastText: "Order Placed!",
+        orderedProducts: cartProducts,
       });
     }
   };
@@ -279,6 +284,20 @@ const CheckoutScreen = (props) => {
                 )}
               </View>
             </TouchableComponent>
+            {methodSelected === "Credit Card" && !selectedCard && (
+              <View style={{ alignItems: "flex-end" }}>
+                <Text style={{ color: Colors.accent, marginTop: 10 }}>
+                  No Credit Card Selected
+                </Text>
+              </View>
+            )}
+            {methodSelected === "Billing Address" && !billingAddress && (
+              <View style={{ alignItems: "flex-end" }}>
+                <Text style={{ color: Colors.accent, marginTop: 10 }}>
+                  Billing Address is invalid
+                </Text>
+              </View>
+            )}
           </View>
           <EmphasisText style={styles.header}>ITEMS</EmphasisText>
           <View style={{ marginTop: 10 }}>
@@ -311,17 +330,21 @@ const CheckoutScreen = (props) => {
             ${cartTotal.toFixed(2)}
           </Text>
         </View>
-        <View style={{ paddingTop: 16 }}>
-          <PrimaryButton
-            text="Place Order"
-            onPress={placeOrderHandler}
-            width={167}
-            iconRight
-            iconName="ios-arrow-forward"
-            iconColor="white"
-            fontSize={16}
-          />
-        </View>
+        {orderPlaced ? (
+          <ActivityIndicator size="small" color={Colors.primary} />
+        ) : (
+          <View style={{ paddingTop: 16 }}>
+            <PrimaryButton
+              text="Place Order"
+              onPress={placeOrderHandler}
+              width={167}
+              iconRight
+              iconName="ios-arrow-forward"
+              iconColor="white"
+              fontSize={16}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

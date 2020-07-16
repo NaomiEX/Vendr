@@ -2,10 +2,12 @@ import {
   ADD_TO_WISHLIST,
   STORE_WISHLIST,
   DELETE_FROM_WISHLIST,
+  STORE_ALL_WISHLIST,
 } from "../actions/wishlist";
 
 const initialState = {
   products: [],
+  allWishlists: [],
 };
 
 export default (state = initialState, action) => {
@@ -35,7 +37,7 @@ export default (state = initialState, action) => {
 
     case DELETE_FROM_WISHLIST:
       const filteredWishlist = state.products.filter(
-        (product) => product.wishlistName !== action.productName
+        (product) => product.wishlistName !== action.wishlistName
       );
       // console.log("FILTERED WISHLIST:");
       // console.log(filteredWishlist);
@@ -43,6 +45,9 @@ export default (state = initialState, action) => {
         ...state,
         products: filteredWishlist,
       };
+
+    case STORE_ALL_WISHLIST:
+      return { ...state, allWishlists: action.wishlist };
 
     default:
       return state;

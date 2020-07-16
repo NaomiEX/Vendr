@@ -30,14 +30,15 @@ const WishlistItem = (props) => {
   const wishlistData = props.wishlistData.filter(
     (wishlistItem) => wishlistItem.productId === props.data.id
   )[0];
-  // console.log("WISHLIST NAME FOR " + props.data.title);
-  // console.log(wishlistData);
 
   const onClickHandler = useCallback(() => {
     const deleteFromWishlist = async () => {
       setIsLoading(true);
       await dispatch(
-        wishlistActions.deleteFromWishlist(wishlistData.wishlistName)
+        wishlistActions.deleteFromWishlist(
+          wishlistData.wishlistName,
+          props.data.title
+        )
       );
     };
     if (heartImage === require("../assets/icons/heart.png")) {

@@ -41,7 +41,7 @@ const SearchBar = (props) => {
         text != "" &&
         props.allProducts[key].title
           .toUpperCase()
-          .startsWith(text.toUpperCase()) &&
+          .includes(text.toUpperCase()) &&
         !ss.includes(props.allProducts[key])
       ) {
         // console.log("I AM HERE");
@@ -108,7 +108,6 @@ const SearchBar = (props) => {
               {itemData.title}
             </EmphasisText>
             <TouchableOpacity
-              style={{}}
               onPress={() => {
                 setInput(itemData.title);
               }}

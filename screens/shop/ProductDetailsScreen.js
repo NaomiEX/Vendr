@@ -12,6 +12,8 @@ import {
   TextInput,
   Alert,
   ToastAndroid,
+  Keyboard,
+  RefreshControl,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -19,6 +21,14 @@ import { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo-linear-gradient";
 import { Rating } from "react-native-ratings";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import {
+  Placeholder,
+  PlaceholderMedia,
+  PlaceholderLine,
+  Fade,
+  Progressive,
+  ShineOverlay,
+} from "rn-placeholder";
 
 import { CATEGORIES } from "../../data/categories";
 
@@ -43,6 +53,12 @@ import * as productActions from "../../store/actions/products";
 import * as notificationActions from "../../store/actions/notifications";
 import * as productDiscussionActions from "../../store/actions/productDiscussion";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
 const ProductDetailsScreen = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [statusBarLight, setStatusBarLight] = useState(false);
@@ -54,6 +70,7 @@ const ProductDetailsScreen = (props) => {
   const [filCat, setFilCat] = useState();
   const [message, setMessage] = useState("");
   const [discussionLoading, setDiscussionLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const { navigation, route } = props;
   const dispatch = useDispatch();
@@ -67,8 +84,6 @@ const ProductDetailsScreen = (props) => {
   const wishlistProduct = useSelector(
     (state) => state.wishlist.products
   ).filter((product) => product.productId === thisProduct.id);
-  // console.log("WISHLIST PRODUCTS FROM THE PRODUCT DETAIL SCREEN:");
-  // console.log(wishlistProduct);
 
   const userId = useSelector((state) => state.authentication.userId);
 
@@ -87,15 +102,15 @@ const ProductDetailsScreen = (props) => {
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       setStatusBarLight(true);
       // await dispatch(notificationActions.getProductDiscussion(productId));
-      await dispatch(
-        otherUserProfilesActions.getOtherProfiles([thisProduct.ownerId])
-      );
-      await dispatch(productActions.updateProductDetails(thisProduct));
-      await dispatch(productDiscussionActions.getProductDiscussion(productId));
-      setIsLoading(false);
+      // await dispatch(
+      //   otherUserProfilesActions.getOtherProfiles([thisProduct.ownerId])
+      // );
+      // await dispatch(productActions.updateProductDetails(thisProduct));
+      // await dispatch(productDiscussionActions.getProductDiscussion(productId));
+      // setIsLoading(false);
     });
 
     const unsubscribeBlur = navigation.addListener("blur", () => {
@@ -110,20 +125,25 @@ const ProductDetailsScreen = (props) => {
   // console.log("THIS PRODUCT:");
   // console.log(thisProduct);
 
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true);
+      await dispatch(
+        otherUserProfilesActions.getOtherProfiles([thisProduct.ownerId])
+      );
+      await dispatch(productActions.updateProductDetails(thisProduct));
+      await dispatch(productDiscussionActions.getProductDiscussion(productId));
+      setIsLoading(false);
+    };
+
+    getData();
+  }, [dispatch, refreshing]);
+
   const ownerProfile = useSelector(
     (state) => state.otherUserProfiles.otherUsers
   )[0];
-  // console.log("OWNER PROFILE");
-  // console.log(ownerProfile);
   let imageUrl;
   let ownerUsername;
-
-  // const discussion = useSelector((state) => state.notifications.discussion);
-
-  // console.log("DISCUSSION IN PRODUCT DETAIL SCREEN: ");
-  // console.log(discussion);
-
-  // let filCat;
 
   useEffect(() => {
     setFilCat(
@@ -180,6 +200,7 @@ const ProductDetailsScreen = (props) => {
   }, [actionButtonImage]);
 
   const onPressSubmitDiscussionHandler = () => {
+    Keyboard.dismiss();
     const storeDiscussion = async () => {
       setDiscussionLoading(true);
       await dispatch(
@@ -200,7 +221,6 @@ const ProductDetailsScreen = (props) => {
         )
       );
       await dispatch(productDiscussionActions.getProductDiscussion(productId));
-      // await dispatch(notificationActions.getProductDiscussion(productId));
       setDiscussionLoading(false);
       setMessage("");
       ToastAndroid.showWithGravityAndOffset(
@@ -231,6 +251,14 @@ const ProductDetailsScreen = (props) => {
       )
     );
     await dispatch(productDiscussionActions.getProductDiscussion(productId));
+    await dispatch(
+      notificationActions.storeNotification(
+        "product discussion reply",
+        thisProduct.ownerId,
+        "",
+        thisProduct.title
+      )
+    );
   };
 
   const navigateToUserDetailsScreen = (userId) => {
@@ -239,28 +267,35 @@ const ProductDetailsScreen = (props) => {
     });
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.loadingContainer}>
-  //       <ActivityIndicator size="large" color={Colors.primary} />
-  //     </View>
-  //   );
-  // }
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(500).then(() => {
+      setRefreshing(false);
+    });
+  }, []);
 
   return (
-    <ScrollView style={{ backgroundColor: "white" }} contentContainerStyle={{}}>
+    <ScrollView
+      keyboardShouldPersistTaps="always"
+      style={{ backgroundColor: "white" }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={{ backgroundColor: "white" }}>
         <StatusBar
           barStyle={statusBarLight ? "light-content" : "dark-content"}
         />
         {isLoading ? (
-          <View
-            style={{
-              width: DeviceDimensions.width,
-              height: DeviceDimensions.width * 0.9,
-              backgroundColor: Colors.inactive_grey,
-            }}
-          ></View>
+          <Placeholder Animation={Fade}>
+            <PlaceholderMedia
+              style={{
+                width: DeviceDimensions.width,
+                height: DeviceDimensions.width * 0.9,
+              }}
+            />
+          </Placeholder>
         ) : (
           <ProductImagesCarousel
             data={thisProduct.productImages}
@@ -274,8 +309,18 @@ const ProductDetailsScreen = (props) => {
         <View style={styles.cardContainer}>
           <View style={styles.heartIconContainer}>
             {wishlistLoading ? (
-              <View style={styles.activityIndicator}>
-                <ActivityIndicator size="large" color={Colors.primary} />
+              <View
+                style={{
+                  backgroundColor: "white",
+                  width: 60,
+                  height: 60,
+                  elevation: 4,
+                  borderRadius: 30,
+                  overflow: "hidden",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator size="small" color={Colors.primary} />
               </View>
             ) : (
               <BubbleIcon
@@ -313,69 +358,128 @@ const ProductDetailsScreen = (props) => {
             style={thisProduct.productImages.length === 1 && { marginTop: 65 }}
           >
             <View style={styles.infoHeaderContainer}>
-              <BubbleIcon
-                width={50}
-                height={50}
-                borderRadius={30}
-                profilePicture={imageUrl}
-                onClickEdit={navigateToUserDetailsScreen.bind(
-                  this,
-                  ownerProfile.uid
-                )}
-              />
-              <View style={{ marginLeft: 10 }}>
-                <Text style={styles.title}>{thisProduct.title}</Text>
-              </View>
+              {isLoading ? (
+                <Placeholder Animation={Fade}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                    }}
+                  >
+                    <PlaceholderMedia
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: 25,
+                        overflow: "hidden",
+                      }}
+                    />
+                    <PlaceholderLine
+                      style={{ marginLeft: 10, marginTop: 10 }}
+                      width={50}
+                      height={22}
+                    />
+                  </View>
+                </Placeholder>
+              ) : (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <BubbleIcon
+                    width={50}
+                    height={50}
+                    borderRadius={30}
+                    profilePicture={imageUrl}
+                    onClickEdit={
+                      ownerProfile &&
+                      navigateToUserDetailsScreen.bind(this, ownerProfile.uid)
+                    }
+                  />
+                  <View style={{ marginLeft: 10 }}>
+                    <Text style={styles.title}>{thisProduct.title}</Text>
+                  </View>
+                </View>
+              )}
             </View>
             {/* categories chip row */}
             <View style={{ marginLeft: 62 }}>
               {filCat ? (
                 <ChipRow data={filCat} />
               ) : (
-                <ActivityIndicator size="small" color={Colors.primary} />
+                <Placeholder Animation={Fade}>
+                  <PlaceholderLine style={{ marginBottom: 2 }} height={26} />
+                </Placeholder>
               )}
             </View>
           </View>
           <View style={styles.dividerContainer}>
             <Divider
-              dividerStyle={{ width: DeviceDimensions.width - 60, height: 1.8 }}
-            />
-          </View>
-          <EmphasisText style={{ color: Colors.inactive_grey }}>
-            Product Details
-          </EmphasisText>
-          <View style={styles.ratingsContainer}>
-            <Rating
-              readonly={true}
-              startingValue={thisProduct.rating.average}
-              fractions={1}
-              imageSize={25}
-              style={styles.ratings}
-            />
-            <EmphasisText style={{ marginLeft: 20 }}>
-              {thisProduct.rating.average} | {thisProduct.rating.numOfRatings}{" "}
-              ratings
-            </EmphasisText>
-          </View>
-          <ExpandingText
-            textStyle={{ lineHeight: 20, marginTop: 10 }}
-            expanderStyle={{ textDecorationLine: "underline" }}
-            numOfLines={6}
-            boundaryLength={362}
-            text={thisProduct.description}
-          />
-          <View style={styles.priceAndCartButtonContainer}>
-            <Text style={styles.price}>${thisProduct.price}</Text>
-            <AddToCartButton
-              productId={thisProduct.id}
-              productPrice={thisProduct.price}
-              ownerUsername={ownerUsername}
+              dividerStyle={{ width: DeviceDimensions.width - 60, height: 1 }}
             />
           </View>
           <EmphasisText
+            style={{ color: Colors.inactive_grey, marginBottom: 0 }}
+          >
+            Product Details
+          </EmphasisText>
+          {isLoading ? (
+            <Placeholder Animation={Fade}>
+              <PlaceholderLine
+                width={65}
+                height={21}
+                style={{ marginTop: 10 }}
+              />
+            </Placeholder>
+          ) : (
+            <View style={styles.ratingsContainer}>
+              <Rating
+                readonly={true}
+                startingValue={thisProduct.rating.average}
+                fractions={1}
+                imageSize={25}
+                style={styles.ratings}
+              />
+              <EmphasisText style={{ marginLeft: 20 }}>
+                {thisProduct.rating.average} | {thisProduct.rating.numOfRatings}{" "}
+                ratings
+              </EmphasisText>
+            </View>
+          )}
+          {isLoading ? (
+            <Placeholder Animation={Fade}>
+              <PlaceholderLine height={12} style={{ marginTop: 10 }} />
+            </Placeholder>
+          ) : (
+            <ExpandingText
+              textStyle={{ lineHeight: 20, marginTop: 10 }}
+              expanderStyle={{ textDecorationLine: "underline" }}
+              numOfLines={6}
+              boundaryLength={362}
+              text={thisProduct.description}
+            />
+          )}
+          {isLoading ? (
+            <Placeholder Animation={Fade}>
+              <View style={styles.priceAndCartButtonContainer}>
+                <PlaceholderLine
+                  height={40}
+                  width={90}
+                  style={{ marginBottom: 5 }}
+                />
+              </View>
+            </Placeholder>
+          ) : (
+            <View style={styles.priceAndCartButtonContainer}>
+              <Text style={styles.price}>${thisProduct.price}</Text>
+              <AddToCartButton
+                productId={thisProduct.id}
+                productPrice={thisProduct.price}
+                ownerUsername={ownerUsername}
+              />
+            </View>
+          )}
+          <Divider dividerStyle={{ width: "100%", height: 1, marginTop: 40 }} />
+          <EmphasisText
             style={{
               color: Colors.inactive_grey,
-              marginTop: 20,
+              marginTop: 50,
               marginBottom: 10,
             }}
           >
@@ -385,7 +489,7 @@ const ProductDetailsScreen = (props) => {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              backgroundColor: Colors.translucent_grey,
+              backgroundColor: Colors.barely_there_grey,
             }}
           >
             <TextInput
@@ -399,6 +503,7 @@ const ProductDetailsScreen = (props) => {
               style={{
                 width: 300,
                 paddingHorizontal: 10,
+                marginRight: 20,
                 paddingVertical: 5,
               }}
             />
@@ -413,10 +518,12 @@ const ProductDetailsScreen = (props) => {
               color={Colors.primary}
             />
           )}
-          <ProductDiscussion
-            onSubmitReplyHandler={onSubmitReplyHandler}
-            onClickProfilePicture={navigateToUserDetailsScreen}
-          />
+          {!isLoading && (
+            <ProductDiscussion
+              onSubmitReplyHandler={onSubmitReplyHandler}
+              onClickProfilePicture={navigateToUserDetailsScreen}
+            />
+          )}
         </View>
       </View>
     </ScrollView>
@@ -442,8 +549,6 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
 
-  activityIndicator: { width: 60, height: 60, paddingTop: 10 },
-
   heartIconContainer: { alignItems: "flex-end", marginTop: -30 },
 
   pagination: { marginTop: -40, marginBottom: -10 },
@@ -455,7 +560,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
-  dividerContainer: { marginTop: 20, marginBottom: 20, alignItems: "center" },
+  dividerContainer: { marginTop: 40, marginBottom: 40, alignItems: "center" },
 
   ratings: { alignItems: "flex-start" },
 
@@ -470,7 +575,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    marginTop: 30,
+    marginTop: 50,
   },
 
   price: {

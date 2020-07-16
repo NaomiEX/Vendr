@@ -47,8 +47,7 @@ const CategoriesOverviewScreen = (props) => {
         style={{
           borderRadius: 20,
           overflow: "hidden",
-          elevation: 5,
-          marginBottom: 20,
+          marginBottom: 25,
           backgroundColor: "white",
         }}
         key={itemData.id}
@@ -65,8 +64,8 @@ const CategoriesOverviewScreen = (props) => {
           <View>
             <ImageBackground
               style={{
-                width: DeviceDimensions.width / 2.157,
-                height: DeviceDimensions.height / 2.447,
+                width: DeviceDimensions.width / 2.4834,
+                height: DeviceDimensions.height / 2.945,
               }}
               source={itemData.imageUrl}
             >
@@ -108,7 +107,8 @@ const CategoriesOverviewScreen = (props) => {
           <View
             style={{
               flexDirection: "row",
-              marginHorizontal: DeviceDimensions.width / 41.1,
+              justifyContent: "space-between",
+              marginHorizontal: 25,
             }}
           >
             <View style={{ marginTop: 30 }}>

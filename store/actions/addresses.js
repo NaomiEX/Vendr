@@ -34,8 +34,8 @@ export const storeShippingAddress = (
 
     const responseData = await response.json();
 
-    console.log("STORE SHIPPING ADDRESS RESPONSE:");
-    console.log(responseData);
+    // console.log("STORE SHIPPING ADDRESS RESPONSE:");
+    // console.log(responseData);
   };
 };
 
@@ -166,8 +166,8 @@ export const storeBillingAddress = (
 
     const responseData = await response.json();
 
-    console.log("STORE BILLING ADDRESS RESPONSE:");
-    console.log(responseData);
+    // console.log("STORE BILLING ADDRESS RESPONSE:");
+    // console.log(responseData);
   };
 };
 
@@ -225,7 +225,7 @@ export const editBillingAddress = (
   phoneNumber
 ) => {
   return async (dispatch, getState) => {
-    console.log("EDIT BILLING ADDRESS");
+    // console.log("EDIT BILLING ADDRESS");
     const token = getState().authentication.token;
     const userId = getState().authentication.userId;
     const response = await fetch(
@@ -268,7 +268,7 @@ export const editBillingAddress = (
       ),
     });
 
-    console.log("EDIT BILLING ADDRESS RESPONSE:");
-    console.log(responseData);
+    // console.log("EDIT BILLING ADDRESS RESPONSE:");
+    // console.log(responseData);
   };
 };

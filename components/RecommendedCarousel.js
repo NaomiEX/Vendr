@@ -52,19 +52,31 @@ const RecommendedCarousel = (props) => {
   };
 
   let sortedProducts = filteredProducts.sort(compare);
-  //   console.log("SORTED PRODUCTS");
-  //   console.log(sortedProducts);
+
+  const comparePopularity = (a, b) => {
+    let comparison = 0;
+    if (a.views.totalViews > b.views.totalViews) {
+      comparison = -1;
+    } else if (a.views.totalViews < b.views.totalViews) {
+      comparison = 1;
+    }
+    return comparison;
+  };
+
+  // console.log("SORTTTTTTTTTTT");
+  let finalProducts = props.products.sort(comparePopularity);
+
   let recommendedProducts = [];
   for (const key in sortedProducts) {
-    for (const index in sortedProducts) {
+    for (const index in finalProducts) {
       for (const categoryIndex in sortedProducts[key].categories) {
         if (
-          sortedProducts[index].categories.includes(
+          finalProducts[index].categories.includes(
             sortedProducts[key].categories[categoryIndex]
           ) &&
-          !recommendedProducts.includes(sortedProducts[index])
+          !recommendedProducts.includes(finalProducts[index])
         ) {
-          recommendedProducts.push(sortedProducts[index]);
+          recommendedProducts.push(finalProducts[index]);
         }
       }
     }
@@ -82,7 +94,7 @@ const RecommendedCarousel = (props) => {
     return (
       <View
         style={{
-          borderRadius: 20,
+          borderRadius: 5,
           overflow: "hidden",
           backgroundColor: "white",
           elevation: 3,
@@ -97,8 +109,8 @@ const RecommendedCarousel = (props) => {
           <View style={{ flexDirection: "row" }}>
             <View
               style={{
-                borderTopLeftRadius: 20,
-                borderBottomLeftRadius: 20,
+                borderTopLeftRadius: 5,
+                borderBottomLeftRadius: 5,
                 overflow: "hidden",
                 marginRight: 5,
               }}
@@ -112,7 +124,15 @@ const RecommendedCarousel = (props) => {
               />
             </View>
             <View style={{ marginLeft: 10 }}>
-              <Text style={{ fontFamily: "helvetica-light", fontSize: 18 }}>
+              <Text
+                numberOfLines={2}
+                style={{
+                  fontFamily: "helvetica-light",
+                  fontSize: 18,
+                  marginTop: 10,
+                  width: 170,
+                }}
+              >
                 {itemData.item.title}
               </Text>
               {/* <View
@@ -127,7 +147,7 @@ const RecommendedCarousel = (props) => {
               />
               {/* </View> */}
               <BodyText
-                numberOfLines={11}
+                numberOfLines={8}
                 style={{ width: 170, color: "#cccccc" }}
               >
                 {itemData.item.description}
@@ -146,7 +166,11 @@ const RecommendedCarousel = (props) => {
         activeSlideAlignment="start"
         sliderWidth={DeviceDimensions.width}
         itemWidth={DeviceDimensions.width - 60}
-        data={slicedRecommendedProducts}
+        data={
+          filteredProducts.length > 0
+            ? slicedRecommendedProducts
+            : props.products.slice(0, 5)
+        }
         renderItem={renderRecommendedCarouselItem}
         onSnapToItem={(index) => setActiveSlide(index)}
         inactiveSlideOpacity={0.4}
@@ -154,7 +178,9 @@ const RecommendedCarousel = (props) => {
       />
       <Pagination
         activeDotIndex={activeSlide}
-        dotsLength={slicedRecommendedProducts.length}
+        dotsLength={
+          filteredProducts.length > 0 ? slicedRecommendedProducts.length : 5
+        }
         dotColor={Colors.primary}
         inactiveDotColor={Colors.inactive_grey}
         inactiveDotScale={0.9}

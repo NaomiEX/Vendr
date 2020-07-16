@@ -1,8 +1,13 @@
 import Product from "../../models/product";
+import moment from "moment";
 
 export const ADD_TO_WISHLIST = "ADD_TO_WISHLIST";
 export const STORE_WISHLIST = "STORE_WISHLIST";
 export const DELETE_FROM_WISHLIST = "DELETE_FROM_WISHLIST";
+export const STORE_ALL_WISHLIST = "STORE_ALL_WISHLIST";
+
+import * as notificationActions from "./notifications";
+import * as wishlistActivity from "./wishlistActivity";
 
 export const addToWishlist = (productId) => {
   return async (dispatch, getState) => {
@@ -35,6 +40,8 @@ export const addToWishlist = (productId) => {
     // console.log("ADDING PRODUCT TO WISHLIST:");
     // console.log(responseData);
 
+    dispatch(wishlistActivity.addToWishlistActivity(productId));
+
     dispatch({
       type: ADD_TO_WISHLIST,
       productId,
@@ -43,14 +50,14 @@ export const addToWishlist = (productId) => {
   };
 };
 
-export const deleteFromWishlist = (productName) => {
+export const deleteFromWishlist = (wishlistName, productTitle) => {
   return async (dispatch, getState) => {
     // console.log("REACHED!!");
-    // console.log("product name:" + productName);
+    // console.log("product name:" + wishlistName);
     const token = getState().authentication.token;
     const userId = getState().authentication.userId;
     const response = await fetch(
-      `https://vendr-6265c.firebaseio.com/wishlist/${userId}/${productName}.json?auth=${token}`,
+      `https://vendr-6265c.firebaseio.com/wishlist/${userId}/${wishlistName}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -65,7 +72,15 @@ export const deleteFromWishlist = (productName) => {
     // console.log("DELETE PRODUCT FROM WISHLIST");
     // console.log(responseData);
 
-    dispatch({ type: DELETE_FROM_WISHLIST, productName });
+    dispatch({ type: DELETE_FROM_WISHLIST, wishlistName });
+    dispatch(
+      notificationActions.storeNotification(
+        "wishlist",
+        userId,
+        "Vendr_Official",
+        `You have removed the product: ${productTitle} from your wishlist`
+      )
+    );
   };
 };
 
@@ -98,6 +113,36 @@ export const fetchWishlist = () => {
 
     dispatch({
       type: STORE_WISHLIST,
+      wishlist,
+    });
+  };
+};
+
+export const fetchAllWishlist = () => {
+  return async (dispatch, getState) => {
+    const response = await fetch(
+      `https://vendr-6265c.firebaseio.com/wishlist.json`
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
+    const responseData = await response.json();
+    const wishlist = [];
+
+    for (const key in responseData) {
+      wishlist.push({
+        userId: key,
+        wishlist: responseData[key],
+      });
+    }
+
+    // console.log("ALL WISHLIST: ");
+    // console.log(wishlist);
+
+    dispatch({
+      type: STORE_ALL_WISHLIST,
       wishlist,
     });
   };

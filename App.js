@@ -20,6 +20,8 @@ import cardReducer from "./store/reducers/card";
 import ordersReducer from "./store/reducers/orders";
 import notificationsReducer from "./store/reducers/notifications";
 import productDiscussionReducer from "./store/reducers/productDiscussion";
+import ratingsReducer from "./store/reducers/ratings";
+import wishlistActivityReducer from "./store/reducers/wishlistActivity";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
 
@@ -48,6 +50,8 @@ const rootReducer = combineReducers({
   orders: ordersReducer,
   notifications: notificationsReducer,
   productDiscussion: productDiscussionReducer,
+  ratings: ratingsReducer,
+  wishlistActivity: wishlistActivityReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -74,24 +78,6 @@ export default function App() {
   if (!firebase.apps.length) {
     firebase.initializeApp(ApiKeys.FirebaseConfig);
   }
-
-  // const uri =
-  //   "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540naomiex%252FVendr/ImagePicker/ea77b1f7-11b4-42f9-a6a9-6fb02858f1f4.jpg";
-
-  // var ref = firebase
-  //   .storage()
-  //   .ref()
-  //   .child("images/" + "Test_Image.jpg");
-  // const uploadImage = async (uri, imageName) => {
-  //   const response = await fetch(uri);
-  //   const blob = await response.blob();
-  //   console.log("********FIREBASE************");
-  //   console.log(ref);
-  //   ref.put(blob);
-  //   const url = ref.getDownloadURL().then((durl) => console.log(durl));
-  // };
-
-  // uploadImage(uri, "Test_image");
   return (
     <Provider store={store}>
       <NavigatorContainer />

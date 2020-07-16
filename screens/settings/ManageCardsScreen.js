@@ -38,8 +38,8 @@ const ManageCardsScreen = (props) => {
   // console.log(cards);
 
   const selectedCard = useSelector((state) => state.card.selectedCard);
-  console.log("SELECTED CARD");
-  console.log(selectedCard);
+  // console.log("SELECTED CARD");
+  // console.log(selectedCard);
 
   useEffect(() => {
     dispatch(cardActions.setSelectedCard(selectedId));
@@ -97,7 +97,7 @@ const ManageCardsScreen = (props) => {
     );
   };
 
-  console.log("SELECTED ID: " + selectedId);
+  // console.log("SELECTED ID: " + selectedId);
 
   return (
     <Screen>

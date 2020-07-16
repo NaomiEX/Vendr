@@ -14,7 +14,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import * as productActions from "../../store/actions/products";
 import * as firebase from "firebase";
 
 import { v4 as uuidv4 } from "uuid";
@@ -35,6 +34,9 @@ import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
 import EmphasisText from "../../components/Text/EmphasisText";
 import category from "../../models/categories";
+
+import * as productActions from "../../store/actions/products";
+import * as notificationsActions from "../../store/actions/notifications";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 const FORM_GENERAL_UPDATE = "FORM_GENERAL_UPDATE";
@@ -278,6 +280,10 @@ const EditProductScreen = (props) => {
                   categories
                 )
               );
+
+              await dispatch(
+                notificationsActions.wishlistChanges(params.id, params.title)
+              );
               props.navigation.navigate("Home", {
                 toastText: "Product successfully edited!",
               });
@@ -429,7 +435,7 @@ const EditProductScreen = (props) => {
               show={show}
               initialValue={title}
             />
-            <HeaderText>Price</HeaderText>
+            <HeaderText style={{ marginTop: 20 }}>Price</HeaderText>
             <BodyText style={styles.description}>
               Please choose an appropriate price for your product
             </BodyText>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -19,6 +19,8 @@ if (Platform.OS === "android" && Platform.Version >= 21) {
 }
 
 const ProductItem = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <View
       style={
@@ -30,16 +32,19 @@ const ProductItem = (props) => {
       <TouchableComponent
         style={{
           width: props.style ? props.style.width : 150,
-          height: props.style ? props.style.height : 217.5,
+          height: props.style ? props.style.height : 230,
         }}
         useForeground={true}
         onPress={props.onTap.bind(this, props.id)}
       >
         <View style={styles.card}>
           <ImageBackground
+            // onLoad={() => {
+            //   setIsLoading(false);
+            // }}
             style={{
               width: props.style ? props.style.width : 150,
-              height: props.style ? props.style.height : 217.5,
+              height: props.style ? props.style.height : 230,
               backgroundColor: "#cccccc",
             }}
             source={{ uri: props.thumbnail.imageUrl }}
@@ -63,13 +68,17 @@ const ProductItem = (props) => {
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "space-around",
                   }}
                 >
                   <Text style={{ ...styles.text, ...styles.price }}>
                     ${props.price}
                   </Text>
-                  <View style={{ flexDirection: "row" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                    }}
+                  >
                     <Image
                       style={styles.star}
                       source={require("../../assets/icons/star.png")}
@@ -92,11 +101,11 @@ const styles = StyleSheet.create({
   cardContainer: {
     overflow: "hidden",
     marginRight: 10,
-    borderRadius: 10,
+    borderRadius: 5,
   },
 
   card: {
-    borderRadius: 10,
+    borderRadius: 5,
     overflow: "hidden",
   },
 
@@ -114,17 +123,19 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: "helvetica-standard",
     color: "white",
   },
 
-  star: { width: 20, height: 20, marginTop: 8, marginRight: 5 },
+  star: { width: 16, height: 16, marginTop: 8 },
 
   price: {
     letterSpacing: 1.5,
     width: 90,
   },
+
+  rating: { fontSize: 20, marginLeft: 5 },
 });
 
 export default ProductItem;

@@ -1,11 +1,11 @@
 import {
   STORE_NOTIFICATIONS,
-  STORE_DISCUSSION,
+  STORE_NOTIFICATION_FILTERS,
 } from "../actions/notifications";
 
 const initialState = {
   notifications: [],
-  discussion: [],
+  filters: [],
 };
 
 export default (state = initialState, action) => {
@@ -13,10 +13,8 @@ export default (state = initialState, action) => {
     case STORE_NOTIFICATIONS:
       return { ...state, notifications: action.notifications };
 
-    case STORE_DISCUSSION:
-      // console.log("DISCUSSION PASSED FROM ACTION: ");
-      // console.log(action.discussion);
-      return { ...state, discussion: action.discussion };
+    case STORE_NOTIFICATION_FILTERS:
+      return { ...state, filters: action.filters };
 
     default:
       return state;

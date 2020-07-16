@@ -25,8 +25,8 @@ const renderSmallBannerItem = (banner) => {
     <View
       style={{
         marginRight: 20,
-        marginTop: 15,
-        borderRadius: 20,
+        marginTop: 20,
+        borderRadius: 5,
         overflow: "hidden",
       }}
       key={banner.id}

@@ -32,8 +32,8 @@ const FeaturedSellers = (props) => {
     );
   };
 
-  console.log("FEATURED PROFILES:");
-  console.log(featuredProfiles);
+  // console.log("FEATURED PROFILES:");
+  // console.log(featuredProfiles);
 
   return (
     <View>

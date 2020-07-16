@@ -21,35 +21,33 @@ if (Platform.Version >= 21) {
 
 const PrimaryButton = (props) => {
   return (
-    <View style={{ borderRadius: 10, overflow: "hidden" }}>
-      <TouchableComponent onPress={props.onPress}>
-        <View
+    <TouchableComponent onPress={props.onPress}>
+      <View
+        style={{
+          ...styles.buttonContainer,
+          width: props.width,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Text
           style={{
-            ...styles.buttonContainer,
-            width: props.width,
-            flexDirection: "row",
-            alignItems: "center",
+            ...styles.text,
+            fontSize: props.fontSize ? props.fontSize : 14,
           }}
         >
-          <Text
-            style={{
-              ...styles.text,
-              fontSize: props.fontSize ? props.fontSize : 14,
-            }}
-          >
-            {props.text}
-          </Text>
-          {props.iconRight && (
-            <Ionicons
-              style={{ marginLeft: 20 }}
-              name={props.iconName}
-              size={18}
-              color={props.iconColor}
-            />
-          )}
-        </View>
-      </TouchableComponent>
-    </View>
+          {props.text}
+        </Text>
+        {props.iconRight && (
+          <Ionicons
+            style={{ marginLeft: 20 }}
+            name={props.iconName}
+            size={18}
+            color={props.iconColor}
+          />
+        )}
+      </View>
+    </TouchableComponent>
   );
 };
 

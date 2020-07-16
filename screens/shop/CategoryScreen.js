@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
   Platform,
-  Button,
-  Image,
-  FlatList,
   StyleSheet,
   ScrollView,
-  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { Placeholder, PlaceholderMedia, Fade } from "rn-placeholder";
 
-import * as activeComponentsActions from "../../store/actions/activeComponents";
 import * as productsActions from "../../store/actions/products";
 import * as otherUserProfilesActions from "../../store/actions/otherUserProfiles";
 
@@ -23,30 +20,34 @@ import DeviceDimensions from "../../constants/DeviceDimensions";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import Screen from "../../components/UI/BasicScreen";
 import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
-import ProductSlider from "../../components/UI/ProductSlider";
-import Product from "../../models/product";
 import PopularProductsRow from "../../components/PopularProductsRow";
 import FeaturedSellers from "../../components/FeaturedSellers";
 import ProductItem from "../../components/UI/ProductItem";
+import SkeletonProductsList from "../../components/Skeletons/SkeletonProductsList";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 
 const CategoryScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", async () => {
-      // dispatch(activeComponentsActions.updateActiveScreen("Home"));
+    const getData = async () => {
       setIsLoading(true);
       await dispatch(productsActions.fetchProducts());
       await dispatch(otherUserProfilesActions.getOtherProfiles(ownerIds));
       setIsLoading(false);
-    });
-
-    return () => {
-      unsubscribe();
     };
-  }, []);
+
+    getData();
+  }, [dispatch, refreshing]);
+
   const categoryTitle = props.route.params.title;
 
   const products = useSelector(
@@ -86,17 +87,25 @@ const CategoryScreen = (props) => {
     });
   };
 
-  const renderListItem = (item) => {
+  console.log(DeviceDimensions);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(500).then(() => {
+      setRefreshing(false);
+    });
+  }, []);
+
+  const renderListItem = (item, side) => {
     return (
       <View key={item.id} style={styles.listItem}>
         <ProductItem
           style={{
-            width: 170.5,
-            height: 248,
+            width: 166.365,
+            height: 255.093,
           }}
-          cardContainerStyle={{
-            marginRight: 12,
-          }}
+          cardContainerStyle={side === "right" && { marginLeft: 12 }}
           titleStyle={{
             fontSize: 18,
           }}
@@ -115,22 +124,43 @@ const CategoryScreen = (props) => {
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
       contentContainerStyle={{ paddingBottom: 80 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
       <View style={{ paddingLeft: 20 }}>
         <CategoryHeaderText style={{ marginVertical: 10 }}>
           Popular
         </CategoryHeaderText>
         {/* <ProductSlider data={products} onTap={onPress} /> */}
-        <PopularProductsRow
-          products={products}
-          onPressProduct={onPressHandler}
-          onPressSeeMore={onPressSeeMoreHandler}
-        />
+        {isLoading ? (
+          <Placeholder Animation={Fade}>
+            <View style={{ flexDirection: "row" }}>
+              <PlaceholderMedia style={styles.popularProductSkeleton} />
+              <PlaceholderMedia style={styles.popularProductSkeleton} />
+              <PlaceholderMedia style={styles.popularProductSkeleton} />
+            </View>
+          </Placeholder>
+        ) : (
+          <PopularProductsRow
+            products={products}
+            onPressProduct={onPressHandler}
+            onPressSeeMore={onPressSeeMoreHandler}
+          />
+        )}
         <CategoryHeaderText style={{ marginTop: 40 }}>
           Featured Sellers
         </CategoryHeaderText>
         {isLoading ? (
-          <ActivityIndicator size="large" color={Colors.primary} />
+          <Placeholder Animation={Fade}>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <PlaceholderMedia style={styles.featuredSellersProfileSkeleton} />
+              <PlaceholderMedia style={styles.featuredSellersProfileSkeleton} />
+              <PlaceholderMedia style={styles.featuredSellersProfileSkeleton} />
+              <PlaceholderMedia style={styles.featuredSellersProfileSkeleton} />
+              <PlaceholderMedia style={styles.featuredSellersProfileSkeleton} />
+            </View>
+          </Placeholder>
         ) : (
           <FeaturedSellers
             style={{ marginTop: 10 }}
@@ -146,19 +176,39 @@ const CategoryScreen = (props) => {
           All Products
         </CategoryHeaderText>
       </View>
-      <View style={{ flexDirection: "row", paddingLeft: 19 }}>
-        <View>{leftArray.map((item) => renderListItem(item))}</View>
-        <View style={{ marginTop: 40 }}>
-          {rightArray.map((item) => renderListItem(item))}
+      {isLoading ? (
+        <SkeletonProductsList />
+      ) : (
+        <View style={{ flexDirection: "row", paddingLeft: 19 }}>
+          <View>{leftArray.map((item) => renderListItem(item, "left"))}</View>
+          <View style={{ marginTop: 40 }}>
+            {rightArray.map((item) => renderListItem(item, "right"))}
+          </View>
         </View>
-      </View>
+      )}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   listItem: {
-    marginTop: 12,
+    marginTop: 20,
+  },
+
+  popularProductSkeleton: {
+    width: 150,
+    height: 230,
+    borderRadius: 10,
+    overflow: "hidden",
+    marginRight: 20,
+  },
+
+  featuredSellersProfileSkeleton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    overflow: "hidden",
+    marginRight: 20,
   },
 });
 

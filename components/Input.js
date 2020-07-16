@@ -118,9 +118,9 @@ const Input = (props) => {
   let result;
   const inputChangeHandler = (text) => {
     object[props.type] = text;
-    console.log(object);
+    // console.log(object);
     result = validate(object, constraints);
-    console.log(result);
+    // console.log(result);
     dispatch({
       type: INPUT_CHANGE,
       value: text,

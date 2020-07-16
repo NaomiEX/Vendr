@@ -8,6 +8,7 @@ import {
   ScrollView,
   ToastAndroid,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import SettingItem from "../../components/UI/SettingItem";
@@ -15,6 +16,7 @@ import Colors from "../../constants/Colors";
 import TitleText from "../../components/Text/TitleText";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
+import * as notificationActions from "../../store/actions/notifications";
 
 const SettingsScreen = (props) => {
   const [transactions, setTransactions] = useState(false);
@@ -24,15 +26,37 @@ const SettingsScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", () => {
-      dispatch(activeComponentsActions.updateActiveScreen("Settings", "top"));
-    });
+  const isFocused = useIsFocused();
 
+  useEffect(() => {
+    if (!isFocused) {
+      dispatch(
+        notificationActions.storeNotificationsFilters(
+          {
+            transactions,
+            productDiscussion,
+            wishlistChanges,
+            official: sales,
+          },
+          "test"
+        )
+      );
+    }
+  }, [dispatch, isFocused]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", async () => {
+      await dispatch(
+        activeComponentsActions.updateActiveScreen("Settings", "top")
+      );
+      await dispatch(notificationActions.getNotificationFilters("test"));
+    });
     return () => {
       unsubscribe();
     };
   }, []);
+
+  const filters = useSelector((state) => state.notifications.filters);
 
   useEffect(() => {
     props.route.params &&
@@ -44,6 +68,15 @@ const SettingsScreen = (props) => {
         160
       );
   });
+
+  useEffect(() => {
+    if (filters) {
+      setTransactions(filters.transactions);
+      setProductDiscussion(filters.productDiscussion);
+      setWishlistChanges(filters.wishlistChanges);
+      setSales(filters.official);
+    }
+  }, [filters]);
 
   return (
     <ScrollView

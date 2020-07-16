@@ -41,8 +41,8 @@ const ProductDiscussion = (props) => {
     (state) => state.productDiscussion.productDiscussion
   );
 
-  console.log("PRODUCT DISCUSSION FROM THE SCREEN:");
-  console.log(productDiscussion);
+  // console.log("PRODUCT DISCUSSION FROM THE SCREEN:");
+  // console.log(productDiscussion);
 
   const replies = productDiscussion.filter(
     (discussion) => discussion.type === "reply"
@@ -65,8 +65,8 @@ const ProductDiscussion = (props) => {
     // console.log("REPLIED MESSAGE INFO");
     // console.log(replies[key]);
   }
-  console.log("SECOND POSTS:");
-  console.log(posts);
+  // console.log("SECOND POSTS:");
+  // console.log(posts);
 
   const onClickReplyHandler = () => {
     Keyboard.dismiss();
@@ -106,7 +106,11 @@ const ProductDiscussion = (props) => {
             )}
             <BubbleIcon
               iconBackgroundColor="white"
-              profilePicture={{ uri: discussion.senderProfilePicture }}
+              profilePicture={
+                discussion.senderProfilePicture
+                  ? { uri: discussion.senderProfilePicture }
+                  : require("../assets/Anonymous.png")
+              }
               onClickEdit={props.onClickProfilePicture.bind(
                 this,
                 discussion.senderId
@@ -163,8 +167,8 @@ const ProductDiscussion = (props) => {
             style={{
               textAlign: "center",
               color: Colors.inactive_grey,
-              marginTop: 100,
-              marginBottom: 80,
+              marginTop: 40,
+              marginBottom: 20,
               width: "80%",
             }}
           >
@@ -189,7 +193,11 @@ const ProductDiscussion = (props) => {
                 >
                   <BubbleIcon
                     iconBackgroundColor="white"
-                    profilePicture={{ uri: modalData.senderProfilePicture }}
+                    profilePicture={
+                      modalData.senderProfilePicture
+                        ? { uri: modalData.senderProfilePicture }
+                        : require("../assets/Anonymous.png")
+                    }
                     onClickEdit={() => {
                       setShowModal(false);
                       props.onClickProfilePicture(modalData.senderId);

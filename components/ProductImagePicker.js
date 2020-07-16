@@ -82,7 +82,7 @@ const ProductImagePicker = (props) => {
     setShowModal(false);
     const image = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: props.thumbnail ? [11, 16] : [10, 9],
+      aspect: props.thumbnail ? [15, 23] : [10, 9],
       quality: 0.5,
     });
 
@@ -101,7 +101,7 @@ const ProductImagePicker = (props) => {
     setShowModal(false);
     const image = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: props.thumbnail ? [11, 16] : [10, 9],
+      aspect: props.thumbnail ? [15, 23] : [10, 9],
       quality: 0.5,
     });
 

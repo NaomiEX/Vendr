@@ -33,13 +33,15 @@ if (Platform.OS === "android" && Platform.Version >= 21) {
 }
 
 const NotificationsScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { navigation } = props;
   const dispatch = useDispatch();
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", async () => {
       await dispatch(notificationsActions.getNotifications());
+      await dispatch(notificationsActions.getNotificationFilters());
+      setIsLoading(false);
     });
 
     return () => {
@@ -196,7 +198,11 @@ const NotificationsScreen = (props) => {
               <View style={styles.profilePicture}>
                 <Image
                   style={{ width: "100%", height: "100%" }}
-                  source={{ uri: notificationData.profilePicture }}
+                  source={
+                    notificationData.profilePicture
+                      ? { uri: notificationData.profilePicture }
+                      : require("../../assets/Anonymous.png")
+                  }
                 />
               </View>
               <View style={{ paddingLeft: 20 }}>
@@ -243,7 +249,9 @@ const NotificationsScreen = (props) => {
                   }}
                 >
                   {notificationData.type.includes("product discussion")
-                    ? `This user has left a comment on one of your products: ${notificationData.message}`
+                    ? `This user has left a ${
+                        notificationData.type.split(" ")[2]
+                      } on one of your products: ${notificationData.message}`
                     : notificationData.message}
                 </Text>
               </View>
@@ -272,7 +280,7 @@ const NotificationsScreen = (props) => {
         <View style={{ alignItems: "center" }}>
           <TitleText style={{ color: Colors.primary }}>Notifications</TitleText>
           <Divider dividerStyle={{ marginTop: 5, width: 30, height: 2 }} />
-          {allNotifications.length <= 0 && (
+          {allNotifications.length <= 0 && !isLoading && (
             <EmphasisText
               style={{
                 color: Colors.inactive_grey,
@@ -285,7 +293,7 @@ const NotificationsScreen = (props) => {
           )}
           {isLoading && (
             <ActivityIndicator
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 40 }}
               color={Colors.primary}
               size="small"
             />

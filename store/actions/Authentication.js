@@ -1,5 +1,6 @@
 import { AsyncStorage } from "react-native";
 import * as userProfileActions from "./userProfile";
+import * as notificationsActions from "./notifications";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
@@ -92,6 +93,18 @@ export const signUp = (email, password, username, formValidity) => {
       responseData.idToken,
       responseData.localId,
       expirationDate
+    );
+
+    dispatch(
+      notificationsActions.storeNotificationsFilters(
+        {
+          official: true,
+          productDiscussion: true,
+          transactions: true,
+          wishlistChanges: true,
+        },
+        "filters"
+      )
     );
   };
 };
@@ -273,11 +286,11 @@ export const checkPassword = (password) => {
         console.log(errorResponseData);
         const errorId = errorResponseData.error.message;
         let message = "Something went wrong!";
-        console.log("error id");
-        console.log(errorId);
+        // console.log("error id");
+        // console.log(errorId);
 
         if (errorId === "INVALID_PASSWORD") {
-          console.log("REACHED!!1");
+          // console.log("REACHED!!1");
           message = "The old password you typed in is invalid!";
         } else if (errorId.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
           message = "Too many unsuccessful attempts. Try again later";
@@ -287,8 +300,8 @@ export const checkPassword = (password) => {
       }
 
       const responseData = await response.json();
-      console.log("check password response:");
-      console.log(responseData);
+      // console.log("check password response:");
+      // console.log(responseData);
       dispatch(userProfileActions.storeNewIdToken(responseData.idToken));
     } catch (err) {
       throw new Error(err.message);

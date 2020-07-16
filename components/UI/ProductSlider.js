@@ -77,12 +77,8 @@ const renderFlatlistItem = (onTap, itemData) => {
     //   </TouchableComponent>
     // </View>
     <ProductItem
-      style={{
-        width: 150,
-        height: 217.5,
-      }}
       cardContainerStyle={{
-        borderRadius: 20,
+        borderRadius: 5,
         marginRight: 20,
       }}
       onTap={onTap}

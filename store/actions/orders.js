@@ -51,8 +51,8 @@ export const storeOrder = (items, total) => {
 
     const responseData = await response.json();
 
-    console.log("STORE ORDER RESPONSE: ");
-    console.log(responseData);
+    // console.log("STORE ORDER RESPONSE: ");
+    // console.log(responseData);
   };
 };
 

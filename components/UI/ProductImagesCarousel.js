@@ -1,6 +1,15 @@
 import React, { useState, useEffect, memo } from "react";
 import { View, Image, StyleSheet, Text, ActivityIndicator } from "react-native";
 
+import {
+  Placeholder,
+  PlaceholderLine,
+  PlaceholderMedia,
+  Fade,
+  Progressive,
+  ShineOverlay,
+} from "rn-placeholder";
+
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -14,17 +23,25 @@ const ProductImagesCarousel = (props) => {
     return (
       <View>
         {isLoading && (
-          <View
-            style={{
-              width: DeviceDimensions.width,
-              height: DeviceDimensions.width * 0.9,
-              backgroundColor: Colors.translucent_grey,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ActivityIndicator size="large" color={Colors.primary} />
-          </View>
+          // <View
+          //   style={{
+          //     width: DeviceDimensions.width,
+          //     height: DeviceDimensions.width * 0.9,
+          //     backgroundColor: Colors.translucent_grey,
+          //     justifyContent: "center",
+          //     alignItems: "center",
+          //   }}
+          // >
+          //   <ActivityIndicator size="large" color={Colors.primary} />
+          // </View>
+          <Placeholder Animation={Progressive}>
+            <PlaceholderMedia
+              style={{
+                width: DeviceDimensions.width,
+                height: DeviceDimensions.width * 0.9,
+              }}
+            />
+          </Placeholder>
         )}
         <Image
           onLoad={() => {

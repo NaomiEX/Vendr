@@ -129,7 +129,7 @@ const BillingAddressScreen = (props) => {
     );
   };
 
-  console.log(formState);
+  // console.log(formState);
 
   useEffect(() => {
     if (error) {

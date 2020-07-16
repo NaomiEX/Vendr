@@ -23,6 +23,7 @@ import BodyText from "../../components/Text/BodyText";
 import Divider from "../../components/UI/Divider";
 import EmphasisText from "../../components/Text/EmphasisText";
 import ProductItem from "../../components/UI/ProductItem";
+import SkeletonOtherUserProfileScreen from "../../components/Skeletons/SkeletonOtherUserProfileScreen";
 
 import DeviceDimensions from "../../constants/DeviceDimensions";
 import Colors from "../../constants/Colors";
@@ -45,7 +46,7 @@ const OtherUserProfileScreen = (props) => {
 
   const userId = props.route.params.userId;
 
-  console.log(userId);
+  // console.log(userId);
 
   useEffect(() => {
     const unsubscribeFocus = navigation.addListener("focus", async () => {
@@ -111,6 +112,9 @@ const OtherUserProfileScreen = (props) => {
   let rightArray = [];
 
   for (const index in userProducts) {
+    if (leftArray.length + rightArray.length >= 10) {
+      break;
+    }
     if (index % 2 === 0) {
       leftArray.push(userProducts[index]);
     } else {
@@ -131,7 +135,7 @@ const OtherUserProfileScreen = (props) => {
   // console.log("ALL ORDERS");
   // console.log(allOrders);
 
-  console.log(userData);
+  // console.log(userData);
 
   // console.log("NUM OF ITEMS BOUGHT: " + itemsBought);
   // console.log("NUM OF ITEMS SOLD: " + itemsSold);
@@ -232,6 +236,10 @@ const OtherUserProfileScreen = (props) => {
     );
   };
 
+  if (isLoading) {
+    return <SkeletonOtherUserProfileScreen />;
+  }
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
@@ -240,66 +248,26 @@ const OtherUserProfileScreen = (props) => {
       <View>
         <View style={{ alignItems: "center", marginTop: 20 }}>
           <View style={styles.profileContainer}>
-            {isLoading ? (
-              <View
-                style={{ flex: 1, backgroundColor: Colors.inactive_grey }}
-              />
-            ) : (
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={{ uri: userData.profilePicture }}
-              />
-            )}
+            <Image
+              style={{ width: "100%", height: "100%" }}
+              source={{ uri: userData.profilePicture }}
+            />
           </View>
-          {isLoading ? (
-            <View
-              style={{
-                height: 26,
-                width: 100,
-                marginTop: 20,
-                marginBottom: 10,
-                backgroundColor: Colors.inactive_grey,
-              }}
+          <Text style={styles.username}>{userData.username}</Text>
+          <BodyText style={{ color: Colors.inactive_grey, marginTop: 5 }}>
+            {userData.fullName}
+          </BodyText>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Ionicons
+              style={{ marginBottom: 2, marginRight: 5 }}
+              name={Platform.OS === "android" ? "md-pin" : "ios-pin"}
+              size={13}
+              color={Colors.translucent_grey}
             />
-          ) : (
-            <Text style={styles.username}>{userData.username}</Text>
-          )}
-          {isLoading ? (
-            <View
-              style={{
-                height: 14,
-                width: 150,
-                marginTop: 5,
-                backgroundColor: Colors.inactive_grey,
-              }}
-            />
-          ) : (
-            <BodyText style={{ color: Colors.inactive_grey, marginTop: 5 }}>
-              {userData.fullName}
+            <BodyText style={{ color: Colors.inactive_grey }}>
+              {userShippingAddress.city}, {userShippingAddress.country}
             </BodyText>
-          )}
-          {isLoading ? (
-            <View
-              style={{
-                height: 14,
-                width: 150,
-                marginTop: 5,
-                backgroundColor: Colors.inactive_grey,
-              }}
-            />
-          ) : (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Ionicons
-                style={{ marginBottom: 2, marginRight: 5 }}
-                name={Platform.OS === "android" ? "md-pin" : "ios-pin"}
-                size={13}
-                color={Colors.translucent_grey}
-              />
-              <BodyText style={{ color: Colors.inactive_grey }}>
-                {userShippingAddress.city}, {userShippingAddress.country}
-              </BodyText>
-            </View>
-          )}
+          </View>
         </View>
         <View
           style={{
@@ -307,95 +275,46 @@ const OtherUserProfileScreen = (props) => {
             marginTop: 50,
           }}
         >
-          {isLoading ? (
-            <ActivityIndicator
-              style={{ height: 59 }}
-              color={Colors.primary}
-              size="large"
-            />
-          ) : (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                flex: 1,
-              }}
-            >
-              <View style={{ alignItems: "center" }}>
-                <Text style={styles.mainStatistic}>{userProducts.length}</Text>
-                <BodyText style={{ color: Colors.inactive_grey }}>
-                  User Products
-                </BodyText>
-                <Divider dividerStyle={{ width: 50, height: 1 }} />
-              </View>
-              <View style={{ alignItems: "center" }}>
-                <Text style={styles.mainStatistic}>{itemsBought}</Text>
-                <BodyText style={{ color: Colors.inactive_grey }}>
-                  Products Bought
-                </BodyText>
-                <Divider dividerStyle={{ width: 60, height: 1 }} />
-              </View>
-              <View style={{ alignItems: "center" }}>
-                <Text style={styles.mainStatistic}>{itemsSold}</Text>
-                <BodyText style={{ color: Colors.inactive_grey }}>
-                  Products Sold
-                </BodyText>
-                <Divider dividerStyle={{ width: 55, height: 1 }} />
-              </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              flex: 1,
+            }}
+          >
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.mainStatistic}>{userProducts.length}</Text>
+              <BodyText style={{ color: Colors.inactive_grey }}>
+                User Products
+              </BodyText>
+              <Divider dividerStyle={{ width: 50, height: 1 }} />
             </View>
-          )}
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.mainStatistic}>{itemsBought}</Text>
+              <BodyText style={{ color: Colors.inactive_grey }}>
+                Products Bought
+              </BodyText>
+              <Divider dividerStyle={{ width: 60, height: 1 }} />
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.mainStatistic}>{itemsSold}</Text>
+              <BodyText style={{ color: Colors.inactive_grey }}>
+                Products Sold
+              </BodyText>
+              <Divider dividerStyle={{ width: 55, height: 1 }} />
+            </View>
+          </View>
         </View>
         {/* body */}
         <View style={{ paddingHorizontal: 20, marginTop: 0 }}>
-          {isLoading ? (
-            <View>
-              <View
-                style={{
-                  height: 18,
-                  width: 100,
-                  marginTop: 20,
-                  backgroundColor: Colors.inactive_grey,
-                }}
-              />
-              <View
-                style={{
-                  height: 14,
-                  width: 300,
-                  marginTop: 20,
-                  backgroundColor: Colors.inactive_grey,
-                }}
-              />
-              <View
-                style={{
-                  height: 18,
-                  width: 100,
-                  marginTop: 40,
-                  backgroundColor: Colors.inactive_grey,
-                }}
-              />
-              <View
-                style={{
-                  height: 14,
-                  width: 300,
-                  marginTop: 20,
-                  backgroundColor: Colors.inactive_grey,
-                }}
-              />
-            </View>
-          ) : (
-            <View>
-              <Text style={styles.categoryHeader}>
-                About {userData.username}
-              </Text>
-              <BodyText style={styles.bodyText}>{userData.bio}</BodyText>
-              <Text style={styles.categoryHeader}>
-                Contact {userData.username}
-              </Text>
-              <BodyText style={styles.bodyText}>
-                Email: {userData.email}
-              </BodyText>
-            </View>
-          )}
+          <View>
+            <Text style={styles.categoryHeader}>About {userData.username}</Text>
+            <BodyText style={styles.bodyText}>{userData.bio}</BodyText>
+            <Text style={styles.categoryHeader}>
+              Contact {userData.username}
+            </Text>
+            <BodyText style={styles.bodyText}>Email: {userData.email}</BodyText>
+          </View>
           {/* Contact directly container */}
           <View style={styles.contactDirectlyContainer}>
             <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
@@ -453,18 +372,12 @@ const OtherUserProfileScreen = (props) => {
           <Text style={styles.categoryHeader}>User Products</Text>
 
           <View style={{ marginTop: 20 }}>
-            {isLoading ? (
-              <View style={{ alignItems: "center" }}>
-                <ActivityIndicator size="large" color={Colors.primary} />
+            <View style={{ flexDirection: "row" }}>
+              <View>{leftArray.map((item) => renderProductItem(item))}</View>
+              <View style={{ marginTop: 40 }}>
+                {rightArray.map((item) => renderProductItem(item))}
               </View>
-            ) : (
-              <View style={{ flexDirection: "row" }}>
-                <View>{leftArray.map((item) => renderProductItem(item))}</View>
-                <View style={{ marginTop: 40 }}>
-                  {rightArray.map((item) => renderProductItem(item))}
-                </View>
-              </View>
-            )}
+            </View>
           </View>
         </View>
       </View>

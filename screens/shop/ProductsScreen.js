@@ -20,7 +20,7 @@ const ProductsScreen = (props) => {
 
   const allProducts = useSelector((state) => state.products.availableProducts);
   let products = search
-    ? allProducts.filter((product) => product.title.startsWith(search))
+    ? allProducts.filter((product) => product.title.includes(search))
     : props.route.params.products;
 
   let leftArray = [];
@@ -48,17 +48,19 @@ const ProductsScreen = (props) => {
     });
   };
 
-  const renderListItem = (item) => {
+  const renderListItem = (item, side) => {
     return (
       <View key={item.id} style={styles.listItem}>
         <ProductItem
           style={{
-            width: 170.5,
-            height: 248,
+            width: 166.365,
+            height: 255.093,
           }}
-          cardContainerStyle={{
-            marginRight: 12,
-          }}
+          cardContainerStyle={
+            side === "right" && {
+              marginLeft: 12,
+            }
+          }
           titleStyle={{
             fontSize: 18,
           }}
@@ -90,10 +92,16 @@ const ProductsScreen = (props) => {
           {title}
         </CategoryHeaderText>
       )}
-      <View style={{ flexDirection: "row", paddingLeft: 19 }}>
-        <View>{leftArray.map((item) => renderListItem(item))}</View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginHorizontal: 20,
+        }}
+      >
+        <View>{leftArray.map((item) => renderListItem(item, "left"))}</View>
         <View style={{ marginTop: 40 }}>
-          {rightArray.map((item) => renderListItem(item))}
+          {rightArray.map((item) => renderListItem(item, "right"))}
         </View>
       </View>
     </ScrollView>
@@ -102,7 +110,7 @@ const ProductsScreen = (props) => {
 
 const styles = StyleSheet.create({
   listItem: {
-    marginTop: 12,
+    marginTop: 20,
   },
 });
 

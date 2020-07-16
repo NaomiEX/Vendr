@@ -34,7 +34,7 @@ const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
-    console.log(action.inputType);
+    // console.log(action.inputType);
     if (
       (action.inputType.includes("credit") ||
         action.inputType.includes("cvv")) &&
@@ -76,7 +76,7 @@ const EditCardScreen = (props) => {
         inputIdentifier.includes("credit") &&
         (isNaN(input) || input === " ")
       ) {
-        console.log("INVALID");
+        // console.log("INVALID");
         return;
       }
       dispatchFormState({
@@ -119,7 +119,7 @@ const EditCardScreen = (props) => {
     cvv,
   } = formState;
 
-  console.log(formState);
+  // console.log(formState);
 
   useEffect(() => {
     if (error) {

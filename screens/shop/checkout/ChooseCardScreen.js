@@ -39,8 +39,8 @@ const ManageCardsScreen = (props) => {
   }, [navigation]);
 
   const cards = useSelector((state) => state.card.cards);
-  console.log("THE CARDS:");
-  console.log(cards);
+  // console.log("THE CARDS:");
+  // console.log(cards);
 
   useEffect(() => {
     props.route.params &&

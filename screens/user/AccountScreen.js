@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,9 @@ import {
   Platform,
   Image,
   StatusBar,
+  RefreshControl,
   ToastAndroid,
+  ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,14 +18,31 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import BubbleIcon from "../../components/UI/BubbleIcon";
 import Tab from "../../components/Tab";
+import BodyText from "../../components/Text/BodyText";
+import SkeletonAccountScreen from "../../components/Skeletons/SkeletonAccountScreen";
 
 import * as userProfileActions from "../../store/actions/userProfile";
 import * as activeComponentsActions from "../../store/actions/activeComponents";
+import * as ordersActions from "../../store/actions/orders";
+import * as productDiscussionActions from "../../store/actions/productDiscussion";
+import * as ratingsActions from "../../store/actions/ratings";
+import * as productsActions from "../../store/actions/products";
+import * as wishlistActivityActions from "../../store/actions/wishlistActivity";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
 const AccountScreen = (props) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
   // console.log("Account Screen render");
 
   const dispatch = useDispatch();
@@ -31,16 +50,31 @@ const AccountScreen = (props) => {
   const token = useSelector((state) => state.authentication.token);
   const username = " " + useSelector((state) => state.userProfile.username);
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", () => {
+    const unsubscribe = props.navigation.addListener("focus", async () => {
       dispatch(activeComponentsActions.updateActiveScreen("Profile", "top"));
-      dispatch(userProfileActions.getProfile(token));
-      dispatch(userProfileActions.getProfileDetails());
+      await dispatch(userProfileActions.getProfile(token));
+      await dispatch(userProfileActions.getProfileDetails());
     });
 
     return () => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true);
+      await dispatch(ordersActions.getAllOrders());
+      await dispatch(productDiscussionActions.getAllProductDiscussion());
+      await dispatch(ratingsActions.getRatingInfo());
+      await dispatch(productsActions.fetchProducts());
+      await dispatch(ordersActions.getOrders());
+      await dispatch(wishlistActivityActions.fetchWishlistActivity());
+      setIsLoading(false);
+    };
+
+    getData();
+  }, [dispatch, refreshing]);
 
   const profilePictureUrl = useSelector(
     (state) => state.userProfile.profilePicture
@@ -57,6 +91,14 @@ const AccountScreen = (props) => {
     imageUrl = require("../../assets/Anonymous.png");
   }
 
+  const bio = useSelector((state) => state.userProfile.bio);
+  const fullName = useSelector((state) => state.userProfile.fullName);
+
+  // console.log("BIO");
+  // console.log(bio);
+  // console.log("FULL NAME");
+  // console.log(fullName);
+
   const navigateToEditProduct = () => {
     props.navigation.navigate("Edit Product");
   };
@@ -72,23 +114,77 @@ const AccountScreen = (props) => {
       );
   });
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(500).then(() => {
+      setRefreshing(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return <SkeletonAccountScreen />;
+  }
+
   return (
-    <View style={styles.screen}>
-      <View style={styles.greetingsContainer}>
-        <Text style={styles.greeting}>
-          Hi,
-          <Text style={{ ...styles.greeting, ...styles.username }}>
-            {username}!
+    <View style={{ backgroundColor: "white" }}>
+      {activeIndex === 1 && (
+        <View style={{ position: "absolute", bottom: 80, right: 20 }}>
+          <BubbleIcon
+            iconBackgroundColor={"#4DD599"}
+            onClick={navigateToEditProduct}
+            icon={require("../../assets/icons/plus.png")}
+          />
+        </View>
+      )}
+      <ScrollView
+        style={styles.screen}
+        contentContainerStyle={{ paddingBottom: 140 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={styles.greetingsContainer}>
+          <Text style={styles.greeting}>
+            Hi,
+            <Text
+              style={{
+                ...styles.greeting,
+                color: activeIndex === 0 ? Colors.primary : "#4DD599",
+              }}
+            >
+              {username}!
+            </Text>
           </Text>
-        </Text>
-        <BubbleIcon
-          onClickEdit={() => {
-            props.navigation.navigate("Edit Profile");
+          <BubbleIcon
+            onClickEdit={() => {
+              props.navigation.navigate("Edit Profile");
+            }}
+            profilePicture={imageUrl}
+          />
+        </View>
+        <View style={styles.personalInfo}>
+          <Text style={styles.fullName}>{fullName}</Text>
+          <BodyText
+            style={{
+              color: Colors.inactive_grey,
+              textAlign: "right",
+              width: DeviceDimensions.width * 0.6,
+            }}
+          >
+            {bio}
+          </BodyText>
+        </View>
+        <Tab
+          changeIndex={(index) => {
+            setActiveIndex(index);
           }}
-          profilePicture={imageUrl}
+          account
+          title={["Buyer", "Seller"]}
+          onTap={navigateToEditProduct}
+          navigation={props.navigation}
         />
-      </View>
-      <Tab account title={["Buyer", "Seller"]} onTap={navigateToEditProduct} />
+      </ScrollView>
     </View>
   );
 };
@@ -112,13 +208,10 @@ export const screenOptions = (navData) => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: "white",
-  },
+  screen: { backgroundColor: "white" },
 
   greetingsContainer: {
-    marginBottom: 30,
+    marginBottom: 20,
     marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -132,8 +225,17 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
   },
 
-  username: {
-    color: Colors.accent,
+  personalInfo: {
+    alignItems: "flex-end",
+    marginRight: 20,
+    marginBottom: 30,
+  },
+
+  fullName: {
+    fontFamily: "helvetica-light",
+    fontSize: 14,
+    color: Colors.black,
+    letterSpacing: 1,
   },
 });
 

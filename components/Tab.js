@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,8 @@ import CategoryHeaderText from "../components/Text/CategoryHeaderText";
 import DeviceDimensions from "../constants/DeviceDimensions";
 import Colors from "../constants/Colors";
 import BubbleIcon from "../components/UI/BubbleIcon";
+import AccountBuyerScreen from "../components/AccountBuyerScreen";
+import AccountSellerScreen from "../components/AccountSellerScreen";
 
 const initialLayout = { width: DeviceDimensions.width };
 
@@ -24,18 +26,6 @@ let TouchableComponent = TouchableOpacity;
 if (Platform.OS === "android" && Platform.Version >= 21) {
   TouchableComponent = TouchableNativeFeedback;
 }
-const renderTabBar = (props) => (
-  <TabBar
-    {...props}
-    activeColor={Colors.accent}
-    inactiveColor={Colors.inactive_grey}
-    indicatorStyle={{ backgroundColor: Colors.accent }}
-    renderLabel={({ route, focused, color }) => (
-      <CategoryHeaderText style={{ color }}>{route.title}</CategoryHeaderText>
-    )}
-    style={{ backgroundColor: "white" }}
-  />
-);
 
 const Tab = (props) => {
   const [index, setIndex] = useState(0);
@@ -44,23 +34,19 @@ const Tab = (props) => {
     { key: "second", title: props.title[1] },
   ]);
 
+  useEffect(() => {
+    props.changeIndex(index);
+  }, [index]);
+
   const BuyerScreen = () => (
-    <View>
-      <Text>Buyer Screen</Text>
-    </View>
+    <AccountBuyerScreen navigation={props.navigation} />
   );
 
   const SellerScreen = () => (
-    <View>
-      <Text>Seller Screen</Text>
-      <View style={styles.addButton}>
-        <BubbleIcon
-          onClick={props.onTap}
-          iconBackgroundColor={Colors.accent}
-          icon={require("../assets/icons/plus.png")}
-        />
-      </View>
-    </View>
+    <AccountSellerScreen
+      navigation={props.navigation}
+      onTapButton={props.onTap}
+    />
   );
 
   const renderScene = SceneMap({
@@ -68,23 +54,37 @@ const Tab = (props) => {
     second: props.account ? SellerScreen : null,
   });
 
+  const renderTabBar = (props) => {
+    return (
+      <TabBar
+        {...props}
+        activeColor={index === 0 ? Colors.primary : "#4DD599"}
+        inactiveColor={Colors.inactive_grey}
+        indicatorStyle={{
+          backgroundColor: index === 0 ? Colors.primary : "#4DD599",
+        }}
+        renderLabel={({ route, focused, color }) => (
+          <CategoryHeaderText style={{ color }}>
+            {route.title}
+          </CategoryHeaderText>
+        )}
+        style={{ backgroundColor: "white" }}
+      />
+    );
+  };
+
   return (
     <TabView
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={(index) => setIndex(index)}
       initialLayout={initialLayout}
+      index={index}
       renderTabBar={renderTabBar}
     />
   );
 };
 
-const styles = StyleSheet.create({
-  addButton: {
-    position: "absolute",
-    top: 400,
-    right: 20,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default Tab;

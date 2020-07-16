@@ -68,17 +68,19 @@ const UserProductsScreen = (props) => {
   // console.log("ARRAY 2:");
   // console.log(rightArray);
 
-  const renderListItem = (item) => {
+  const renderListItem = (item, side) => {
     return (
       <View key={item.id} style={styles.listItem}>
         <ProductItem
           style={{
-            width: 170.5,
-            height: 248,
+            width: 166.365,
+            height: 255.093,
           }}
-          cardContainerStyle={{
-            marginRight: 12,
-          }}
+          cardContainerStyle={
+            side === "right" && {
+              marginLeft: 12,
+            }
+          }
           titleStyle={{
             fontSize: 18,
           }}
@@ -106,22 +108,6 @@ const UserProductsScreen = (props) => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-        }}
-      >
-        <Title />
-        <View style={{ marginTop: 100 }}>
-          <ActivityIndicator size="large" color={Colors.primary} />
-        </View>
-      </View>
-    );
-  }
-
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -135,10 +121,17 @@ const UserProductsScreen = (props) => {
         numColumns={2}
         contentContainerStyle={{ paddingBottom: 60 }}
       /> */}
+        {isLoading && (
+          <ActivityIndicator
+            size="small"
+            color={Colors.primary}
+            style={{ marginTop: 20 }}
+          />
+        )}
         <View style={{ flexDirection: "row", paddingLeft: 19 }}>
-          <View>{leftArray.map((item) => renderListItem(item))}</View>
+          <View>{leftArray.map((item) => renderListItem(item, "left"))}</View>
           <View style={{ marginTop: 40 }}>
-            {rightArray.map((item) => renderListItem(item))}
+            {rightArray.map((item) => renderListItem(item, "right"))}
           </View>
         </View>
       </Screen>
@@ -168,7 +161,7 @@ const styles = StyleSheet.create({
   list: { flex: 1 },
 
   listItem: {
-    marginTop: 12,
+    marginTop: 20,
   },
 });
 

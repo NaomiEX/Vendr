@@ -53,8 +53,8 @@ export const getSearchHistory = () => {
       for (const key in responseData) {
         searchHistory.push(new Search(key, responseData[key].search));
       }
-      console.log("THE SEARCH HISTORY RESPONSE:");
-      console.log(searchHistory);
+      // console.log("THE SEARCH HISTORY RESPONSE:");
+      // console.log(searchHistory);
 
       dispatch({
         type: STORE_SEARCH_HISTORY,

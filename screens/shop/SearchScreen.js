@@ -108,9 +108,11 @@ const SearchScreen = (props) => {
           marginBottom: 5,
           flexDirection: "row",
           alignItems: "center",
+          justifyContent: "flex-end",
         }}
       >
         <TouchableOpacity
+          style={{ flex: 1, justifyContent: "flex-start" }}
           onPress={() => {
             props.navigation.navigate("Products", {
               search: itemData.search,
@@ -123,7 +125,6 @@ const SearchScreen = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.6}
-          style={{ flex: 1, alignItems: "flex-end" }}
           onPress={async () => {
             setRemovePressed(true);
             setIsLoading(true);

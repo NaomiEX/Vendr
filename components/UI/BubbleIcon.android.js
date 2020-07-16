@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import { Placeholder, PlaceholderMedia, Fade } from "rn-placeholder";
+
 import BodyText from "../../components/Text/BodyText";
 
 import Colors from "../../constants/Colors";
@@ -70,17 +72,20 @@ const BubbleIcon = (props) => {
           >
             <View>
               {isLoading && (
-                <View
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: Colors.translucent_grey,
-                    alignItems: "center",
-                    paddingTop: 15,
-                  }}
-                >
-                  <ActivityIndicator size="small" color={Colors.primary} />
-                </View>
+                // <View
+                //   style={{
+                //     width: "100%",
+                //     height: "100%",
+                //     backgroundColor: Colors.translucent_grey,
+                //     alignItems: "center",
+                //     paddingTop: 15,
+                //   }}
+                // >
+                //   <ActivityIndicator size="small" color={Colors.primary} />
+                // </View>
+                <Placeholder Animation={Fade}>
+                  <PlaceholderMedia style={{ width: "100%", height: "100%" }} />
+                </Placeholder>
               )}
               <Image
                 onLoad={() => {

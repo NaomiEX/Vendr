@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
@@ -15,17 +15,20 @@ import Colors from "../../constants/Colors";
 import * as activeComponentsActions from "../../store/actions/activeComponents";
 import * as ordersActions from "../../store/actions/orders";
 import * as addressesActions from "../../store/actions/addresses";
+import { ActivityIndicator } from "react-native-paper";
 
 const OrderHistoryScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", () => {
+    const unsubscribe = props.navigation.addListener("focus", async () => {
       dispatch(
         activeComponentsActions.updateActiveScreen("Order History", "top")
       );
-      dispatch(ordersActions.getOrders());
-      dispatch(addressesActions.getShippingAddress());
+      await dispatch(ordersActions.getOrders());
+      await dispatch(addressesActions.getShippingAddress());
+      setIsLoading(false);
     });
 
     return () => {
@@ -59,6 +62,13 @@ const OrderHistoryScreen = (props) => {
         <TitleText style={{ color: Colors.primary }}>Order History</TitleText>
         <Divider dividerStyle={{ width: 30, height: 2, marginTop: 5 }} />
       </View>
+      {isLoading && (
+        <ActivityIndicator
+          style={{ marginTop: 20 }}
+          size="small"
+          color={Colors.primary}
+        />
+      )}
       <View>{orders.map((order) => renderOrderItem(order))}</View>
     </ScrollView>
   );

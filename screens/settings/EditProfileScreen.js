@@ -179,8 +179,8 @@ const EditProfileScreen = (props) => {
           try {
             await dispatch(userProfileActions.changeEmail(email));
           } catch (err) {
-            console.log("THE ERROR HAS BEEN CAUGHT BY EDIT PROFILE SCREEN");
-            console.log(err.message);
+            // console.log("THE ERROR HAS BEEN CAUGHT BY EDIT PROFILE SCREEN");
+            // console.log(err.message);
             if (err.message === "This email has already been taken") {
               setError("This email already exists");
               emailError = true;

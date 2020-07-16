@@ -2,6 +2,8 @@ import Product from "../../models/product";
 import Rating from "../../models/rating";
 import Views from "../../models/views";
 
+import * as ratingsActions from "./ratings";
+
 import { CATEGORIES } from "../../data/categories";
 
 export const CREATE_PRODUCTS = "CREATE_PRODUCTS";
@@ -41,7 +43,7 @@ export const createProduct = (
           productImages,
           description,
           categories,
-          rating: new Rating(0, 0, 0, []),
+          rating: new Rating(0, 0, 0),
           views: new Views({}, 0),
         }),
       }
@@ -149,6 +151,7 @@ export const updateProductDetails = (product, rating) => {
     const token = getState().authentication.token;
     const userId = getState().authentication.userId;
     let updatedViews;
+    let updatedRatings;
     if (!rating) {
       if (product.views.users) {
         if (product.views.users[userId]) {
@@ -175,6 +178,19 @@ export const updateProductDetails = (product, rating) => {
           totalViews: 1,
         };
       }
+    } else {
+      let updatedTotal = product.rating.total + rating;
+      let updatedNumOfRatings = product.rating.numOfRatings + 1;
+      let updatedAverage = updatedTotal / updatedNumOfRatings;
+
+      console.log("UPDATED TOTAL: " + updatedTotal);
+      console.log("UPDATED NUM OF RATINGS: " + updatedNumOfRatings);
+      console.log("UPDATED AVERAGE: " + updatedAverage);
+      updatedRatings = new Rating(
+        updatedAverage,
+        updatedTotal,
+        updatedNumOfRatings
+      );
     }
 
     // console.log("UPDATED VIEWS:");
@@ -187,11 +203,13 @@ export const updateProductDetails = (product, rating) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body:
-          !rating &&
-          JSON.stringify({
-            views: updatedViews,
-          }),
+        body: !rating
+          ? JSON.stringify({
+              views: updatedViews,
+            })
+          : JSON.stringify({
+              rating: updatedRatings,
+            }),
       }
     );
 
@@ -202,7 +220,11 @@ export const updateProductDetails = (product, rating) => {
 
     const responseData = await response.json();
 
-    // console.log("UPDATE PRODUCT DETAILS RESPONSE:");
-    // console.log(responseData);
+    if (rating) {
+      dispatch(ratingsActions.storeRatingInfo(userId));
+    }
+
+    console.log("UPDATE PRODUCT DETAILS RESPONSE:");
+    console.log(responseData);
   };
 };

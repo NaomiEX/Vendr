@@ -1,24 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   StyleSheet,
   Platform,
   StatusBar,
   ScrollView,
+  RefreshControl,
   ToastAndroid,
   Text,
   ActivityIndicator,
   Image,
   Animated,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useIsDrawerOpen } from "@react-navigation/drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSafeArea } from "react-native-safe-area-context";
-import moment from "moment";
-import * as firebase from "firebase";
+import { Placeholder, PlaceholderMedia, Fade } from "rn-placeholder";
 
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import BannerCarousel from "../../components/BannerCarousel";
@@ -30,6 +31,7 @@ import RecommendedProductsRow from "../../components/RecommendedProductsRow";
 import BodyText from "../../components/Text/BodyText";
 import SmallBanners from "../../components/UI/SmallBanners";
 import RecommendedCarousel from "../../components/RecommendedCarousel";
+import RatingModal from "../../components/UI/RatingModal";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
@@ -37,16 +39,22 @@ import { LARGE_BANNERS } from "../../data/large_banners";
 import { CATEGORIES } from "../../data/categories";
 
 import * as activeComponentsActions from "../../store/actions/activeComponents";
-import * as otherProfilesActions from "../../store/actions/otherUserProfiles";
 import * as wishlistActions from "../../store/actions/wishlist";
 import * as productActions from "../../store/actions/products";
-import * as addressesActions from "../../store/actions/addresses";
 import * as userProfileActions from "../../store/actions/userProfile";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 
 const HomeScreen = (props) => {
   const [isHomeScreenActive, setIsHomeScreenActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [transparent, setTransparent] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const dispatch = useDispatch();
   const isDrawerOpen = useIsDrawerOpen();
@@ -66,8 +74,7 @@ const HomeScreen = (props) => {
       // setIsLoading(true);
       await dispatch(activeComponentsActions.updateActiveScreen("Home", "top"));
       setIsHomeScreenActive(true);
-      await dispatch(productActions.fetchProducts());
-      await dispatch(wishlistActions.fetchWishlist());
+
       dispatch(userProfileActions.getProfile(token));
       dispatch(userProfileActions.getProfileDetails());
       // setIsLoading(false);
@@ -83,7 +90,27 @@ const HomeScreen = (props) => {
     };
   }, [navigation]);
 
+  console.log(DeviceDimensions);
+
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true);
+      await dispatch(productActions.fetchProducts());
+      await dispatch(wishlistActions.fetchWishlist());
+      setIsLoading(false);
+    };
+
+    getData();
+  }, [dispatch, refreshing]);
+
   const allProducts = useSelector((state) => state.products.availableProducts);
+
+  useEffect(() => {
+    const orderedProducts = route.params && route.params.orderedProducts;
+    // console.log("ORDERED PRODUCTS: ");
+    // console.log(orderedProducts);
+    orderedProducts && setShowModal(true);
+  }, [route]);
 
   useEffect(() => {
     route.params &&
@@ -97,12 +124,6 @@ const HomeScreen = (props) => {
   }, [route]);
 
   useEffect(() => {
-    props.navigation.setOptions({
-      headerShown: isLoading ? false : true,
-    });
-  }, [isLoading]);
-
-  useEffect(() => {
     dispatch(activeComponentsActions.updateActiveDrawer(isDrawerOpen));
   }, [isDrawerOpen]);
 
@@ -111,13 +132,6 @@ const HomeScreen = (props) => {
       id: itemId,
     });
   };
-  // if (isLoading) {
-  //   return (
-  //     <Screen style={{ justifyContent: "center", alignItems: "center" }}>
-  //       <ActivityIndicator size="large" color={Colors.primary} />
-  //     </Screen>
-  //   );
-  // }
   const onPressSeeMoreHandler = (type, products) => {
     props.navigation.navigate("Products", {
       type,
@@ -136,11 +150,6 @@ const HomeScreen = (props) => {
     }
     const listenerId = scrollY.addListener((a) => {
       const topNaviOffset = BANNER_HEIGHT - HEADER_HEIGHT - safeArea.top;
-      // if (transparent && a.value > topNaviOffset) {
-      //   setTransparent(false);
-      // } else if (!transparent && a.value < topNaviOffset) {
-      //   setTransparent(true);
-      // }
       transparent !== a.value < topNaviOffset && setTransparent(!transparent);
     });
     return () => scrollY.removeListener(listenerId);
@@ -198,9 +207,20 @@ const HomeScreen = (props) => {
     ),
   });
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(500).then(() => {
+      setRefreshing(false);
+    });
+  }, []);
+
   return (
     <Animated.ScrollView
       contentContainerStyle={{ paddingBottom: 80 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       style={styles.screen}
       scrollEventThrottle={16}
       onScroll={Animated.event(
@@ -224,14 +244,15 @@ const HomeScreen = (props) => {
           translucent={true}
           backgroundColor="rgba(0,0,0,0)"
         />
+
         <BannerCarousel data={LARGE_BANNERS} autoplay={true} />
         <View style={styles.body}>
-          <CategoryHeaderText style={{ marginBottom: 5 }}>
+          <CategoryHeaderText style={{ marginBottom: 10 }}>
             Categories
           </CategoryHeaderText>
           <BubbleIconRow data={CATEGORIES} onTap={navigateToCategory} />
           <TouchableOpacity
-            style={{ ...styles.seeMore, marginTop: 5 }}
+            style={{ ...styles.seeMore, marginTop: 10 }}
             activeOpacity={0.6}
             onPress={() => {
               props.navigation.navigate("Categories Overview", {
@@ -245,28 +266,90 @@ const HomeScreen = (props) => {
             <Image source={require("../../assets/icons/yellow_arrow.png")} />
           </TouchableOpacity>
 
-          <CategoryHeaderText style={{ marginBottom: 20, marginTop: 30 }}>
+          <CategoryHeaderText style={{ marginBottom: 30, marginTop: 50 }}>
             Popular
           </CategoryHeaderText>
-          <PopularProductsRow
-            products={allProducts}
-            onPressProduct={onPressProductHandler}
-            onPressSeeMore={onPressSeeMoreHandler}
-          />
-          <CategoryHeaderText style={{ marginTop: 30, marginBottom: 20 }}>
-            Recommended
-          </CategoryHeaderText>
-          <View>
-            <RecommendedCarousel
+          {isLoading ? (
+            <Placeholder Animation={Fade}>
+              <View style={{ flexDirection: "row" }}>
+                <PlaceholderMedia
+                  style={styles.popularProductsSliderSkeleton}
+                />
+                <PlaceholderMedia
+                  style={styles.popularProductsSliderSkeleton}
+                />
+                <PlaceholderMedia
+                  style={styles.popularProductsSliderSkeleton}
+                />
+              </View>
+            </Placeholder>
+          ) : (
+            <PopularProductsRow
               products={allProducts}
               onPressProduct={onPressProductHandler}
+              onPressSeeMore={onPressSeeMoreHandler}
             />
-          </View>
-          <CategoryHeaderText style={{ marginTop: 10 }}>
+          )}
+          <CategoryHeaderText style={{ marginTop: 60, marginBottom: 20 }}>
+            Recommended
+          </CategoryHeaderText>
+          {isLoading ? (
+            <Placeholder Animation={Fade}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <PlaceholderMedia
+                  style={{
+                    width: DeviceDimensions.width - 60,
+                    height: DeviceDimensions.height / 3.807,
+                    borderRadius: 10,
+                    overflow: "hidden",
+                    marginRight: 20,
+                  }}
+                />
+                <PlaceholderMedia
+                  style={{
+                    width: DeviceDimensions.width - 60,
+                    height: DeviceDimensions.height / 4.1,
+                    borderRadius: 10,
+                    overflow: "hidden",
+                  }}
+                />
+              </View>
+            </Placeholder>
+          ) : (
+            <View>
+              <RecommendedCarousel
+                products={allProducts}
+                onPressProduct={onPressProductHandler}
+              />
+            </View>
+          )}
+          <CategoryHeaderText style={{ marginTop: 40, marginBottom: 10 }}>
             Hot Sales
           </CategoryHeaderText>
           <SmallBanners />
         </View>
+        <RatingModal
+          products={
+            route.params && route.params.orderedProducts
+              ? route.params.orderedProducts
+              : []
+          }
+          showModal={showModal}
+          hideModal={() => {
+            setShowModal(false);
+          }}
+          storeRatings={(ratings) => {
+            setShowModal(false);
+            for (const key in ratings) {
+              dispatch(
+                productActions.updateProductDetails(
+                  ratings[key].product,
+                  ratings[key].rating
+                )
+              );
+            }
+          }}
+        />
       </View>
     </Animated.ScrollView>
   );
@@ -280,7 +363,7 @@ const styles = StyleSheet.create({
 
   body: {
     marginLeft: DeviceDimensions.width / 19.64,
-    marginTop: -DeviceDimensions.height / 75.93,
+    marginTop: 20,
   },
 
   headerText: {
@@ -292,6 +375,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
+    marginRight: 20,
+  },
+
+  popularProductsSliderSkeleton: {
+    width: 150,
+    height: 230,
+    borderRadius: 10,
+    overflow: "hidden",
     marginRight: 20,
   },
 });

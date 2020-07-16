@@ -9,6 +9,12 @@ import EditProductScreen, {
   screenOptions as editProductScreenOptions,
 } from "../../screens/user/EditProductScreen";
 import EditProfileScreen from "../../screens/settings/EditProfileScreen";
+import ProductDetailsScreen, {
+  screenOptions as productDetailsScreenOptions,
+} from "../../screens/shop/ProductDetailsScreen";
+import OrderHistoryScreen, {
+  screenOptions as orderHistoryScreenOptions,
+} from "../../screens/user/OrderHistoryScreen";
 
 import { defaultNavOptions } from "../defaultNavOptions";
 
@@ -34,6 +40,15 @@ export const AccountNavigator = () => {
       <AccountStackNavigator.Screen
         name="Edit Profile"
         component={EditProfileScreen}
+      />
+      <AccountStackNavigator.Screen
+        name="Product Details"
+        component={ProductDetailsScreen}
+        options={productDetailsScreenOptions}
+      />
+      <AccountStackNavigator.Screen
+        name="Order History"
+        component={OrderHistoryScreen}
       />
     </AccountStackNavigator.Navigator>
   );

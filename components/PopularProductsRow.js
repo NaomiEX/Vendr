@@ -29,7 +29,7 @@ const PopularProductsRow = (props) => {
         onTap={props.onPressProduct}
       />
       <TouchableOpacity
-        style={{ ...styles.seeMore, marginTop: 15 }}
+        style={{ ...styles.seeMore, marginTop: 25 }}
         activeOpacity={0.6}
         onPress={props.onPressSeeMore.bind(this, "popular", sortedProducts)}
       >

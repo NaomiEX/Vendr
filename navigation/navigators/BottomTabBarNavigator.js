@@ -46,6 +46,7 @@ export const BottomTabNavigator = () => {
           paddingBottom: 2,
         },
       }}
+      initialRouteName="Home"
     >
       <BottomTabBarNavigator.Screen
         name="Home"

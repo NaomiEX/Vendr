@@ -102,8 +102,8 @@ const ChangePasswordScreen = (props) => {
     setConfirmNewPassword(text);
   };
 
-  console.log("Form State: ");
-  console.log(formState);
+  // console.log("Form State: ");
+  // console.log(formState);
 
   const ChangePasswordButton = (props) => {
     return (

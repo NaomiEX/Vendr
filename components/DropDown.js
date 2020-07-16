@@ -26,7 +26,7 @@ const DropDown = (props) => {
   }, [selectedItem]);
 
   const renderDropDownListItem = (itemData) => {
-    console.log(itemData.item);
+    // console.log(itemData.item);
     return (
       <View style={{ marginVertical: 5 }}>
         <TouchableOpacity
