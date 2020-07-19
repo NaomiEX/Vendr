@@ -127,7 +127,7 @@ const ProductDiscussion = (props) => {
                 style={{
                   textAlign: "justify",
                   lineHeight: 20,
-                  color: Colors.black,
+                  color: Colors.grey,
                 }}
                 numberOfLines={5}
               >

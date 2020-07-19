@@ -40,7 +40,7 @@ const CartScreen = (props) => {
     // console.log(cartItems[product.id].sum);
     return (
       <View
-        style={{ marginHorizontal: 20, alignItems: "center" }}
+        style={{ marginHorizontal: 20, marginTop: 10, alignItems: "center" }}
         key={product.id}
       >
         <CartItem
@@ -101,21 +101,6 @@ const CartScreen = (props) => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
-  }
-
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
@@ -130,7 +115,10 @@ const CartScreen = (props) => {
               <Divider dividerStyle={{ width: 10, height: 2 }} />
             </View>
           </View>
-          <View style={{}}>
+          <View>
+            {isLoading && (
+              <ActivityIndicator size="small" color={Colors.primary} />
+            )}
             {cartProducts.map((product) => renderCartItem(product, cartItems))}
           </View>
         </Screen>

@@ -67,10 +67,10 @@ const RecommendedProductsRow = (props) => {
           recommendedProducts
         )}
       >
-        <BodyText style={{ color: Colors.accent }}>
+        <BodyText style={{ color: Colors.primary, marginRight: 5 }}>
           See all recommended products
         </BodyText>
-        <Image source={require("../assets/icons/yellow_arrow.png")} />
+        <Image source={require("../assets/icons/Arrow_red.png")} />
       </TouchableOpacity>
     </View>
   );

@@ -17,6 +17,7 @@ import HeaderText from "./Text/HeaderText";
 import AnalyticsCard from "./UI/AnalyticsCard";
 import ProductItem from "./UI/ProductItem";
 import BodyText from "./Text/BodyText";
+import CategoryHeaderText from "./Text/CategoryHeaderText";
 
 import Colors from "../constants/Colors";
 import DeviceDimensions from "../constants/DeviceDimensions";

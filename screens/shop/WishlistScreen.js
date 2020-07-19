@@ -93,7 +93,7 @@ const WishlistScreen = (props) => {
       style={{
         flex: 1,
         marginRight: 5,
-        backgroundColor: Colors.barely_there_grey,
+        backgroundColor: "white",
       }}
       contentContainerStyle={{ paddingBottom: 60 }}
     >
@@ -110,7 +110,7 @@ const WishlistScreen = (props) => {
           //   data={filteredProducts}
           //   renderItem={renderWishlistItem}
           // />
-          <View style={{ marginTop: 40 }}>
+          <View style={{ marginTop: 30 }}>
             {filteredProducts.map((item) => renderWishlistItem(item))}
           </View>
         ) : (
@@ -130,7 +130,7 @@ const WishlistScreen = (props) => {
 const styles = StyleSheet.create({
   wishlistItem: {
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 20,
   },
 
   emptyText: {

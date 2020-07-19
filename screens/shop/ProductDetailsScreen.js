@@ -43,6 +43,7 @@ import ExpandingText from "../../components/ExpandingText";
 import AddToCartButton from "../../components/AddToCartButton";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import ProductDiscussion from "../../components/ProductDiscussion";
+import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
 
 import Colors from "../../constants/Colors";
 import DeviceDimensions from "../../constants/DeviceDimensions";
@@ -414,11 +415,9 @@ const ProductDetailsScreen = (props) => {
               dividerStyle={{ width: DeviceDimensions.width - 60, height: 1 }}
             />
           </View>
-          <EmphasisText
-            style={{ color: Colors.inactive_grey, marginBottom: 0 }}
-          >
+          <CategoryHeaderText style={{ color: Colors.inactive_grey }}>
             Product Details
-          </EmphasisText>
+          </CategoryHeaderText>
           {isLoading ? (
             <Placeholder Animation={Fade}>
               <PlaceholderLine

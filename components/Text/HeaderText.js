@@ -13,8 +13,8 @@ const HeaderText = (props) => {
         color: props.style
           ? props.style.color
             ? props.style.color
-            : "rgba(0,0,0,0.6)"
-          : "rgba(0,0,0,0.6)",
+            : Colors.grey
+          : Colors.grey,
       }}
     ></Text>
   );

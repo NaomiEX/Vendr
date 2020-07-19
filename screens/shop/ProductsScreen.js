@@ -177,11 +177,14 @@ const ProductsScreen = (props) => {
             </Text>
           </BodyText>
         ) : (
-          <CategoryHeaderText style={{ marginLeft: 20, marginVertical: 10 }}>
-            {title}
-          </CategoryHeaderText>
+          <BodyText style={{ marginVertical: 10 }}>{title}</BodyText>
         )}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
           <BodyText>Sort by:{"  "}</BodyText>
           <TouchableOpacity
             activeOpacity={0.6}

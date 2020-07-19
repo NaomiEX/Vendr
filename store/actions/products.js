@@ -184,7 +184,7 @@ export const updateProductDetails = (product, rating) => {
     } else {
       let updatedTotal = product.rating.total + rating;
       let updatedNumOfRatings = product.rating.numOfRatings + 1;
-      let updatedAverage = updatedTotal / updatedNumOfRatings;
+      let updatedAverage = updatedTotal / updatedNumOfRatings.toFixed(1);
 
       // console.log("UPDATED TOTAL: " + updatedTotal);
       // console.log("UPDATED NUM OF RATINGS: " + updatedNumOfRatings);

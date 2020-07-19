@@ -21,6 +21,7 @@ import AddressesInfoCard from "../../../components/UI/AddressesInfoCard";
 import CartItem from "../../../components/CartItem";
 import PrimaryButton from "../../../components/UI/PrimaryButton";
 import BodyText from "../../../components/Text/BodyText";
+import CategoryHeaderText from "../../../components/Text/CategoryHeaderText";
 
 import Colors from "../../../constants/Colors";
 
@@ -74,33 +75,6 @@ const CheckoutScreen = (props) => {
   const cartProducts = useSelector(
     (state) => state.products.availableProducts
   ).filter((product) => cartItemsIds.includes(product.id));
-
-  // useEffect(() => {
-  //   if (cartProducts.length < 1) {
-  //     props.navigation.navigate("Cart");
-  //   }
-  // }, [cartProducts]);
-  // console.log(cartItems);
-
-  // console.log(cartProducts);
-
-  // let owners = [];
-
-  // // console.log("CART PRODUCTS: ");
-  // // console.log(cartProducts);
-
-  // for (const index in cartProducts) {
-  //   // !owners.includes(cartProducts[index].ownerId) &&
-  //   //   owners.push(cartProducts[index].ownerId);
-  //   // console.log(cartProducts[index].ownerId);
-  //   if (!owners.includes(cartProducts[index].ownerId)) {
-  //     owners.push({ ownerId: cartProducts[index].ownerId, productName: cartProducts[index].title});
-  //   }
-  // }
-
-  // console.log("OWNERS: ");
-  // console.log(owners);
-
   const selectedCard = useSelector((state) => state.card.selectedCard);
   const billingAddress = useSelector((state) => state.addresses.billingAddress);
 
@@ -191,7 +165,9 @@ const CheckoutScreen = (props) => {
             <TitleText style={styles.title}>Checkout</TitleText>
             <Divider dividerStyle={{ width: 25, height: 2, marginTop: 5 }} />
           </View>
-          <EmphasisText style={styles.header}>SHIPPING ADDRESS</EmphasisText>
+          <CategoryHeaderText style={styles.header}>
+            Shipping Address
+          </CategoryHeaderText>
           <AddressesInfoCard
             addressesInfo={shippingAddress}
             onPressEdit={() => {
@@ -201,7 +177,9 @@ const CheckoutScreen = (props) => {
               });
             }}
           />
-          <EmphasisText style={styles.header}>PAYMENT METHOD</EmphasisText>
+          <CategoryHeaderText style={styles.header}>
+            Payment Method
+          </CategoryHeaderText>
           <View
             style={{
               borderRadius: 10,
@@ -330,10 +308,10 @@ const CheckoutScreen = (props) => {
             ${cartTotal.toFixed(2)}
           </Text>
         </View>
-        {orderPlaced ? (
-          <ActivityIndicator size="small" color={Colors.primary} />
-        ) : (
-          <View style={{ paddingTop: 16 }}>
+        <View style={{ paddingTop: 16 }}>
+          {orderPlaced ? (
+            <ActivityIndicator size="small" color={Colors.primary} />
+          ) : (
             <PrimaryButton
               text="Place Order"
               onPress={placeOrderHandler}
@@ -343,8 +321,8 @@ const CheckoutScreen = (props) => {
               iconColor="white"
               fontSize={16}
             />
-          </View>
-        )}
+          )}
+        </View>
       </View>
     </View>
   );
@@ -356,10 +334,9 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    color: Colors.inactive_grey,
+    color: Colors.grey,
     marginTop: 30,
     marginLeft: 20,
-    letterSpacing: 0.8,
   },
 
   paymentMethodContainer: {

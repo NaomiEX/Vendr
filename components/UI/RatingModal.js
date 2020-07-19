@@ -57,11 +57,13 @@ const RatingModal = (props) => {
             source={{ uri: itemData.item.thumbnail.imageUrl }}
           />
           <Text
+            numberOfLines={4}
             style={{
               width: 148,
               marginLeft: 10,
-              fontSize: 14,
+              fontSize: 18,
               color: Colors.black,
+              fontFamily: "helvetica-light",
             }}
           >
             {itemData.item.title}

@@ -45,9 +45,9 @@ const BubbleIcon = (props) => {
             ? props.iconStyle
               ? props.iconStyle.elevation
                 ? props.iconStyle.elevation
-                : 2
-              : 2
-            : 2,
+                : 0
+              : 0
+            : 0,
         }}
       >
         {props.icon && (

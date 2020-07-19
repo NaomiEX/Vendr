@@ -25,7 +25,7 @@ import * as firebase from "firebase";
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import BannerCarousel from "../../components/BannerCarousel";
 import SearchBar from "../../components/SearchBar";
-import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
+import HeaderText from "../../components/Text/HeaderText";
 import BubbleIconRow from "../../components/BubbleIconRow";
 import PopularProductsRow from "../../components/PopularProductsRow";
 import RecommendedProductsRow from "../../components/RecommendedProductsRow";
@@ -258,9 +258,7 @@ const HomeScreen = (props) => {
           }}
         />
         <View style={styles.body}>
-          <CategoryHeaderText style={{ marginBottom: 10 }}>
-            Categories
-          </CategoryHeaderText>
+          <HeaderText style={{ marginBottom: 10 }}>Categories</HeaderText>
           <BubbleIconRow data={CATEGORIES} onTap={navigateToCategory} />
           <TouchableOpacity
             style={{ ...styles.seeMore, marginTop: 10 }}
@@ -277,9 +275,7 @@ const HomeScreen = (props) => {
             <Image source={require("../../assets/icons/Arrow_red.png")} />
           </TouchableOpacity>
 
-          <CategoryHeaderText style={{ marginBottom: 30, marginTop: 50 }}>
-            Popular
-          </CategoryHeaderText>
+          <HeaderText style={{ marginVertical: 30 }}>Popular</HeaderText>
           {isLoading ? (
             <Placeholder Animation={Fade}>
               <View style={{ flexDirection: "row" }}>
@@ -301,9 +297,9 @@ const HomeScreen = (props) => {
               onPressSeeMore={onPressSeeMoreHandler}
             />
           )}
-          <CategoryHeaderText style={{ marginTop: 60, marginBottom: 20 }}>
+          <HeaderText style={{ marginTop: 40, marginBottom: 20 }}>
             Recommended
-          </CategoryHeaderText>
+          </HeaderText>
           {isLoading ? (
             <Placeholder Animation={Fade}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -334,9 +330,7 @@ const HomeScreen = (props) => {
               />
             </View>
           )}
-          <CategoryHeaderText style={{ marginTop: 40, marginBottom: 10 }}>
-            Hot Sales
-          </CategoryHeaderText>
+          <HeaderText style={{ marginTop: 40 }}>Hot Sales</HeaderText>
           <SmallBanners
             onPress={(id, headerData) => {
               props.navigation.navigate("Sales", {

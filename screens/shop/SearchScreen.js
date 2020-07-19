@@ -249,20 +249,11 @@ const SearchScreen = (props) => {
       </View>
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
         <CategoryHeaderText>Search History</CategoryHeaderText>
-        {isLoading ? (
-          <ActivityIndicator size="large" color={Colors.primary} />
-        ) : (
-          <View>
-            {searchHistory
-              .reverse()
-              .map((searchItem) => renderSearchHistoryItem(searchItem))}
-          </View>
-          // <FlatList
-          //   data={searchHistory.reverse()}
-          //   renderItem={renderSearchHistoryItem}
-          // />
-        )}
-        <CategoryHeaderText style={{ marginBottom: 10, marginTop: 30 }}>
+        {isLoading && <ActivityIndicator size="small" color={Colors.primary} />}
+        {searchHistory
+          .reverse()
+          .map((searchItem) => renderSearchHistoryItem(searchItem))}
+        <CategoryHeaderText style={{ marginBottom: 20, marginTop: 50 }}>
           Items in your wishlist
         </CategoryHeaderText>
         <ProductSlider
@@ -273,7 +264,7 @@ const SearchScreen = (props) => {
           }
           onTap={onPressProductHandler}
         />
-        <CategoryHeaderText style={{ marginBottom: 10, marginTop: 30 }}>
+        <CategoryHeaderText style={{ marginBottom: 20, marginTop: 50 }}>
           Recommended Products
         </CategoryHeaderText>
         <RecommendedProductsRow

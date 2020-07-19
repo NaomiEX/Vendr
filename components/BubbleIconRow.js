@@ -4,19 +4,19 @@ import { View, StyleSheet, FlatList } from "react-native";
 import BubbleIcon from "./UI/BubbleIcon";
 
 import DeviceDimensions from "../constants/DeviceDimensions";
+import Colors from "../constants/Colors";
 
 const renderBubbleIconRow = (props, itemData) => {
   return (
     <View style={styles.rowItem}>
       <BubbleIcon
         icon={itemData.item.icon}
-        title={itemData.item.title}
         onClick={props.onTap.bind(
           this,
           itemData.item.title,
           itemData.item.color
         )}
-        iconBackgroundColor="#ffffff"
+        iconBackgroundColor={Colors.primary}
       />
     </View>
   );

@@ -1,6 +1,8 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
+import Colors from "../../constants/Colors";
+
 const CategoryHeaderText = (props) => {
   return (
     <Text
@@ -11,8 +13,8 @@ const CategoryHeaderText = (props) => {
         color: props.style
           ? props.style.color
             ? props.style.color
-            : "rgba(0,0,0,0.6)"
-          : "rgba(0,0,0,0.6)",
+            : Colors.grey
+          : Colors.grey,
       }}
     >
       {props.children}
@@ -22,7 +24,7 @@ const CategoryHeaderText = (props) => {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "helvetica-standard",
     letterSpacing: 0.6,
   },

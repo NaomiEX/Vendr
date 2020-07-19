@@ -216,7 +216,7 @@ const AccountSellerScreen = (props) => {
         />
       </View>
       <View style={styles.earningsSection}>
-        <HeaderText>Earnings</HeaderText>
+        <HeaderText style={{}}>Earnings</HeaderText>
         <View style={styles.earningsRow}>
           <BodyText style={{ color: "rgba(0,0,0,0.6)" }}>
             Total Balance
@@ -258,7 +258,7 @@ const AccountSellerScreen = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <HeaderText>My Products</HeaderText>
+        <HeaderText style={{}}>My Products</HeaderText>
         <TouchableOpacity activeOpacity={0.6} onPress={props.onTapButton}>
           <Image source={require("../assets/icons/turquoise_plus.png")} />
         </TouchableOpacity>

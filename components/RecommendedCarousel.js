@@ -97,7 +97,6 @@ const RecommendedCarousel = (props) => {
           borderRadius: 5,
           overflow: "hidden",
           backgroundColor: "white",
-          elevation: 3,
           margin: 5,
         }}
       >

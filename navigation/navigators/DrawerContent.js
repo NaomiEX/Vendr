@@ -48,7 +48,7 @@ const CustomDrawerItem = (props) => {
               style={{
                 ...styles.drawerTitle,
                 color: isCurrentScreenActive ? Colors.primary : Colors.black,
-                fontFamily: "helvetica-standard",
+                fontFamily: "helvetica-light",
               }}
             >
               {props.title}
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   drawerContentContainer: { marginTop: 2 },
 
   drawerTitle: {
-    fontSize: 16,
+    fontSize: 17,
   },
 });
 
