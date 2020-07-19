@@ -45,6 +45,7 @@ export const createProduct = (
           categories,
           rating: new Rating(0, 0, 0),
           views: new Views({}, 0),
+          date: new Date(),
         }),
       }
     );
@@ -81,6 +82,7 @@ export const updateProduct = (
           productImages,
           description,
           categories,
+          date: new Date(),
         }),
       }
     );
@@ -125,7 +127,8 @@ export const fetchProducts = () => {
             responseData[key].description,
             responseData[key].categories,
             responseData[key].rating,
-            responseData[key].views
+            responseData[key].views,
+            responseData[key].date
           )
         );
       }
@@ -183,9 +186,9 @@ export const updateProductDetails = (product, rating) => {
       let updatedNumOfRatings = product.rating.numOfRatings + 1;
       let updatedAverage = updatedTotal / updatedNumOfRatings;
 
-      console.log("UPDATED TOTAL: " + updatedTotal);
-      console.log("UPDATED NUM OF RATINGS: " + updatedNumOfRatings);
-      console.log("UPDATED AVERAGE: " + updatedAverage);
+      // console.log("UPDATED TOTAL: " + updatedTotal);
+      // console.log("UPDATED NUM OF RATINGS: " + updatedNumOfRatings);
+      // console.log("UPDATED AVERAGE: " + updatedAverage);
       updatedRatings = new Rating(
         updatedAverage,
         updatedTotal,
@@ -224,7 +227,7 @@ export const updateProductDetails = (product, rating) => {
       dispatch(ratingsActions.storeRatingInfo(userId));
     }
 
-    console.log("UPDATE PRODUCT DETAILS RESPONSE:");
-    console.log(responseData);
+    // console.log("UPDATE PRODUCT DETAILS RESPONSE:");
+    // console.log(responseData);
   };
 };

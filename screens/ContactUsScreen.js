@@ -44,12 +44,13 @@ const ContactUsScreen = (props) => {
     switch (type) {
       case "name":
         setName(text);
-
+        return;
       case "email":
         setEmail(text);
-
+        return;
       case "message":
         setMessage(text);
+        return;
     }
   };
 
@@ -92,7 +93,15 @@ const ContactUsScreen = (props) => {
             onChangeText={onInputChange.bind(this, "message")}
             style={styles.messageTextBox}
           />
-          <PrimaryButton width={126} text="Send Now" />
+          <PrimaryButton
+            width={126}
+            text="Send Now"
+            onPress={() => {
+              setName("");
+              setEmail("");
+              setMessage("");
+            }}
+          />
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>

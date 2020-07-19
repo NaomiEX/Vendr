@@ -33,10 +33,10 @@ const PopularProductsRow = (props) => {
         activeOpacity={0.6}
         onPress={props.onPressSeeMore.bind(this, "popular", sortedProducts)}
       >
-        <BodyText style={{ color: Colors.accent }}>
+        <BodyText style={{ color: Colors.primary, marginRight: 5 }}>
           See all popular products
         </BodyText>
-        <Image source={require("../assets/icons/yellow_arrow.png")} />
+        <Image source={require("../assets/icons/Arrow_red.png")} />
       </TouchableOpacity>
     </View>
   );

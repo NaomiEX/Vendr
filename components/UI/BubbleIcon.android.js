@@ -51,7 +51,7 @@ const BubbleIcon = (props) => {
         }}
       >
         {props.icon && (
-          <TouchableComponent onPress={props.onClick}>
+          <TouchableComponent useForeground={true} onPress={props.onClick}>
             <View style={styles.iconBackground}>
               <Image
                 style={

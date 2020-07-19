@@ -17,6 +17,7 @@ import DeviceDimensions from "../../constants/DeviceDimensions";
 import Input from "../../components/Input";
 import MainButton from "../../components/UI/MainButton";
 import BodyText from "../../components/Text/BodyText";
+import PrimaryButton from "../../components/UI/PrimaryButton";
 
 import * as authenticationActions from "../../store/actions/authentication";
 
@@ -118,78 +119,74 @@ const LoginScreen = (props) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <LinearGradient
-        style={styles.gradient}
-        colors={[Colors.secondary, Colors.primary]}
-        start={[0, 0]}
-        end={[1, 1]}
+      <KeyboardAvoidingView
+        style={styles.bodyContainer}
+        behavior="padding"
+        enabled
+        keyboardVerticalOffset={-450}
       >
-        <KeyboardAvoidingView
-          style={styles.bodyContainer}
-          behavior="padding"
-          enabled
-          keyboardVerticalOffset={-450}
+        <View style={styles.imageContainer}>
+          <Image source={require("../../assets/logo_final_white.png")} />
+        </View>
+        <View
+          style={{
+            marginBottom: DeviceDimensions.height / 24.37,
+          }}
         >
-          <View style={styles.imageContainer}>
-            <Image source={require("../../assets/Logo.png")} />
-          </View>
-          <View
-            style={{
-              marginBottom: DeviceDimensions.height / 24.37,
-            }}
-          >
-            <Input
-              style={styles.input}
-              label="Email-address"
-              keyboardType="email-address"
-              onInputChange={inputChangeHandler}
-              type="email"
-              show={show}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <Input
-              style={styles.input}
-              label="Password"
-              onInputChange={inputChangeHandler}
-              type="password"
-              show={show}
-              secureTextEntry
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <View style={styles.buttonViewContainer}>
-              <View style={styles.buttonContainer}>
-                {isLoading ? (
-                  <ActivityIndicator size="small" color={Colors.accent} />
-                ) : (
-                  <MainButton
-                    style={{ backgroundColor: Colors.accent }}
-                    onPress={() => {
-                      setButtonPressed(true);
-                    }}
-                  >
-                    Login
-                  </MainButton>
-                )}
-              </View>
-            </View>
-            <View style={styles.textContainer}>
-              <BodyText style={{ color: "rgba(255,255,255,0.6)" }}>
-                Don't have an account yet?
-              </BodyText>
-              <BodyText
-                style={styles.signUpText}
-                onPress={() => {
-                  props.navigation.navigate("Sign up");
-                }}
-              >
-                Sign up here!
-              </BodyText>
+          <Input
+            style={styles.input}
+            label="Email-address"
+            keyboardType="email-address"
+            onInputChange={inputChangeHandler}
+            type="email"
+            show={show}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <Input
+            style={styles.input}
+            label="Password"
+            onInputChange={inputChangeHandler}
+            type="password"
+            show={show}
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <View style={styles.buttonViewContainer}>
+            <View style={styles.buttonContainer}>
+              {isLoading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <PrimaryButton
+                  text="Login"
+                  backgroundColor="white"
+                  onPress={() => {
+                    setButtonPressed(true);
+                  }}
+                  color={Colors.primary}
+                  fontSize={18}
+                  width={166}
+                  paddingHorizontal={60}
+                />
+              )}
             </View>
           </View>
-        </KeyboardAvoidingView>
-      </LinearGradient>
+          <View style={styles.textContainer}>
+            <BodyText style={{ color: "rgba(255,255,255,0.6)" }}>
+              Don't have an account yet?
+            </BodyText>
+            <BodyText
+              style={styles.signUpText}
+              onPress={() => {
+                props.navigation.navigate("Sign up");
+              }}
+            >
+              Sign up here!
+            </BodyText>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
@@ -201,18 +198,20 @@ const styles = StyleSheet.create({
 
   bodyContainer: {
     justifyContent: "flex-end",
+    backgroundColor: Colors.primary,
     flex: 1,
   },
 
   imageContainer: {
     alignItems: "center",
-    marginBottom: DeviceDimensions.height / 6.602,
+    marginBottom: DeviceDimensions.height / 6,
   },
 
   input: { borderBottomColor: "rgba(255,255,255,0.5)", marginHorizontal: 30 },
 
   buttonViewContainer: {
     width: "100%",
+    alignItems: "center",
   },
 
   buttonContainer: {
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
 
   signUpText: {
     textDecorationLine: "underline",
-    color: "rgba(255, 199, 0, 0.8)",
+    color: "rgba(255,255,255,0.8)",
   },
 });
 

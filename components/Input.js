@@ -147,7 +147,14 @@ const Input = (props) => {
   return (
     <View style={styles.container}>
       {props.label && (
-        <EmphasisText style={styles.label}>{props.label}</EmphasisText>
+        <EmphasisText
+          style={{
+            ...styles.label,
+            color: props.labelColor ? props.labelColor : "white",
+          }}
+        >
+          {props.label}
+        </EmphasisText>
       )}
       <View
         style={{
@@ -211,7 +218,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginTop: 40,
     marginHorizontal: Dimensions.get("window").width / 10.275,
-    color: "white",
   },
 
   input: {

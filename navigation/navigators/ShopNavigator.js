@@ -31,9 +31,9 @@ import ManageCardsScreen, {
 } from "../../screens/settings/ManageCardsScreen";
 import OtherUserProfileScreen from "../../screens/shop/OtherUserProfileScreen";
 import EditCardScreen from "../../screens/settings/EditCardScreen";
-import AccountScreen, {
-  screenOptions as accountScreenOptions,
-} from "../../screens/user/AccountScreen";
+import SalesScreen, {
+  screenOptions as salesScreenOptions,
+} from "../../screens/shop/SalesScreen";
 
 import { defaultNavOptions } from "../defaultNavOptions";
 
@@ -93,6 +93,11 @@ export const ShopNavigator = () => {
       <ShopStackNavigator.Screen
         name="Other User Profile"
         component={OtherUserProfileScreen}
+      />
+      <ShopStackNavigator.Screen
+        name="Sales"
+        component={SalesScreen}
+        options={salesScreenOptions}
       />
     </ShopStackNavigator.Navigator>
   );

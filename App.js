@@ -22,6 +22,7 @@ import notificationsReducer from "./store/reducers/notifications";
 import productDiscussionReducer from "./store/reducers/productDiscussion";
 import ratingsReducer from "./store/reducers/ratings";
 import wishlistActivityReducer from "./store/reducers/wishlistActivity";
+import onSaleReducer from "./store/reducers/onSale";
 
 import NavigatorContainer from "./navigation/NavigatorContainer";
 
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   productDiscussion: productDiscussionReducer,
   ratings: ratingsReducer,
   wishlistActivity: wishlistActivityReducer,
+  onSale: onSaleReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

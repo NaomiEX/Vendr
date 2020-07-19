@@ -20,6 +20,7 @@ import { useIsDrawerOpen } from "@react-navigation/drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSafeArea } from "react-native-safe-area-context";
 import { Placeholder, PlaceholderMedia, Fade } from "rn-placeholder";
+import * as firebase from "firebase";
 
 import CustomHeaderButton from "../../components/UI/HeaderButton";
 import BannerCarousel from "../../components/BannerCarousel";
@@ -245,7 +246,17 @@ const HomeScreen = (props) => {
           backgroundColor="rgba(0,0,0,0)"
         />
 
-        <BannerCarousel data={LARGE_BANNERS} autoplay={true} />
+        <BannerCarousel
+          navigation={props.navigation}
+          data={LARGE_BANNERS}
+          autoplay={true}
+          onPress={(id, headerData) => {
+            props.navigation.navigate("Sales", {
+              id,
+              headerData,
+            });
+          }}
+        />
         <View style={styles.body}>
           <CategoryHeaderText style={{ marginBottom: 10 }}>
             Categories
@@ -260,10 +271,10 @@ const HomeScreen = (props) => {
               });
             }}
           >
-            <BodyText style={{ color: Colors.accent }}>
+            <BodyText style={{ color: Colors.primary, marginRight: 5 }}>
               See all categories
             </BodyText>
-            <Image source={require("../../assets/icons/yellow_arrow.png")} />
+            <Image source={require("../../assets/icons/Arrow_red.png")} />
           </TouchableOpacity>
 
           <CategoryHeaderText style={{ marginBottom: 30, marginTop: 50 }}>
@@ -326,7 +337,14 @@ const HomeScreen = (props) => {
           <CategoryHeaderText style={{ marginTop: 40, marginBottom: 10 }}>
             Hot Sales
           </CategoryHeaderText>
-          <SmallBanners />
+          <SmallBanners
+            onPress={(id, headerData) => {
+              props.navigation.navigate("Sales", {
+                id,
+                headerData,
+              });
+            }}
+          />
         </View>
         <RatingModal
           products={

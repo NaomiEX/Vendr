@@ -414,7 +414,10 @@ const EditProductScreen = (props) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1, backgroundColor: "white" }}>
-        <ScrollView style={{ flex: 1, marginBottom: 80 }}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          style={{ flex: 1, marginBottom: 80 }}
+        >
           <TitleText style={styles.titleText}>Create Product</TitleText>
           <View style={{ alignItems: "center" }}>
             <View style={styles.divider}></View>

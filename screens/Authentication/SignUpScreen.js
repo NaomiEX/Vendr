@@ -16,6 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../../constants/Colors";
 import Input from "../../components/Input";
 import MainButton from "../../components/UI/MainButton";
+import PrimaryButton from "../../components/UI/PrimaryButton";
 
 import * as authenticationActions from "../../store/actions/authentication";
 import DeviceDimensions from "../../constants/DeviceDimensions";
@@ -122,12 +123,7 @@ const SignUpScreen = (props) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <LinearGradient
-        style={styles.gradient}
-        colors={["#43cebe", "#478feb"]}
-        start={[0, 0]}
-        end={[1, 1]}
-      >
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         <TouchableOpacity
           style={styles.arrowContainer}
           activeOpacity={0.6}
@@ -135,7 +131,9 @@ const SignUpScreen = (props) => {
             props.navigation.goBack();
           }}
         >
-          <Image source={require("../../assets/icons/back_arrow.png")} />
+          <Image
+            source={require("../../assets/icons/sign_up_back_arrow.png")}
+          />
         </TouchableOpacity>
         <KeyboardAvoidingView
           behavior="padding"
@@ -144,12 +142,13 @@ const SignUpScreen = (props) => {
           keyboardVerticalOffset={-450}
         >
           <View style={styles.imageContainer}>
-            <Image source={require("../../assets/Logo.png")} />
+            <Image source={require("../../assets/logo_final_red.png")} />
           </View>
           <View style={styles.contentContainer}>
             <Input
               style={styles.input}
               label="Email-address"
+              labelColor={Colors.primary}
               keyboardType="email-address"
               onInputChange={inputChangeHandler}
               type="email"
@@ -159,6 +158,7 @@ const SignUpScreen = (props) => {
             />
             <Input
               style={styles.input}
+              labelColor={Colors.primary}
               label="Username"
               onInputChange={inputChangeHandler}
               type="username"
@@ -168,6 +168,7 @@ const SignUpScreen = (props) => {
             />
             <Input
               style={styles.input}
+              labelColor={Colors.primary}
               label="Password"
               onInputChange={inputChangeHandler}
               type="password"
@@ -181,20 +182,21 @@ const SignUpScreen = (props) => {
                 {isLoading ? (
                   <ActivityIndicator size="small" color={Colors.primary} />
                 ) : (
-                  <MainButton
-                    style={{ backgroundColor: Colors.accent }}
+                  <PrimaryButton
+                    text="Sign Up"
                     onPress={() => {
                       setButtonPressed(true);
                     }}
-                  >
-                    Sign up
-                  </MainButton>
+                    fontSize={18}
+                    width={187}
+                    paddingHorizontal={60}
+                  />
                 )}
               </View>
             </View>
           </View>
         </KeyboardAvoidingView>
-      </LinearGradient>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -210,8 +212,8 @@ const styles = StyleSheet.create({
   },
 
   arrowContainer: {
-    marginTop: 30,
-    marginLeft: DeviceDimensions.width / 41.1,
+    marginTop: 40,
+    marginLeft: DeviceDimensions.width / 20,
   },
 
   imageContainer: {
@@ -224,8 +226,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    borderBottomColor: "white",
+    borderBottomColor: Colors.primary,
     marginHorizontal: 30,
+    color: Colors.primary,
   },
 
   buttonViewContainer: {
@@ -244,11 +247,7 @@ const styles = StyleSheet.create({
 
   signUp: {
     textDecorationLine: "underline",
-    color: "rgba(255, 199, 0, 0.6)",
-  },
-
-  bodyText: {
-    color: "rgba(255,255,255,0.6)",
+    color: Colors.primary,
   },
 });
 

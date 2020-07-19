@@ -111,10 +111,9 @@ const WishlistItem = (props) => {
 const styles = StyleSheet.create({
   touchableComponentContainer: {
     height: 144,
-    elevation: 3,
     backgroundColor: "white",
     overflow: "hidden",
-    borderRadius: 10,
+    borderRadius: 5,
     marginHorizontal: 15,
   },
 
@@ -124,8 +123,8 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
     overflow: "hidden",
   },
 

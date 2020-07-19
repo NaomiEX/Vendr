@@ -5,11 +5,11 @@
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Icon.png",
+    "icon": "./assets/logo_final.png",
     "splash": {
-      "image": "./assets/Splash.png",
+      "image": "./assets/splash_logo_final.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ff5151"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

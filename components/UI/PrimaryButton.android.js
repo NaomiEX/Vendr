@@ -28,12 +28,19 @@ const PrimaryButton = (props) => {
           width: props.width,
           flexDirection: "row",
           alignItems: "center",
+          backgroundColor: props.backgroundColor
+            ? props.backgroundColor
+            : Colors.primary,
+          paddingHorizontal: props.paddingHorizontal
+            ? props.paddingHorizontal
+            : 30,
         }}
       >
         <Text
           style={{
             ...styles.text,
             fontSize: props.fontSize ? props.fontSize : 14,
+            color: props.color ? props.color : "white",
           }}
         >
           {props.text}
@@ -53,14 +60,11 @@ const PrimaryButton = (props) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 30,
     paddingVertical: 10,
   },
 
   text: {
     fontFamily: "helvetica-light",
-    color: "white",
   },
 });
 

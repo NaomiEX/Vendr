@@ -249,9 +249,20 @@ const AccountSellerScreen = (props) => {
           />
         </View>
       </View>
-      <HeaderText style={{ marginTop: 30, marginBottom: 10 }}>
-        My Products
-      </HeaderText>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 30,
+          marginBottom: 10,
+          justifyContent: "space-between",
+        }}
+      >
+        <HeaderText>My Products</HeaderText>
+        <TouchableOpacity activeOpacity={0.6} onPress={props.onTapButton}>
+          <Image source={require("../assets/icons/turquoise_plus.png")} />
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           flexDirection: "row",
@@ -276,8 +287,10 @@ const AccountSellerScreen = (props) => {
         }}
       >
         <View style={styles.seeMoreRow}>
-          <BodyText style={{ color: Colors.accent }}>See More</BodyText>
-          <Image source={require("../assets/icons/yellow_arrow.png")} />
+          <BodyText style={{ color: "#4DD599", marginRight: 5 }}>
+            See More
+          </BodyText>
+          <Image source={require("../assets/icons/arrow_turquoise.png")} />
         </View>
       </TouchableOpacity>
     </View>

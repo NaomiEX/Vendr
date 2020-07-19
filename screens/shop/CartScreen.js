@@ -177,10 +177,8 @@ const styles = StyleSheet.create({
   checkoutTouchableCotainer: {
     width: 150,
     height: 43,
-    borderRadius: 10,
     marginTop: 20,
     backgroundColor: Colors.primary,
-    overflow: "hidden",
   },
 
   checkoutButtonContainer: {

@@ -90,10 +90,14 @@ const WishlistScreen = (props) => {
 
   return (
     <ScrollView
-      style={{ flex: 1, marginRight: 5, backgroundColor: "white" }}
+      style={{
+        flex: 1,
+        marginRight: 5,
+        backgroundColor: Colors.barely_there_grey,
+      }}
       contentContainerStyle={{ paddingBottom: 60 }}
     >
-      <Screen style={{ paddingTop: 50 }}>
+      <View style={{ paddingTop: 50 }}>
         <TitleText style={{ textAlign: "center", color: Colors.primary }}>
           Wishlist
         </TitleText>
@@ -118,7 +122,7 @@ const WishlistScreen = (props) => {
             </EmphasisText>
           </View>
         )}
-      </Screen>
+      </View>
     </ScrollView>
   );
 };

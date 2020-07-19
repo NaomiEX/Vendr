@@ -45,7 +45,7 @@ const CategoriesOverviewScreen = (props) => {
     return (
       <View
         style={{
-          borderRadius: 20,
+          borderRadius: 10,
           overflow: "hidden",
           marginBottom: 25,
           backgroundColor: "white",
@@ -69,12 +69,12 @@ const CategoriesOverviewScreen = (props) => {
               }}
               source={itemData.imageUrl}
             >
-              <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+              <View style={{ flex: 1, alignItems: "center", marginTop: 40 }}>
                 <TitleText
                   style={{
                     color: "white",
                     textAlign: "center",
-                    width: 150.5,
+                    marginHorizontal: 10,
                   }}
                 >
                   {itemData.title}

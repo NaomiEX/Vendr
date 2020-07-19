@@ -238,8 +238,10 @@ const AccountBuyerScreen = (props) => {
         }}
       >
         <View style={styles.seeMoreRow}>
-          <BodyText style={{ color: Colors.accent }}>See More</BodyText>
-          <Image source={require("../assets/icons/yellow_arrow.png")} />
+          <BodyText style={{ color: Colors.primary, marginRight: 5 }}>
+            See More
+          </BodyText>
+          <Image source={require("../assets/icons/Arrow_red.png")} />
         </View>
       </TouchableOpacity>
     </View>

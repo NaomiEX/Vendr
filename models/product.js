@@ -9,7 +9,8 @@ class Product {
     description,
     categories,
     rating,
-    views
+    views,
+    date
   ) {
     this.id = id;
     this.ownerId = ownerId;
@@ -21,6 +22,7 @@ class Product {
     this.categories = categories;
     this.rating = rating;
     this.views = views;
+    this.date = date;
   }
 }
 

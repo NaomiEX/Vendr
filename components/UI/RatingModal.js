@@ -74,7 +74,7 @@ const RatingModal = (props) => {
           reviewSize={20}
           showRating={false}
           onFinishRating={(rating) => {
-            console.log(rating);
+            // console.log(rating);
 
             if (ratings.length === 0) {
               setRatings([{ product: itemData.item, rating }]);
@@ -102,8 +102,8 @@ const RatingModal = (props) => {
     );
   };
 
-  console.log("RATINGS: ");
-  console.log(ratings);
+  // console.log("RATINGS: ");
+  // console.log(ratings);
 
   return (
     <Modal transparent animationType="fade" visible={props.showModal}>

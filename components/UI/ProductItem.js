@@ -57,6 +57,7 @@ const ProductItem = (props) => {
             >
               <View style={styles.textContainer}>
                 <Text
+                  numberOfLines={2}
                   style={{
                     ...styles.text,
                     ...styles.title,

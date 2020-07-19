@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, ImageBackground, StyleSheet, Image } from "react-native";
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Image,
+  TouchableNativeFeedback,
+} from "react-native";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,33 +13,48 @@ import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../constants/Colors";
 import DeviceDimensions from "../constants/DeviceDimensions";
 
-const renderCarouselItem = (itemData) => {
-  return (
-    <View>
-      <ImageBackground
-        style={{
-          width: DeviceDimensions.width,
-          height: DeviceDimensions.height / 2.812,
-        }}
-        source={itemData.item.imageUrl}
-      >
-        <LinearGradient
-          style={{ flex: 1, justifyContent: "flex-end" }}
-          colors={["rgba(0,0,0,0.5)", "rgba(0,0,0,0)"]}
-          start={[0.5, 0.2]}
-          end={[0.5, 0.4]}
-        >
-          <View style={styles.textContainer}>
-            <Image source={itemData.item.imageTextUrl} />
-          </View>
-        </LinearGradient>
-      </ImageBackground>
-    </View>
-  );
-};
-
 const BannerCarousel = (props) => {
   const [activeSlide, setActiveSlide] = useState(0);
+
+  const renderCarouselItem = (itemData) => {
+    return (
+      <View>
+        <ImageBackground
+          style={{
+            width: DeviceDimensions.width,
+            height: DeviceDimensions.height / 2.812,
+          }}
+          source={itemData.item.imageUrl}
+        >
+          <TouchableNativeFeedback
+            useForeground={true}
+            style={{ flex: 1 }}
+            onPress={() => {
+              // console.log(itemData.item.id);
+              props.onPress(itemData.item.id, {
+                headerBackground: itemData.item.headerBackground,
+                headerIcon: itemData.item.headerIcon,
+                headerSubtitle: itemData.item.headerSubtitle,
+                headerText: itemData.item.headerText,
+                headerSubtitleWidth: itemData.item.headerSubtitleWidth,
+              });
+            }}
+          >
+            <LinearGradient
+              style={{ flex: 1, justifyContent: "flex-end" }}
+              colors={["rgba(0,0,0,0.5)", "rgba(0,0,0,0)"]}
+              start={[0.5, 0.2]}
+              end={[0.5, 0.4]}
+            >
+              <View style={styles.textContainer}>
+                <Image source={itemData.item.imageTextUrl} />
+              </View>
+            </LinearGradient>
+          </TouchableNativeFeedback>
+        </ImageBackground>
+      </View>
+    );
+  };
 
   return (
     <View>

@@ -9,6 +9,7 @@ import {
   RefreshControl,
   ToastAndroid,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -63,7 +64,7 @@ const AccountScreen = (props) => {
 
   useEffect(() => {
     const getData = async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       await dispatch(ordersActions.getAllOrders());
       await dispatch(productDiscussionActions.getAllProductDiscussion());
       await dispatch(ratingsActions.getRatingInfo());
@@ -100,6 +101,7 @@ const AccountScreen = (props) => {
   // console.log(fullName);
 
   const navigateToEditProduct = () => {
+    console.log("HELLO");
     props.navigation.navigate("Edit Product");
   };
 
@@ -128,15 +130,6 @@ const AccountScreen = (props) => {
 
   return (
     <View style={{ backgroundColor: "white" }}>
-      {activeIndex === 1 && (
-        <View style={{ position: "absolute", bottom: 80, right: 20 }}>
-          <BubbleIcon
-            iconBackgroundColor={"#4DD599"}
-            onClick={navigateToEditProduct}
-            icon={require("../../assets/icons/plus.png")}
-          />
-        </View>
-      )}
       <ScrollView
         style={styles.screen}
         contentContainerStyle={{ paddingBottom: 140 }}
