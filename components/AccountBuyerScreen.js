@@ -60,9 +60,13 @@ const AccountBuyerScreen = (props) => {
     }
   }
   let userOrders;
+
   if (allOrders.length > 0) {
-    userOrders = allOrders.filter((orders) => orders.userId === userId)[0]
-      .orders;
+    userOrders = allOrders.filter((orders) => orders.userId === userId);
+
+    if (userOrders.length > 0) {
+      userOrders = userOrders[0].orders;
+    }
   }
 
   // console.log("USER ORDERS: ");

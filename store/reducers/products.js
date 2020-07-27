@@ -1,8 +1,9 @@
-import { SET_PRODUCTS } from "../actions/products";
+import { SET_PRODUCTS, SET_FILTERED_PRODUCTS } from "../actions/products";
 
 const initialState = {
   availableProducts: [],
   userProducts: [],
+  filteredProducts: [],
 };
 
 export default (state = initialState, action) => {
@@ -13,6 +14,12 @@ export default (state = initialState, action) => {
         ...state,
         availableProducts: action.products,
         userProducts: action.userProducts,
+      };
+
+    case SET_FILTERED_PRODUCTS:
+      return {
+        ...state,
+        filteredProducts: action.filteredProducts,
       };
 
     default:

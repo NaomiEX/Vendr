@@ -110,7 +110,7 @@ const UserProductsScreen = (props) => {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: "white" }}
       contentContainerStyle={{ paddingBottom: 80 }}
     >
       <Screen style={styles.list}>

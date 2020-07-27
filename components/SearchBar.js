@@ -45,7 +45,9 @@ const SearchBar = (props) => {
         !ss.includes(props.allProducts[key])
       ) {
         // console.log("I AM HERE");
-        ss.push(props.allProducts[key]);
+        if (ss.length < 10) {
+          ss.push(props.allProducts[key]);
+        }
         // searchSuggestion.push(props.allProducts[key]);
       }
       setSearchSuggestion(ss);
@@ -104,17 +106,18 @@ const SearchBar = (props) => {
               size={24}
               color={Colors.inactive_grey}
             />
-            <EmphasisText style={{ marginRight: 220 }}>
-              {itemData.title}
-            </EmphasisText>
+            <EmphasisText style={{ width: 300 }}>{itemData.title}</EmphasisText>
             <TouchableOpacity
+              style={{ flex: 1 }}
               onPress={() => {
                 setInput(itemData.title);
               }}
             >
               <View
                 style={{
+                  flex: 1,
                   justifyContent: "center",
+                  alignItems: "flex-end",
                 }}
               >
                 <Image

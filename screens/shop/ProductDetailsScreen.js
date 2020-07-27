@@ -393,7 +393,12 @@ const ProductDetailsScreen = (props) => {
                       navigateToUserDetailsScreen.bind(this, ownerProfile.uid)
                     }
                   />
-                  <View style={{ marginLeft: 10 }}>
+                  <View
+                    style={{
+                      marginLeft: 10,
+                      width: 273,
+                    }}
+                  >
                     <Text style={styles.title}>{thisProduct.title}</Text>
                   </View>
                 </View>

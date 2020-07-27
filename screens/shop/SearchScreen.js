@@ -256,14 +256,26 @@ const SearchScreen = (props) => {
         <CategoryHeaderText style={{ marginBottom: 20, marginTop: 50 }}>
           Items in your wishlist
         </CategoryHeaderText>
-        <ProductSlider
-          data={
-            wishlistProducts.length > 9
-              ? wishlistProducts.slice(0, 10)
-              : wishlistProducts
-          }
-          onTap={onPressProductHandler}
-        />
+        {wishlistProducts.length > 0 ? (
+          <ProductSlider
+            data={
+              wishlistProducts.length > 9
+                ? wishlistProducts.slice(0, 10)
+                : wishlistProducts
+            }
+            onTap={onPressProductHandler}
+          />
+        ) : (
+          <EmphasisText
+            style={{
+              color: Colors.inactive_grey,
+              textAlign: "center",
+              marginTop: 20,
+            }}
+          >
+            No Items found in your wishlist
+          </EmphasisText>
+        )}
         <CategoryHeaderText style={{ marginBottom: 20, marginTop: 50 }}>
           Recommended Products
         </CategoryHeaderText>

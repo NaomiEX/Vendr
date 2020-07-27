@@ -171,7 +171,10 @@ const Input = (props) => {
             ...styles.input,
             textAlignVertical: "top",
             paddingTop: props.style.borderColor ? 5 : 0,
-            height: props.multiline ? 100 : 30,
+            paddingBottom: props.style.paddingBottom
+              ? props.style.paddingBottom
+              : 3,
+            height: props.multiline ? 200 : 30,
             width: props.style
               ? props.style.width
                 ? props.style.width
@@ -224,7 +227,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
     marginTop: 5,
     paddingHorizontal: 7,
-    paddingBottom: 2,
   },
 });
 

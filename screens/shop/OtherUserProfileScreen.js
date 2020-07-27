@@ -85,8 +85,11 @@ const OtherUserProfileScreen = (props) => {
   let itemsSold = 0;
 
   if (allOrders.length > 0) {
-    userOrders = allOrders.filter((orders) => orders.userId === userId)[0]
-      .orders;
+    userOrders = allOrders.filter((orders) => orders.userId === userId);
+
+    if (userOrders[0]) {
+      userOrders = userOrders[0].orders;
+    }
     for (const key in userOrders) {
       for (const index in userOrders[key].items) {
         itemsBought += userOrders[key].items[index].itemQuantity;
@@ -112,7 +115,7 @@ const OtherUserProfileScreen = (props) => {
   let rightArray = [];
 
   for (const index in userProducts) {
-    if (leftArray.length + rightArray.length >= 10) {
+    if (leftArray.length + rightArray.length >= 4) {
       break;
     }
     if (index % 2 === 0) {
@@ -232,6 +235,10 @@ const OtherUserProfileScreen = (props) => {
           price={product.price}
           rating={product.rating}
         />
+        {/* <Image
+          style={{ width: 170.5, height: 248 }}
+          source={{ uri: product.thumbnail.imageUrl }}
+        /> */}
       </View>
     );
   };
@@ -242,6 +249,7 @@ const OtherUserProfileScreen = (props) => {
 
   return (
     <ScrollView
+      removeClippedSubviews={true}
       style={{ flex: 1, backgroundColor: "white" }}
       contentContainerStyle={{ paddingBottom: 100 }}
     >
@@ -265,7 +273,8 @@ const OtherUserProfileScreen = (props) => {
               color={Colors.translucent_grey}
             />
             <BodyText style={{ color: Colors.inactive_grey }}>
-              {userShippingAddress.city}, {userShippingAddress.country}
+              {userShippingAddress ? userShippingAddress.city : ""},{" "}
+              {userShippingAddress ? userShippingAddress.country : ""}
             </BodyText>
           </View>
         </View>

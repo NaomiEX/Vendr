@@ -64,7 +64,7 @@ const RecommendedProductsRow = (props) => {
         onPress={props.onPressSeeMore.bind(
           this,
           "recommended",
-          recommendedProducts
+          recommendedProducts.slice(0, 20)
         )}
       >
         <BodyText style={{ color: Colors.primary, marginRight: 5 }}>

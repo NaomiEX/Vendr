@@ -458,7 +458,7 @@ const EditProductScreen = (props) => {
                   borderBottomColor: Colors.translucent_grey,
                   color: Colors.accent,
                   fontSize: 18,
-                  width: 70,
+                  width: 80,
                 }}
                 type="price"
                 keyboardType="numeric"
@@ -511,6 +511,7 @@ const EditProductScreen = (props) => {
                 borderColor: Colors.translucent_grey,
                 color: Colors.black,
                 fontSize: 12,
+                paddingBottom: 10,
               }}
               type="description"
               onInputChange={inputChangeHandler}

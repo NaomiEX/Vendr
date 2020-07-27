@@ -11,7 +11,7 @@ export const storeNotification = (type, receiverId, senderId, message) => {
     const token = getState().authentication.token;
     const userId = getState().authentication.userId;
 
-    await dispatch(getNotificationFilters("test"));
+    await dispatch(getNotificationFilters("filters"));
 
     const notificationFilters = getState().notifications.filters;
     let storeNotification = true;

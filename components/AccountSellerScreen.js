@@ -37,7 +37,7 @@ const AccountSellerScreen = (props) => {
   let rightArray = [];
 
   for (const key in userProducts) {
-    if (leftArray.length + rightArray.length === 8) {
+    if (leftArray.length + rightArray.length >= 8) {
       break;
     }
     if (key % 2 === 0) {
@@ -101,9 +101,7 @@ const AccountSellerScreen = (props) => {
   let pastSales = 0;
   let totalEarnings = 0;
   let earningsThisMonth = 0;
-  let earningsPerDay = Array(
-    +moment().startOf("month").fromNow().split(" ")[0]
-  ).fill(0);
+  let earningsPerDay = Array(+moment().format("DD")).fill(0);
 
   // console.log();
 

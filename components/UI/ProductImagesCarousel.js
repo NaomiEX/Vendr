@@ -53,7 +53,6 @@ const ProductImagesCarousel = (props) => {
               : {
                   width: DeviceDimensions.width,
                   height: DeviceDimensions.width * 0.9,
-                  backgroundColor: "#cccccc",
                 }
           }
           source={{ uri: props.imageUrl }}

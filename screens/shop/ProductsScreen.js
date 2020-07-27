@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  FlatList,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -24,27 +25,10 @@ import Colors from "../../constants/Colors";
 import EmphasisText from "../../components/Text/EmphasisText";
 import CategoryHeaderText from "../../components/Text/CategoryHeaderText";
 
+import * as productsActions from "../../store/actions/products";
+
 import { SORT_BY_OPTIONS } from "../../data/sort_by";
-
-let comparison = 0;
-
-const comparePopularity = (a, b) => {
-  if (a.views.totalViews > b.views.totalViews) {
-    comparison = -1;
-  } else if (a.views.totalViews < b.views.totalViews) {
-    comparison = 1;
-  }
-  return comparison;
-};
-
-const compareNames = (a, b) => {
-  if (a.title > b.title) {
-    comparison = 1;
-  } else if (a.title < b.title) {
-    comparison = -1;
-  }
-  return comparison;
-};
+import { ActivityIndicator } from "react-native-paper";
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -52,20 +36,105 @@ const wait = (timeout) => {
   });
 };
 
+// const renderListItem = (onPress, itemData) => {
+//   return (
+//     <View style={styles.listItem}>
+//       <ProductItem
+//         style={{
+//           width: 166.365,
+//           height: 255.093,
+//         }}
+//         // cardContainerStyle={
+//         //   side === "right" && {
+//         //     marginLeft: 12,
+//         //   }
+//         // }
+//         titleStyle={{
+//           fontSize: 18,
+//         }}
+//         onTap={onPress}
+//         id={itemData.item.id}
+//         thumbnail={itemData.item.thumbnail}
+//         title={itemData.item.title}
+//         price={itemData.item.price}
+//         rating={itemData.item.rating}
+//       />
+//     </View>
+//   );
+// };
+
 const ProductsScreen = (props) => {
   const [sortBy, setSortBy] = useState("Newest to Oldest");
   const [isExpanded, setIsExpanded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const dispatch = useDispatch();
 
   const search = props.route.params.search;
   const type = props.route.params.type;
 
   const allProducts = useSelector((state) => state.products.availableProducts);
-  let products = search
-    ? allProducts.filter((product) => product.title.includes(search))
-    : props.route.params.products;
+  // let products;
+
+  // if (type) {
+  //   products
+  // }
+  let products = type && props.route.params.products;
+  // : allProducts.filter((product) =>
+  //     product.categories.includes("Men's Fashion")
+  //   );
 
   // console.log(allProducts);
+  // console.log(products);
+
+  useEffect(() => {
+    const fetchFilteredProducts = async () => {
+      await dispatch(productsActions.fetchFilteredProducts("search", search));
+    };
+
+    if (search) {
+      fetchFilteredProducts();
+    }
+  }, [search]);
+
+  if (search) {
+    products = useSelector((state) => state.products.filteredProducts);
+  }
+
+  // let fP = useSelector((state) => state.products.filteredProducts);
+
+  // console.log("Filtered Products: ");
+  // console.log(fP);
+
+  // let filteredProducts = [];
+
+  // for (const key in allProducts) {
+  //   if (allProducts[key].categories.includes("Men's Fashion")) {
+  //     filteredProducts.push(allProducts[key]);
+  //   }
+  // }
+  let comparison = 0;
+
+  const comparePopularity = (a, b) => {
+    // console.log(a.views);
+    if (a.views.totalViews > b.views.totalViews) {
+      comparison = -1;
+    } else if (a.views.totalViews < b.views.totalViews) {
+      comparison = 1;
+    }
+    return comparison;
+  };
+
+  const compareNames = (a, b) => {
+    // console.log(a.title);
+    if (a.title > b.title) {
+      comparison = 1;
+    } else if (a.title < b.title) {
+      comparison = -1;
+    }
+    return comparison;
+  };
 
   const compareDate = (a, b) => {
     // console.log("A DATE");
@@ -85,6 +154,7 @@ const ProductsScreen = (props) => {
   if (sortBy.includes("Oldest")) {
     products = products.sort(compareDate);
   } else if (sortBy === "Popularity") {
+    // console.log("Popularity");
     products = products.sort(comparePopularity);
   } else if (sortBy === "Name") {
     products = products.sort(compareNames);
@@ -114,6 +184,12 @@ const ProductsScreen = (props) => {
       id: itemId,
     });
   };
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setIsLoading(false);
+    }
+  }, [products]);
 
   const renderListItem = (item, side) => {
     return (
@@ -152,85 +228,95 @@ const ProductsScreen = (props) => {
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: "white" }}
-      contentContainerStyle={{ paddingBottom: 60 }}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+      removeClippedSubviews={true}
+      style={{ backgroundColor: "white" }}
+      contentContainerStyle={{ paddingBottom: 80 }}
     >
       <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginHorizontal: 20,
-          marginTop: 10,
-        }}
+        style={{ flex: 1, backgroundColor: "white" }}
+        // contentContainerStyle={{ paddingBottom: 60 }}
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        // }
       >
-        {search ? (
-          <BodyText>
-            Search results for:{" "}
-            <Text
-              style={{ color: Colors.accent, fontFamily: "helvetica-bold" }}
-            >
-              "{search}"
-            </Text>
-          </BodyText>
-        ) : (
-          <BodyText style={{ marginVertical: 10 }}>{title}</BodyText>
-        )}
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            marginHorizontal: 20,
+            marginTop: 10,
           }}
         >
-          <BodyText>Sort by:{"  "}</BodyText>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => {
-              setIsExpanded(!isExpanded);
+          {search ? (
+            <View>
+              <BodyText>Search results for: </BodyText>
+              <Text
+                style={{
+                  color: Colors.accent,
+                  fontFamily: "helvetica-bold",
+                  fontSize: 12,
+                  width: 180,
+                }}
+              >
+                "{search}"
+              </Text>
+            </View>
+          ) : (
+            <BodyText>{title}</BodyText>
+          )}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                borderWidth: 1,
-                borderColor: Colors.inactive_grey,
-                width: 133,
-                justifyContent: "center",
-                paddingVertical: 2,
+            <BodyText>Sort by:{"  "}</BodyText>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsExpanded(!isExpanded);
               }}
             >
-              <BodyText style={{ color: Colors.black }}>{sortBy}</BodyText>
-              <Image
+              <View
                 style={{
-                  marginLeft: 5,
-                  marginTop: isExpanded ? 0 : 2,
-                  width: 6,
-                  height: 6,
-                  marginRight: -5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: Colors.inactive_grey,
+                  width: 133,
+                  justifyContent: "center",
+                  paddingVertical: 2,
                 }}
-                source={
-                  isExpanded
-                    ? require("../../assets/icons/drop_down_collapse.png")
-                    : require("../../assets/icons/drop_down_arrow.png")
-                }
-              />
-            </View>
-          </TouchableOpacity>
+              >
+                <BodyText style={{ color: Colors.black }}>{sortBy}</BodyText>
+                <Image
+                  style={{
+                    marginLeft: 5,
+                    marginTop: isExpanded ? 0 : 2,
+                    width: 6,
+                    height: 6,
+                    marginRight: -5,
+                  }}
+                  source={
+                    isExpanded
+                      ? require("../../assets/icons/drop_down_collapse.png")
+                      : require("../../assets/icons/drop_down_arrow.png")
+                  }
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      {isExpanded && (
-        <View
-          style={{
-            alignItems: "flex-end",
-            marginHorizontal: 20,
-            marginTop: -1,
-          }}
-        >
-          {/* <View
+        {isExpanded && (
+          <View
+            style={{
+              alignItems: "flex-end",
+              marginHorizontal: 20,
+              marginTop: -1,
+            }}
+          >
+            {/* <View
           style={{
             width: 133,
             borderWidth: 1,
@@ -239,28 +325,43 @@ const ProductsScreen = (props) => {
             paddingVertical: 2,
           }}
         > */}
-          <SortByDropDown
-            data={SORT_BY_OPTIONS}
-            onPress={(label) => {
-              setSortBy(label);
-              setIsExpanded(false);
-            }}
-          />
-          {/* </View> */}
-        </View>
-      )}
+            <SortByDropDown
+              data={SORT_BY_OPTIONS}
+              onPress={(label) => {
+                setSortBy(label);
+                setIsExpanded(false);
+              }}
+            />
+            {/* </View> */}
+          </View>
+        )}
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginHorizontal: 20,
-          marginTop: isExpanded ? -50 : 0,
-        }}
-      >
-        <View>{leftArray.map((item) => renderListItem(item, "left"))}</View>
-        <View style={{ marginTop: 40 }}>
-          {rightArray.map((item) => renderListItem(item, "right"))}
+        {isLoading && <ActivityIndicator color={Colors.primary} size="small" />}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginHorizontal: 20,
+            marginTop: 0,
+          }}
+        >
+          {/* <FlatList
+          contentContainerStyle={{ paddingBottom: 120, paddingTop: 20 }}
+          data={products}
+          renderItem={renderListItem.bind(this, onPressHandler)}
+          numColumns={2}
+          initialNumToRender={4}
+          keyExtractor={(item) => item.id}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={4}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        /> */}
+          <View>{leftArray.map((item) => renderListItem(item, "left"))}</View>
+          <View style={{ marginTop: 40 }}>
+            {rightArray.map((item) => renderListItem(item, "right"))}
+          </View>
         </View>
       </View>
     </ScrollView>

@@ -7,6 +7,8 @@ import {
   StyleSheet,
   ScrollView,
   RefreshControl,
+  FlatList,
+  ToastAndroid,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Placeholder, PlaceholderMedia, Fade } from "rn-placeholder";
@@ -24,6 +26,7 @@ import PopularProductsRow from "../../components/PopularProductsRow";
 import FeaturedSellers from "../../components/FeaturedSellers";
 import ProductItem from "../../components/UI/ProductItem";
 import SkeletonProductsList from "../../components/Skeletons/SkeletonProductsList";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -34,6 +37,7 @@ const wait = (timeout) => {
 const CategoryScreen = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [maximumLength, setMaximumLength] = useState(10);
 
   const dispatch = useDispatch();
 
@@ -73,6 +77,9 @@ const CategoryScreen = (props) => {
   let rightArray = [];
 
   for (const index in products) {
+    if (leftArray.length + rightArray.length >= 10) {
+      break;
+    }
     if (index % 2 === 0) {
       leftArray.push(products[index]);
     } else {
@@ -96,6 +103,29 @@ const CategoryScreen = (props) => {
       setRefreshing(false);
     });
   }, []);
+
+  // const renderListItem = (itemData) => {
+  //   return (
+  //     <View style={styles.listItem}>
+  //       <ProductItem
+  //         style={{
+  //           width: 166.365,
+  //           height: 255.093,
+  //         }}
+  //         // cardContainerStyle={side === "right" && { marginLeft: 12 }}
+  //         titleStyle={{
+  //           fontSize: 18,
+  //         }}
+  //         onTap={onPressHandler}
+  //         id={itemData.item.id}
+  //         thumbnail={itemData.item.thumbnail}
+  //         title={itemData.item.title}
+  //         price={itemData.item.price}
+  //         rating={itemData.item.rating}
+  //       />
+  //     </View>
+  //   );
+  // };
 
   const renderListItem = (item, side) => {
     return (
@@ -181,11 +211,48 @@ const CategoryScreen = (props) => {
       ) : (
         <View style={{ flexDirection: "row", paddingLeft: 19 }}>
           <View>{leftArray.map((item) => renderListItem(item, "left"))}</View>
+          {/* <FlatList
+            data={leftArray}
+            renderItem={renderListItem.bind(this, "left")}
+          />
+          <FlatList
+            data={rightArray}
+            renderItem={renderListItem.bind(this, "right")}
+          /> */}
           <View style={{ marginTop: 40 }}>
             {rightArray.map((item) => renderListItem(item, "right"))}
           </View>
+          {/* <FlatList
+            numColumns={2}
+            data={products.slice(0, 10)}
+            renderItem={renderListItem}
+          /> */}
         </View>
       )}
+      <TouchableOpacity
+        activeOpacity={0.6}
+        onPress={() => {
+          // setMaximumLength(maximumLength + 10);
+          props.navigation.navigate("Products", {
+            type: "all category products",
+            products: products,
+          });
+        }}
+      >
+        <Text
+          style={{
+            textAlign: "right",
+            // "right",
+            marginTop: 20,
+            marginRight: 20,
+            fontFamily: "helvetica-standard",
+            color: Colors.primary,
+            fontSize: 12,
+          }}
+        >
+          {products.length >= 10 ? "See All" : ""}
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };

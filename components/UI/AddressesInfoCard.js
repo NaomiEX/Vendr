@@ -17,29 +17,40 @@ const AddressesInfoCard = (props) => {
       >
         <View>
           <BodyText style={{ ...styles.label, marginTop: 0 }}>NAME</BodyText>
-          <Text style={styles.addressInfoText}>{props.addressesInfo.name}</Text>
+          <Text style={styles.addressInfoText}>
+            {props.addressesInfo ? props.addressesInfo.name : ""}
+          </Text>
         </View>
         <TouchableOpacity activeOpacity={0.6} onPress={props.onPressEdit}>
           <Image source={require("../../assets/icons/edit_card.png")} />
         </TouchableOpacity>
       </View>
       <BodyText style={styles.label}>ADDRESS</BodyText>
-      <Text style={styles.addressInfoText}>{props.addressesInfo.address}</Text>
+      <Text style={styles.addressInfoText}>
+        {props.addressesInfo ? props.addressesInfo.address : ""}
+      </Text>
       <View style={{ flexDirection: "row" }}>
         <View>
           <BodyText style={styles.label}>CITY</BodyText>
-          <Text style={styles.addressInfoText}>{props.addressesInfo.city}</Text>
+          <Text
+            style={{
+              ...styles.addressInfoText,
+              width: 200,
+            }}
+          >
+            {props.addressesInfo ? props.addressesInfo.city : ""}
+          </Text>
         </View>
-        <View style={{ marginLeft: 100 }}>
+        <View style={{ marginLeft: 40 }}>
           <BodyText style={styles.label}>COUNTRY</BodyText>
           <Text style={styles.addressInfoText}>
-            {props.addressesInfo.country}
+            {props.addressesInfo ? props.addressesInfo.country : ""}
           </Text>
         </View>
       </View>
       <BodyText style={styles.label}>POSTAL CODE</BodyText>
       <Text style={styles.addressInfoText}>
-        {props.addressesInfo.postalCode}
+        {props.addressesInfo ? props.addressesInfo.postalCode : ""}
       </Text>
     </View>
   );

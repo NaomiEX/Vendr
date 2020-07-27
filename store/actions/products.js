@@ -8,6 +8,7 @@ import { CATEGORIES } from "../../data/categories";
 
 export const CREATE_PRODUCTS = "CREATE_PRODUCTS";
 export const SET_PRODUCTS = "SET_PRODUCTS";
+export const SET_FILTERED_PRODUCTS = "SET_FILTERED_PRODUCTS";
 
 export const createProduct = (
   title,
@@ -142,6 +143,58 @@ export const fetchProducts = () => {
         userProducts: loadedProducts.filter(
           (product) => product.ownerId === userId
         ),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+export const fetchFilteredProducts = (type, filter) => {
+  return async (dispatch, getState) => {
+    const token = getState().authentication.token;
+    const userId = getState().authentication.userId;
+    try {
+      const response = await fetch(
+        "https://vendr-6265c.firebaseio.com/products.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const responseData = await response.json();
+      const loadedProducts = [];
+
+      for (const key in responseData) {
+        if (
+          (type === "category" &&
+            responseData[key].categories.includes(filter)) ||
+          (type === "search" && responseData[key].title.includes(filter))
+        ) {
+          loadedProducts.push(
+            new Product(
+              key,
+              responseData[key].ownerId,
+              responseData[key].title,
+              responseData[key].price,
+              responseData[key].thumbnail,
+              responseData[key].productImages,
+              responseData[key].description,
+              responseData[key].categories,
+              responseData[key].rating,
+              responseData[key].views,
+              responseData[key].date
+            )
+          );
+        }
+      }
+
+      // console.log("FETCH PRODUCTS LOADED PRODUCTS:");
+      // console.log(loadedProducts);
+
+      dispatch({
+        type: SET_FILTERED_PRODUCTS,
+        filteredProducts: loadedProducts,
       });
     } catch (err) {
       console.log(err);

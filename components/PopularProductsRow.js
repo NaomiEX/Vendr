@@ -31,7 +31,11 @@ const PopularProductsRow = (props) => {
       <TouchableOpacity
         style={{ ...styles.seeMore, marginTop: 25 }}
         activeOpacity={0.6}
-        onPress={props.onPressSeeMore.bind(this, "popular", sortedProducts)}
+        onPress={props.onPressSeeMore.bind(
+          this,
+          "popular",
+          sortedProducts.slice(0, 20)
+        )}
       >
         <BodyText style={{ color: Colors.primary, marginRight: 5 }}>
           See all popular products

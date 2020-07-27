@@ -26,7 +26,11 @@ const ProductItem = (props) => {
       style={
         props.cardContainerStyle
           ? { ...styles.cardContainer, ...props.cardContainerStyle }
-          : styles.cardContainer
+          : {
+              ...styles.cardContainer,
+              width: props.style ? props.style.width : 150,
+              height: props.style ? props.style.height : 230,
+            }
       }
     >
       <TouchableComponent
@@ -72,7 +76,14 @@ const ProductItem = (props) => {
                     justifyContent: "space-around",
                   }}
                 >
-                  <Text style={{ ...styles.text, ...styles.price }}>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      ...styles.text,
+                      ...styles.price,
+                      width: 80,
+                    }}
+                  >
                     ${props.price}
                   </Text>
                   <View
@@ -100,14 +111,7 @@ const ProductItem = (props) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    overflow: "hidden",
     marginRight: 10,
-    borderRadius: 5,
-  },
-
-  card: {
-    borderRadius: 5,
-    overflow: "hidden",
   },
 
   textContainer: {

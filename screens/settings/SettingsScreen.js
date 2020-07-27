@@ -38,7 +38,7 @@ const SettingsScreen = (props) => {
             wishlistChanges,
             official: sales,
           },
-          "test"
+          "filters"
         )
       );
     }
@@ -49,7 +49,7 @@ const SettingsScreen = (props) => {
       await dispatch(
         activeComponentsActions.updateActiveScreen("Settings", "top")
       );
-      await dispatch(notificationActions.getNotificationFilters("test"));
+      await dispatch(notificationActions.getNotificationFilters("filters"));
     });
     return () => {
       unsubscribe();
