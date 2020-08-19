@@ -32,6 +32,14 @@ Vendr is an e-commerce app where users can buy and sell products.
 
 ![Splash](./assets/splash.png)
 
+### Categories Screen
+
+![Categories](./assets/categories.png)
+
+### Wishlist
+
+![Wishlist](./assets/wishlist.png)
+
 ## General info
 
 In Vendr, you are able to view and search for products that are on sale, featured, popular and recommended (based on previous search results and selected products). Once you tap on the product you are intereseted in, you may add any quantity of that item you want to your cart. Otherwise, you also have the option to add that item to your wishlist, post a comment relating to that product, or reply to an existing comment.
