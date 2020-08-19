@@ -9,7 +9,6 @@ Vendr is an e-commerce app where users can buy and sell products.
 * [General info](#general-info)
 * [Demo](#demonstration)
 * [Features](#features)
-* [Code](#code-specifications)
 * [Built with](#built-with)
 
 ## General info
@@ -33,4 +32,28 @@ If there are certain options you want to change over the course of using the app
 If you have any questions about the app and how to use it you can navigate to the Help Screen where you can view frequently asked questions and their respective answers.
 
 To contact me regarding the app, you may message me through the Contact Us Screen.
+
+## Demonstration
+
+![Demo](./assets/demonstration.gif)
+
+## Features
+
+* View products of chosen category
+* View popular/recommended/on sale products
+* Search for products by name
+* Add/remove products to/from cart
+* Purchase products from checkout
+* Add/remove products from wishlist
+* Rate and provide feedback on purchased products
+* View notifications (alerts, messages, etc.)
+* View profile and user statistics
+* View order history
+
+## Built with
+* Node.js version 12.16.3
+* Expo SDK v37.0.0
+* React Native 0.62
+* React Navigation 5.x
+* React Redux version 7.2
 
