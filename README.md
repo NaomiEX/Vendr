@@ -6,10 +6,21 @@ Vendr is an e-commerce app where users can buy and sell products.
 ![Logo](./assets/splash_logo_final.png)
 
 ## Table of contents
-* [General info](#general-info)
 * [Demo](#demonstration)
+* [General info](#general-info)
 * [Features](#features)
 * [Built with](#built-with)
+
+## Demonstration
+
+### Home Screen
+
+![Demo](./assets/demonstration.gif)
+
+### Login Screen
+
+
+### Sign Up Screen
 
 ## General info
 
@@ -32,10 +43,6 @@ If there are certain options you want to change over the course of using the app
 If you have any questions about the app and how to use it you can navigate to the Help Screen where you can view frequently asked questions and their respective answers.
 
 To contact me regarding the app, you may message me through the Contact Us Screen.
-
-## Demonstration
-
-![Demo](./assets/demonstration.gif)
 
 ## Features
 
