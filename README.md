@@ -14,12 +14,23 @@ Vendr is an e-commerce app where users can buy and sell products.
 ## Demonstration
 
 ### Home Screen
-
 ![Demo](./assets/demonstration.gif)
 
 ### Login Screen / Sign Up Screen
 
 ![Login](./assets/login.png)           ![Sign Up](./assets/sign_up.png)
+
+### Product Screen
+
+![Product](./assets/sample_product.png)
+
+### Discount Screen
+
+![Sale](./assets/discount.png)
+
+### Splash Screen
+
+![Splash](./assets/splash.png)
 
 ## General info
 
