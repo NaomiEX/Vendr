@@ -38,7 +38,7 @@ Vendr is an e-commerce app where users can buy and sell products.
 
 ### Wishlist
 
-![Wishlist](./assets/wishlist.png)
+![Wishlist](./assets/wishlist_smaller.png)
 
 ### Cart
 
