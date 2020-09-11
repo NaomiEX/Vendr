@@ -1,9 +1,12 @@
-# Vendr
-This app was created by Michelle Adeline as a Computer Science Project completed by myself over the course of 2 months.
+<a>
+  <image src="https://firebasestorage.googleapis.com/v0/b/vendr-6265c.appspot.com/o/images%2Flogo_word.png?alt=media&token=2681769f-282b-4834-b1ad-b8c555a1af55" title="Vendr" align="right" height="50" alt="Vendr logo"/>
+</a>
 
-Vendr is an e-commerce app where users can buy and sell products.
+Vendr
+=====
+>A mock e-commerce app where users can buy and sell products.
 
-![Logo](./assets/splash_logo_final.png)
+>This app was created by Michelle Adeline as a Computer Science Project completed over the course of 2 months.
 
 ## Table of contents
 * [Demo](#demonstration)
@@ -13,16 +16,14 @@ Vendr is an e-commerce app where users can buy and sell products.
 
 ## Demonstration
 
-### Home Screen
-![Home](./assets/home-screen.gif)
-
+### &nbsp; &nbsp; &nbsp; &nbsp; Home Screen &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Product Screen &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Category Screen
+![Home](./assets/home-screen.gif) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![Product](./assets/Product-Screen.gif) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![Categories](./assets/category-screen.gif)
+<br />
+<br />
+<br />
 ### Login Screen / Sign Up Screen
 
 ![Login](./assets/login_small.png)    ![Sign Up](./assets/sign_up_smaller.png)
-
-### Product Screen
-
-![Product](./assets/Product-Screen.gif)
 
 ### Discount Screen
 
@@ -31,10 +32,6 @@ Vendr is an e-commerce app where users can buy and sell products.
 ### Splash Screen
 
 ![Splash](./assets/splash_smaller.png)
-
-### Categories Screen
-
-![Categories](./assets/category-screen.gif)
 
 ### Wishlist
 
