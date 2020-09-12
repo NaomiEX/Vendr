@@ -8,6 +8,8 @@ Vendr
 
 >This app was created by Michelle Adeline as a Computer Science Project completed over the course of 2 months.
 
+----README IN PROGRESS----
+
 ## Table of contents
 * [Demo](#demonstration)
 * [General info](#general-info)
@@ -80,6 +82,8 @@ The rules for a valid username are:
 1. 
 
 Provided that all three fields are valid, they are sent to Firebase where it checks whether the email has already been taken, if so an alert is displayed and the sign up process is halted. Otherwise the app proceeds to the [Home Screen](#home-screen).
+
+![Login_Sign_Up](./assets/Login_Sign_Up.png)
 
 ### Home Screen
 
