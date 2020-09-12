@@ -36,6 +36,8 @@ Vendr
 
 ### Login/Sign Up Screen
 
+![Login_Sign_Up](./assets/Login_Sign_Up.png)
+
 ### Home Screen
 
 
