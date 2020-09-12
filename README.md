@@ -60,75 +60,75 @@ Vendr
 
 ### Login/Sign Up Screen
 
+Unless the user is already signed in, the first screen the user will see when they boot up the app (aside from the splash screen) is the Login Screen. In this screen the user can fill in their email-address and password which is validated in real-time with the help of [validate.js](https://validatejs.org/) 
 
-
-<details><summary>Page Breakdown</summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Home Screen
 
-<details><summary><b>Home Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Profile Page
 
-<details><summary><b>Profile Page</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Category Screen
 
-<details><summary><b>Category Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Products Screen
 
-<details><summary><b>Products Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Create/Edit Product Screen
 
-<details><summary><b>Create/Edit Product Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Product Details Screen
 
-<details><summary><b>Product Details Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Wishlist
 
-<details><summary><b>Wishlist Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Cart & Checkout
 
-<details><summary><b>Cart & Checkout Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Manage Cards Screen
 
-<details><summary><b>Manage Cards Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Order History
 
-<details><summary><b>Order History Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
 ### Notifications Screen
 
-<details><summary><b>Notifications Screen</b></summary>
+<details><summary>Breakdown</summary>
   
 </details>
 
