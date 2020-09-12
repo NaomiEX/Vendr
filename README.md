@@ -7,44 +7,18 @@ Vendr
 >A mock e-commerce app where users can buy and sell products.
 
 >This app was created by Michelle Adeline as a Computer Science Project completed over the course of 2 months.
+<br />
+<p align="center">
+  <img src="./assets/Compilation.gif" width="700" height="497.78" />
+</p>
+  
 
 ----README IN PROGRESS----
 
 ## Table of contents
-* [Demo](#demonstration)
-* [General info](#general-info)
-* [Features](#features)
+* [Key Features](#key-features)
+* [Page Breakdown](#page-breakdown)
 * [Built with](#built-with)
-
-## Demonstration
-
-### Login Screen / Sign Up Screen
-
-![Login](./assets/login_small.png)    ![Sign Up](./assets/sign_up_smaller.png)
-
-### Discount Screen
-
-![Sale](./assets/discount_smaller.png)
-
-### Splash Screen
-
-![Splash](./assets/splash_smaller.png)
-
-### Wishlist
-
-![Wishlist](./assets/wishlist_smaller.png)
-
-### Cart
-
-![Cart](./assets/cart_smaller.png)
-
-### Drawer
-
-![Drawer](./assets/drawer_smaller.png)
-
-### Checkout
-
-![Checkout](./assets/checkout-screen.gif)
 
 ## Key Features
 
@@ -61,29 +35,6 @@ Vendr
 ## Page Breakdown
 
 ### Login/Sign Up Screen
-
-Unless the user is already signed in, the first screen the user will see when they boot up the app (aside from the splash screen) is the Login Screen. On this screen the user can type in their email-address and password which are validated in real-time with the help of [validate.js](https://validatejs.org/).
-
-The rules for a valid email address are:
-1. The field cannot be empty
-
-The rules for a vaild password are:
-1. The field cannot be empty
-
-Provided that both fields are valid, they are sent to Firebase which is the database where all users' information are stored and it checks a couple of things:
-1. Whether that email address exists
-2. Whether the password matches the one linked with the email address in the database
-
-If one or more of the above conditions are false, an alert is displayed and the login process is halted. Otherwise the app proceeds to the [Home Screen](#home-screen).
-
-If the user does not already have an account in Vendr, they can navigate to the Sign Up screen where they can type in an email-address, username, and password which are also validated with the help of [validate.js](https://validatejs.org/).
-
-The rules for a valid username are:
-1. 
-
-Provided that all three fields are valid, they are sent to Firebase where it checks whether the email has already been taken, if so an alert is displayed and the sign up process is halted. Otherwise the app proceeds to the [Home Screen](#home-screen).
-
-![Login_Sign_Up](./assets/Login_Sign_Up.png)
 
 ### Home Screen
 
