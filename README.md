@@ -16,11 +16,6 @@ Vendr
 
 ## Demonstration
 
-### &nbsp; &nbsp; &nbsp; &nbsp; Home Screen &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Product Screen &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Category Screen
-![Home](./assets/home-screen.gif) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![Product](./assets/Product-Screen.gif) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![Categories](./assets/category-screen.gif)
-<br />
-<br />
-<br />
 ### Login Screen / Sign Up Screen
 
 ![Login](./assets/login_small.png)    ![Sign Up](./assets/sign_up_smaller.png)
