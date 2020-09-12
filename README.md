@@ -60,77 +60,56 @@ Vendr
 
 ### Login/Sign Up Screen
 
-Unless the user is already signed in, the first screen the user will see when they boot up the app (aside from the splash screen) is the Login Screen. In this screen the user can fill in their email-address and password which is validated in real-time with the help of [validate.js](https://validatejs.org/) 
+Unless the user is already signed in, the first screen the user will see when they boot up the app (aside from the splash screen) is the Login Screen. On this screen the user can type in their email-address and password which are validated in real-time with the help of [validate.js](https://validatejs.org/).
 
-<details><summary>Breakdown</summary>
-  
-</details>
+The rules for a valid email address are:
+1. The field cannot be empty
+
+The rules for a vaild password are:
+1. The field cannot be empty
+
+Provided that both fields are valid, they are sent to Firebase which is the database where all users' information are stored and it checks a couple of things:
+1. Whether that email address exists
+2. Whether the password matches the one linked with the email address in the database
+
+If one or more of the above conditions are false, an alert is displayed and the login process is halted. Otherwise the app proceeds to the [Home Screen](#home-screen).
+
+If the user does not already have an account in Vendr, they can navigate to the Sign Up screen where they can type in an email-address, username, and password which are also validated with the help of [validate.js](https://validatejs.org/).
+
+The rules for a valid username are:
+1. 
+
+Provided that all three fields are valid, they are sent to Firebase where it checks whether the email has already been taken, if so an alert is displayed and the sign up process is halted. Otherwise the app proceeds to the [Home Screen](#home-screen).
 
 ### Home Screen
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Profile Page
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Category Screen
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Products Screen
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Create/Edit Product Screen
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Product Details Screen
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Wishlist
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Cart & Checkout
 
-<details><summary>Breakdown</summary>
-  
-</details>
-
-### Manage Cards Screen
-
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Order History
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ### Notifications Screen
 
-<details><summary>Breakdown</summary>
-  
-</details>
 
 ## Built with
 * Node.js version 12.16.3
@@ -139,6 +118,6 @@ Unless the user is already signed in, the first screen the user will see when th
 * React Navigation 5.x
 * React Redux version 7.2
 * Firebase
-* Android Studio
-* Figma
+* Android Studio (Emulator)
+* Figma (Design & Prototyping)
 
