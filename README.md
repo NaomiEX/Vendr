@@ -66,14 +66,13 @@ Install Expo in the [Play Store](https://play.google.com/store/apps/details?id=h
 
 ### Category Screen
 
-
-### Products Screen
-
-
-### Create/Edit Product Screen
-
+![Category_Screen](./assets/Categories_New.png)
 
 ### Product Details Screen
+
+![Products Screen](./assets/Product_Details_Screen_New.png)
+
+### Create/Edit Product Screen
 
 
 ### Wishlist
