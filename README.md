@@ -9,7 +9,7 @@ Vendr
 >This app was created by Michelle Adeline as a Computer Science Project completed over the course of 2 months.
 <br />
 <p align="center">
-  <img src="./assets/Compilation.gif" width="700" height="497.78" />
+  <img src="./assets/Compilation.gif" />
 </p>
   
 
