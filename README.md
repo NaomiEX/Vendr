@@ -28,7 +28,7 @@ Vendr
 
 ### Prerequisites
 
-Install Expo in the Play Store (Android) or the App Store (iOS)
+Install Expo in the [Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en) (Android) or the [App Store](https://apps.apple.com/us/app/expo-client/id982107779) (iOS)
 
 ### Getting access to the app
 
