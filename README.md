@@ -15,10 +15,25 @@ Vendr
 
 ----README IN PROGRESS----
 
+<br />
+
 ## Table of contents
 * [Key Features](#key-features)
 * [Page Breakdown](#page-breakdown)
 * [Built with](#built-with)
+<br />
+
+## Getting Started
+
+### Prerequisites
+
+Install Expo in the Play Store (Android) or the App Store (iOS)
+
+### Getting access to the app
+
+[Click on this link](https://expo.io/@michelle_adeline/Vendr) and select Open project using Expo (on your mobile device), which will automatically open Expo and launch the app.
+
+<br />
 
 ## Key Features
 
@@ -31,6 +46,8 @@ Vendr
 * **Search suggestions** as user types in the **search bar**
 * **Rating** and **providing feedback** on purchased products
 * **Personalization** of **user profiles**
+
+<br />
 
 ## Page Breakdown
 
@@ -67,6 +84,7 @@ Vendr
 
 ### Notifications Screen
 
+<br />
 
 ## Built with
 * Node.js version 12.16.3
