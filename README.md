@@ -58,9 +58,11 @@ Install Expo in the Play Store (Android) or the App Store (iOS)
 
 ### Home Screen
 
+![Home_Page](./assets/Home_Page.png)
 
 ### Profile Page
 
+![Profile_Page](./assets/Profile_Page.png)
 
 ### Category Screen
 
@@ -78,9 +80,6 @@ Install Expo in the Play Store (Android) or the App Store (iOS)
 
 
 ### Cart & Checkout
-
-
-### Order History
 
 
 ### Notifications Screen
