@@ -18,6 +18,7 @@ Vendr
 <br />
 
 ## Table of contents
+* [Getting Started](#getting-started)
 * [Key Features](#key-features)
 * [Page Breakdown](#page-breakdown)
 * [Built with](#built-with)
