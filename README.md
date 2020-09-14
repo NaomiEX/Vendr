@@ -32,7 +32,11 @@ Install Expo in the [Play Store](https://play.google.com/store/apps/details?id=h
 
 ### Getting access to the app
 
-[Click on this link](https://expo.io/@michelle_adeline/Vendr) and select Open project using Expo (on your mobile device), which will automatically open Expo and launch the app.
+[Click on this link](https://expo.io/@michelle_adeline/Vendr) and select Open project using Expo (on your mobile device), which will automatically open Expo and launch the app. Alternatively, Expo gives you the option to open the app by scanning its QR Code which can be found on the website.
+
+### Having trouble accessing the app?
+
+Vendr may take a bit of time to load so you may see the splash screen for ~5 seconds (your mileage may vary). If it takes too long to load or shows an error, close Expo and try again. If the app is very laggy for some reason close the app and try again. If you are still unable to use the app contact me at: michelle.adeline.25@gmail.com
 
 <br />
 
@@ -74,6 +78,7 @@ Install Expo in the [Play Store](https://play.google.com/store/apps/details?id=h
 
 ### Create/Edit Product Screen
 
+![Create_or_Edit_Product_Screen](./assets/Create_or_Edit_Product.png)
 
 ### Wishlist
 
@@ -86,12 +91,13 @@ Install Expo in the [Play Store](https://play.google.com/store/apps/details?id=h
 <br />
 
 ## Built with
-* Node.js version 12.16.3
-* Expo SDK v37.0.0
-* React Native 0.62
-* React Navigation 5.x
-* React Redux version 7.2
-* Firebase
-* Android Studio (Emulator)
-* Figma (Design & Prototyping)
+* [Node.js version 12.16.3](https://nodejs.org/en/)
+* [Expo SDK v37.0.0](https://expo.io/learn)
+* [React Native 0.62](https://reactnative.dev/)
+* [Firebase](https://firebase.google.com/)
+* [Android Studio (Emulator)](https://developer.android.com/studio?hl=es)
+* [Figma (Design & Prototyping)](https://www.figma.com/)
 
+### Libraries
+* [React Navigation 5.x](https://reactnavigation.org/)
+* [React Redux version 7.2](https://react-redux.js.org/)
