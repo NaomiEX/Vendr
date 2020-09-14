@@ -13,8 +13,6 @@ Vendr
 </p>
   
 
-----README IN PROGRESS----
-
 <br />
 
 ## Table of contents
