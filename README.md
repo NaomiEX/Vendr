@@ -80,13 +80,12 @@ Vendr may take a bit of time to load so you may see the splash screen for ~5 sec
 
 ![Create_or_Edit_Product_Screen](./assets/Create_or_Edit_Product.png)
 
-### Wishlist
+### Wishlist & Notifications Screen
 
+![Wishlist_and_Notifications_Screen](./assets/Wishlist_and_Notifications.png)
 
 ### Cart & Checkout
 
-
-### Notifications Screen
 
 <br />
 
