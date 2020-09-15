@@ -84,6 +84,7 @@ Vendr may take a bit of time to load so you may see the splash screen for ~5 sec
 
 ### Cart & Checkout
 
+![Cart_and_Checkout](./assets/Cart_and_Checkout.png)
 
 <br />
 
