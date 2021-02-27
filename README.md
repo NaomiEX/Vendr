@@ -6,7 +6,7 @@ Vendr
 =====
 >A mock e-commerce app where users can buy and sell products.
 
->This app was created by Michelle Adeline as a Computer Science Project completed over the course of 2 months.
+>This app was created by Michelle Adeline as a personal project completed over the course of 2 months.
 <br />
 <p align="center">
   <img src="./assets/Compilation.gif" />
